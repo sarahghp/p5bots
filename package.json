@@ -20,6 +20,7 @@
     "phantomjs": "~1.9.2-4"
   },
   "dependencies": {
+    "firmata": "^0.5.4",
     "reqwest": "~0.9.6"
   },
   "author": "Sarah Groff-Palermo",
