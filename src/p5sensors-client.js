@@ -26,7 +26,8 @@ socket.on('connect', function(){
     mode: DIGITAL,
     direction: OUTPUT
   });
+});
 
-  setInterval(function(){ socket.emit('blink'); }, 2000);
-  
+socket.on('board ready', function(){
+  socket.emit('blink');
 });

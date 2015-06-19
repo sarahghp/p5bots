@@ -19,43 +19,6 @@ io.on('connect', function(socket){
   socket.on('browser', function(data){
     console.log(data);
   });
-
-  // socket.on('board object', function(data){
-  //   var board;
-
-  //   socket.on('blink', function(){
-  //     var fn = function(err){
-  //       if (err) {
-  //         console.log(err);
-  //         return;
-  //       }
-
-  //       var ledPin = data.pin;
-
-  //       console.log("connected");
-  //       console.log(ledPin);
-  //       console.log(board.pins);
-
-  //       var ledOn = true;
-  //       board.pinMode(ledPin, board.MODES[data.mode]);
-
-  //       setInterval(function() {
-  //         if (ledOn) {
-  //           console.log("+");
-  //           board.digitalWrite(ledPin, board.HIGH);
-  //         } else {
-  //           console.log("-");
-  //           board.digitalWrite(ledPin, board.LOW);
-  //         }
-
-  //         ledOn = !ledOn;
-
-  //       }, 500);
-  //     };
-      
-  //     board = new firmata.Board(data.port, fn);
-  //   });
-  // });
   
   var board, boardData;
 
@@ -65,6 +28,7 @@ io.on('connect', function(socket){
       if (err) {
         throw new Error(err);
       }
+      socket.emit('board ready');
       console.log('FIRST TIME', board);
     });
   });
@@ -93,8 +57,5 @@ io.on('connect', function(socket){
 
     }, 500);
   });
-
-
-
 
 }); 
