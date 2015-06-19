@@ -14,41 +14,85 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket){
+io.on('connect', function(socket){
   socket.emit('hello', 'tiger');
   socket.on('browser', function(data){
     console.log(data);
   });
 
+  // socket.on('board object', function(data){
+  //   var board;
+
+  //   socket.on('blink', function(){
+  //     var fn = function(err){
+  //       if (err) {
+  //         console.log(err);
+  //         return;
+  //       }
+
+  //       var ledPin = data.pin;
+
+  //       console.log("connected");
+  //       console.log(ledPin);
+  //       console.log(board.pins);
+
+  //       var ledOn = true;
+  //       board.pinMode(ledPin, board.MODES[data.mode]);
+
+  //       setInterval(function() {
+  //         if (ledOn) {
+  //           console.log("+");
+  //           board.digitalWrite(ledPin, board.HIGH);
+  //         } else {
+  //           console.log("-");
+  //           board.digitalWrite(ledPin, board.LOW);
+  //         }
+
+  //         ledOn = !ledOn;
+
+  //       }, 500);
+  //     };
+      
+  //     board = new firmata.Board(data.port, fn);
+  //   });
+  // });
+  
+  var board, boardData;
+
   socket.on('board object', function(data){
-    var board = new firmata.Board(data.port ,function(err){
+    boardData = data;
+    board = new firmata.Board(data.port, function(err){
       if (err) {
-        console.log(err);
-        return;
+        throw new Error(err);
       }
-
-      var ledPin = data.pin;
-
-      console.log("connected");
-
-      var ledOn = true;
-      board.pinMode(ledPin, board.MODES.OUTPUT);
-
-      setInterval(function() {
-        if (ledOn) {
-          console.log("+");
-          board.digitalWrite(ledPin, board.HIGH);
-        } else {
-          console.log("-");
-          board.digitalWrite(ledPin, board.LOW);
-        }
-
-        ledOn = !ledOn;
-
-      }, 500);
+      console.log('FIRST TIME', board);
+    });
   });
 
-});
+  socket.on('blink', function(data){
+    var ledPin = boardData.pin;
+
+    console.log("connected");
+
+    var ledOn = true;
+    console.log(ledPin);
+    console.log('SECOND TIME', board);
+    board.pinMode(ledPin, board.MODES[boardData.mode]);
+    // board.pinMode.call(board,ledPin, board.MODES[boardData.mode]);
+
+    setInterval(function() {
+      if (ledOn) {
+        console.log("+");
+        board.digitalWrite(ledPin, board.HIGH);
+      } else {
+        console.log("-");
+        board.digitalWrite(ledPin, board.LOW);
+      }
+
+      ledOn = !ledOn;
+
+    }, 500);
+  });
 
 
 
