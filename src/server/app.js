@@ -8,7 +8,7 @@ var express = require('express'),
 
 server.listen(8000);
 
-app.use(express.static('src'));
+app.use(express.static('p5sensors'));
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
