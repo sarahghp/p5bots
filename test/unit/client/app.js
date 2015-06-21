@@ -1,5 +1,5 @@
-suite('Connections', function(){
-  test('socket is connected', function(){
-    
+suite('Testing', function(){
+  test('that I can run tests', function(){
+    assert.equal(4, 4);
   });
 });

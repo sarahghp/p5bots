@@ -17,6 +17,7 @@
     "grunt-mocha": "~0.4.6",
     "grunt-newer": "^1.1.0",
     "grunt-update-json": "^0.2.1",
+    "mock-socket.io": "^1.0.0",
     "phantomjs": "~1.9.2-4"
   },
   "dependencies": {
