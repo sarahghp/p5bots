@@ -129,10 +129,10 @@ module.exports = function(grunt) {
           out: 'lib/p5sensors.js', // name of the output file
           useStrict: true, // Allow "use strict"; be included in the RequireJS files.
           //findNestedDependencies: true,   // automatically find nested deps.  Doesn't appear to effect the code?
-          include: ['src/p5sensors-client'], // this is the file which we are actually building
+          include: ['src/client/app.js'], // this is the file which we are actually building
           wrap: {
-            start: '/*! p5.sound.js v<%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd") %> */\n' + grunt.file.read('./src/fragments/before.frag'),
-            end: grunt.file.read('./src/fragments/after.frag')
+            start: '/*! p5.sound.js v<%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd") %> */\n' + grunt.file.read('./fragments/before.frag'),
+            end: grunt.file.read('./fragments/after.frag')
           },
 
 
