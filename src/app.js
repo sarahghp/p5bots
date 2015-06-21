@@ -29,20 +29,16 @@ io.on('connect', function(socket){
         throw new Error(err);
       }
       socket.emit('board ready');
-      console.log('FIRST TIME', board);
     });
   });
 
   socket.on('blink', function(data){
-    var ledPin = boardData.pin;
+    var ledPin = boardData.pin,
+        ledOn = true;
 
     console.log("connected");
 
-    var ledOn = true;
-    console.log(ledPin);
-    console.log('SECOND TIME', board);
     board.pinMode(ledPin, board.MODES[boardData.mode]);
-    // board.pinMode.call(board,ledPin, board.MODES[boardData.mode]);
 
     setInterval(function() {
       if (ledOn) {

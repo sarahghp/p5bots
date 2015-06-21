@@ -13,6 +13,8 @@
 
   "browser": true,
   "globals": {
+    "define": false,
+    "require": false,
     "assert": false,
     "suite": false,
     "setup": false,

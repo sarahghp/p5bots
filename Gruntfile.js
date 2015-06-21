@@ -58,7 +58,7 @@ module.exports = function(grunt) {
       },
       source: {
         options: {
-          jshintrc: '.jshintrc',
+          jshintrc: 'src/.jshintrc',
           ignores: [ 'src/external/**/*.js' ]
         },
         src: ['src/**/*.js']
@@ -123,19 +123,37 @@ module.exports = function(grunt) {
     requirejs: {
       sensors_unminified: {
         options: {
-          baseUrl: 'src', // from whence do the files come?
+          baseUrl: '.', // whence do the files come?
+          findNestedDependencies: true,
           optimize: 'none', // skip running uglify on the concatenated code
           out: 'lib/p5sensors.js', // name of the output file
           useStrict: true, // Allow "use strict"; be included in the RequireJS files.
           //findNestedDependencies: true,   // automatically find nested deps.  Doesn't appear to effect the code?
-          include: ['app'], // this is the file which we are actually building
-
-          
-          // This is a list of all dependencies, mapped to their AMD identifier.
-          paths: {
-            // external library
-            'reqwest': '../node_modules/reqwest/reqwest'
+          include: ['src/p5sensors-client'], // this is the file which we are actually building
+          wrap: {
+            start: '/*! p5.sound.js v<%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd") %> */\n' + grunt.file.read('./src/fragments/before.frag'),
+            end: grunt.file.read('./src/fragments/after.frag')
           },
+
+
+          // This will transform the compiled file, reversing out the AMD loader and creating a
+          // static JS file.  This code is potentially problematic.
+          onBuildWrite: function(name, path, contents) {
+            return require('amdclean').clean({
+              code: contents,
+              'globalObject': true,
+              escodegen: {
+                'comment': true,
+                'format': {
+                  'indent': {
+                    'style': '  ',
+                    'adjustMultilineComment': true
+                  }
+                }
+              }
+            });
+          },
+
           done: function(done, output) {
             require('concat-files')([
               'lib/p5sensors.js',
