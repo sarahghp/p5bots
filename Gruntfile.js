@@ -131,7 +131,7 @@ module.exports = function(grunt) {
           //findNestedDependencies: true,   // automatically find nested deps.  Doesn't appear to effect the code?
           include: ['src/client/app.js'], // this is the file which we are actually building
           wrap: {
-            start: '/*! p5.sound.js v<%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd") %> */\n' + grunt.file.read('./fragments/before.frag'),
+            start: '/*! p5.sensors.js v<%= pkg.version %> <%= grunt.template.today("yyyy-mm-dd") %> */\n' + grunt.file.read('./fragments/before.frag'),
             end: grunt.file.read('./fragments/after.frag')
           },
 
