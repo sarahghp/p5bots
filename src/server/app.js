@@ -14,13 +14,19 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+
+// App code
+ 
 io.on('connect', function(socket){
+  
+  // Debugging
   socket.emit('hello', 'tiger');
   socket.on('browser', function(data){
     console.log(data);
   });
   
-  var board, boardData;
+  // Board setup
+  var board;
 
   socket.on('board object', function(data){
     boardData = data;
@@ -32,20 +38,21 @@ io.on('connect', function(socket){
     });
   });
 
+  // Action functions
   socket.on('blink', function(data){
-    var ledPin = boardData.pin,
+    var ledPin = data.pin,
         ledOn = true;
 
-    console.log("connected");
+    console.log('connected');
 
-    board.pinMode(ledPin, board.MODES[boardData.mode]);
+    board.pinMode(ledPin, board.MODES[data.mode]);
 
     setInterval(function() {
       if (ledOn) {
-        console.log("+");
+        console.log('+');
         board.digitalWrite(ledPin, board.HIGH);
       } else {
-        console.log("-");
+        console.log('-');
         board.digitalWrite(ledPin, board.LOW);
       }
 

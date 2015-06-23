@@ -3,29 +3,61 @@ define(function (require) {
   'use strict';
 
   var socket = io.connect('http://localhost:8000');
+  var utils = require('socket_utils');
+  var _board;
 
-  // Pretend api codes
-  // board('arduino', '/dev/cu.usbmodem1421');
-  // var led = pin(9, 'DIGITAL', 'OUTPUT') /* OR */ pin(9, 'LED', 'OUTPUT');
-  // led.blink()
+
 
   p5.Board = function (port, type){
     this.port = port;
     this.type = type.toLowerCase() || 'arduino';
+    // Will be set when board is connected
+    this.ready = false;
   };
 
   p5.Pin = function(num, mode, direction){
     this.pin = num;
-    this.mode = mode;
+    this.mode = mode.toLowerCase();
     this.direction = direction;
 
-    // use function to add methods based on mode
+    var modeError = "Please check mode. Value should be 'analog', 'digital', or 'pwm'";
+
+    this.write = function() { throw new Error(modeError) },
+    this.read = function() { throw new Error(modeError) },
+
+    // use function to add methods based on mode & direction
+    if (this.mode === 'digital' || this.mode === 'analog'){
+      this.write = function(){
+        // emits a digital write call
+        // utils.socketGen(this.mode, 'write', this.pin);
+      }
+      this.read = function(){
+        // emits a digital read call
+        // utils.socketGen(this.mode, 'read', this.pin);
+      }
+    } else if (this.mode === 'pwm'){
+      this.write = function(){
+        // emits a analog write call
+        // utils.socketGen('analog', 'write', this.pin);
+      }
+      this.read = function(){
+        // emits a analog read call
+        // utils.socketGen('analog', 'read', this.pin);
+      }
+    } else {
+      throw new Error(modeError);
+    }
   };
 
   p5.board = function (port, type){
-    var _board = new p5.Board(port, type);
+    _board = new p5.Board(port, type);
     
-    // also emit board object
+    // also emit board object & listen for return
+    // utils.boardInit(port, type);
+    // socket.on('board ready', function(){
+    //  _board.ready = true;
+    // });
+     
     return _board;
   };
 
