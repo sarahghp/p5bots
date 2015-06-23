@@ -1,4 +1,5 @@
 define(function (require) {
+    var socket = io.connect('http://localhost:8000');
     var utils =  {
 
       boardInit: function(port, type) {
@@ -7,6 +8,8 @@ define(function (require) {
           port: port
         });
       },
+
+      socket: socket,
 
       socketGen: function(kind, direction, pin) {
         return socket.emit('action', {

@@ -12,7 +12,8 @@ var basicBoard = {
 suite('p5sensors basic', function(){
   test('can create a board object', function(){
     createdBoard = p5.board('/dev/cu.usbmodem1421', 'arduino');
-    assert.deepEqual(createdBoard, basicBoard);
+    assert.equal(createdBoard.type, basicBoard.type);
+    assert.equal(createdBoard.port, basicBoard.port);
   });
 
   test('can add a pin', function(){
