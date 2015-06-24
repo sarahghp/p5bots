@@ -22,4 +22,12 @@ suite('p5sensors basic', function(){
     assert.equal(createdPin.mode, pinnedBoard.mode);
     assert.equal(createdPin.direction, pinnedBoard.direction);
   });
+
+  test('can add a pin with shorthand', function(){
+    createdPin = p5.pin(9);
+    assert.equal(createdPin.pin, pinnedBoard.pin);
+    assert.equal(createdPin.mode, pinnedBoard.mode);
+    assert.equal(createdPin.direction, pinnedBoard.direction);
+  });
+
 });

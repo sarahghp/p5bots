@@ -16,8 +16,8 @@ define(function (require) {
 
   p5.Pin = function(num, mode, direction){
     this.pin = num;
-    this.mode = mode.toLowerCase();
-    this.direction = direction.toLowerCase();
+    this.mode = mode ? mode.toLowerCase() : 'digital';
+    this.direction = direction ? direction.toLowerCase() : 'output';
 
     this.write = function() { throw new Error(modeError) },
     this.read = function() { throw new Error(modeError) }
