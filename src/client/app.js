@@ -4,9 +4,8 @@ define(function (require) {
 
   var utils = require('src/client/socket_utils');
   var modeError = "Please check mode. Value should be 'analog', 'digital', or 'pwm'";
-  var _board, _pin;
-
-
+  var _board;
+  var eventQ = [];
 
   p5.Board = function (port, type){
     this.port = port;
@@ -18,7 +17,7 @@ define(function (require) {
   p5.Pin = function(num, mode, direction){
     this.pin = num;
     this.mode = mode.toLowerCase();
-    this.direction = direction;
+    this.direction = direction.toLowerCase();
 
     this.write = function() { throw new Error(modeError) },
     this.read = function() { throw new Error(modeError) }
@@ -26,36 +25,50 @@ define(function (require) {
 
   p5.board = function (port, type){
     _board = new p5.Board(port, type);
-    
+
     // also emit board object & listen for return
     utils.boardInit(port, type);
     utils.socket.on('board ready', function(){
      _board.ready = true;
+     eventQ.forEach(function(el){
+      el();
+     });
     });
      
     return _board;
   };
 
   p5.pin = function(num, mode, direction){
-    _pin = new p5.Pin(num, mode, direction);
-    // use function to add methods based on mode & direction
+    var _pin = new p5.Pin(num, mode, direction);
+
+    _board.ready ? utils.pinInit(num, mode, direction)() 
+                 : eventQ.push(utils.pinInit(num, mode, direction)); 
+    
+    
+    // add basic methods based on mode
     if (_pin.mode === 'digital' || _pin.mode === 'analog'){
-      _pin.write = function(){
+      _pin.write = function(arg){
         // emits a digital write call
-        utils.socketGen(_pin.mode, 'write', _pin.pin);
+        utils.socketGen(_pin.mode, 'write', _pin.pin, arg);
       }
-      _pin.read = function(){
+      _pin.read = function(arg){
         // emits a digital read call
         utils.socketGen(_pin.mode, 'read', _pin.pin);
+        utils.socket.on('return val', function(data){
+          this.val = data.val; // will prolly have to use that = this or bind for callsite
+        });
       }
     } else if (_pin.mode === 'pwm'){
       _pin.write = function(){
         // emits a analog write call
-        utils.socketGen('analog', 'write', _pin.pin);
+        utils.socketGen('analog', 'write', _pin.pin, arg);
       }
       _pin.read = function(){
         // emits a analog read call
         utils.socketGen('analog', 'read', _pin.pin);
+        utils.socket.on('return val', function(data){
+          this.val = data.val; // will prolly have to use that = this or bind for callsite
+        });
       }
     } else {
       throw new Error(modeError);
@@ -64,27 +77,4 @@ define(function (require) {
     return _pin;
   };
 
-
-
-  // Unreconstructed socket stuff
-  
-  // socket.on('hello', function(data){
-  //   console.log('hello ' + data);
-  //   socket.emit('browser', 'BOWSER');
-  // });
-
-  // socket.on('connect', function(){
-  //   socket.emit('board object', {
-  //     board: 'arduino',
-  //     port: '/dev/cu.usbmodem1421',
-  //     pin: 9,
-  //     mode: 'DIGITAL',
-  //     direction: 'OUTPUT'
-  //   });
-  // });
-
-  // // all operation emits should come on board ready
-  // socket.on('board ready', function(){
-  //   socket.emit('blink');
-  // });
 });

@@ -4,8 +4,8 @@ var basicBoard = {
     },
     pinnedBoard = {
       pin: 9,
-      mode: 'DIGITAL',
-      direction: 'OUTPUT'
+      mode: 'digital',
+      direction: 'output'
     },
     createdBoard, createdPin;
 
@@ -18,6 +18,8 @@ suite('p5sensors basic', function(){
 
   test('can add a pin', function(){
     createdPin = p5.pin(9, 'DIGITAL', 'OUTPUT');
-    assert.deepEqual(createdPin, pinnedBoard);
+    assert.equal(createdPin.pin, pinnedBoard.pin);
+    assert.equal(createdPin.mode, pinnedBoard.mode);
+    assert.equal(createdPin.direction, pinnedBoard.direction);
   });
 });
