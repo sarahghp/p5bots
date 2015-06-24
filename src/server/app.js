@@ -50,14 +50,16 @@ io.on('connect', function(socket){
   // Action functions
   
   socket.on('action', function(data){
-    if (data.arg){
-      if (data.arg && (data.arg === 'HIGH' || data.arg === 'LOW')) {
-        board[data.action](board[data.pin], board[data.arg])
+    console.log('action data', data);
+    var argument = data.arg;
+    if (argument){
+      if (argument && (argument === 'HIGH' || argument === 'LOW')) {
+        board[data.action](data.pin, board[argument])
       } else {
-        board[data.action](board[data.pin], board[data.arg])
+        board[data.action](data.pin, board[argument])
       }
     } else if (data.action === 'digitalRead' || data.action === 'analogRead') {
-      board[data.action](board[data.pin], function(val){
+      board[data.action](data.pin, function(val){
         socket.emit('return val', { val: val })
       });
     }

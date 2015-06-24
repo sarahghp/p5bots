@@ -23,19 +23,11 @@ define(function (require) {
 
       socketGen: function(kind, direction, pin) {
         return function action(arg) {
-          var emission = function() {
-            socket.emit('action', {
-              action: kind + direction.charAt(0).toUpperCase() + direction.substring(1),
-              pin: pin,
-              arg: arg
-            });
-          };
-
-          if (_board.ready) {
-            emission();
-          } else {
-            eventQ.push(emission);
-          }
+          socket.emit('action', {
+            action: kind + direction.charAt(0).toUpperCase() + direction.substring(1),
+            pin: pin,
+            arg: arg
+          });
         }
       }
 

@@ -31,7 +31,7 @@ define(function (require) {
     utils.socket.on('board ready', function(){
      _board.ready = true;
      eventQ.forEach(function(el){
-      el();
+      el.func.apply(null, el.args);
      });
     });
      
@@ -40,16 +40,20 @@ define(function (require) {
 
   p5.pin = function(num, mode, direction){
     var _pin = new p5.Pin(num, mode, direction);
+    var init = utils.pinInit(num, mode, direction);
 
-    _board.ready ? utils.pinInit(num, mode, direction)() 
-                 : eventQ.push(utils.pinInit(num, mode, direction)); 
-    
+    _board.ready ? init() 
+                 : eventQ.push({
+                    func: init,
+                    args: []
+                  }); 
     
     // add basic methods based on mode
     if (_pin.mode === 'digital' || _pin.mode === 'analog'){
       _pin.write = function(arg){
         // emits a digital write call
-        utils.socketGen(_pin.mode, 'write', _pin.pin, arg);
+        var fire = utils.socketGen(_pin.mode, 'write', _pin.pin);
+        _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
       }
       _pin.read = function(arg){
         // emits a digital read call
