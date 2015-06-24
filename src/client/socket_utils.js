@@ -21,17 +21,25 @@ define(function (require) {
 
       socket: socket,
 
-      socketGen: function(kind, direction, pin, arg) {
-        return function action(){
-          socket.emit('action', {
-            action: kind + direction.charAt(0).toUpperCase() + direction.substring(1),
-            pin: pin,
-            arg: arg
-          });
+      socketGen: function(kind, direction, pin) {
+        return function action(arg) {
+          var emission = function() {
+            socket.emit('action', {
+              action: kind + direction.charAt(0).toUpperCase() + direction.substring(1),
+              pin: pin,
+              arg: arg
+            });
+          };
+
+          if (_board.ready) {
+            emission();
+          } else {
+            eventQ.push(emission);
+          }
         }
       }
 
-    };
+  };
 
     return utils;
-});
+})
