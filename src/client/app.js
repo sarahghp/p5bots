@@ -41,6 +41,9 @@ define(function (require) {
   p5.pin = function(num, mode, direction){
     var _pin = new p5.Pin(num, mode, direction);
     var init = utils.pinInit(num, mode, direction);
+    var setVal = function(data){
+          this.val = data.val;
+        };
 
     _board.ready ? init() 
                  : eventQ.push({
@@ -51,18 +54,15 @@ define(function (require) {
     // add basic methods based on mode
     if (_pin.mode === 'digital' || _pin.mode === 'analog'){
       _pin.write = function(arg){
-        // emits a digital write call
         var fire = utils.socketGen(_pin.mode, 'write', _pin.pin);
         _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
       };
       _pin.read = function(arg){
-        // emits a digital read call
+        var that = this;
         var fire = utils.socketGen(_pin.mode, 'read', _pin.pin);
          _board.ready ? fire(wrappedArg) : eventQ.push({func: fire, args: [arg]});
 
-        // utils.socket.on('return val', function(data){
-        //   this.val = data.val; // will prolly have to use that = this or bind for callsite
-        // });
+        utils.socket.on('return val', setVal.bind(this));
       };
     } else if (_pin.mode === 'pwm'){
       _pin.write = function(){
@@ -75,10 +75,8 @@ define(function (require) {
         // emits a analog read call
         var fire = utils.socketGen('analog', 'read', _pin.pin);
          _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
-
-        utils.socket.on('return val', function(data){
-          this.val = data.val; // will prolly have to use that = this or bind for callsite
-        });
+         
+         utils.socket.on('return val', setVal.bind(this));
       }
     } else {
       throw new Error(modeError);
