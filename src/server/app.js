@@ -58,7 +58,10 @@ io.on('connect', function(socket){
       if (argument && (argument === 'HIGH' || argument === 'LOW')) {
         board[data.action](data.pin, board[argument])
       } else if (data.type === 'read') { 
-        eval('constructed = ' + argument + ';');
+        var constructArg = function(args) { 
+          return Function.apply(this, args); 
+        };
+        var constructed = constructArg(argument);
         board[data.action](data.pin, constructed);
       } else {
         board[data.action](data.pin, argument)
