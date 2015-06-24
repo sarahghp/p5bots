@@ -54,22 +54,28 @@ define(function (require) {
         // emits a digital write call
         var fire = utils.socketGen(_pin.mode, 'write', _pin.pin);
         _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
-      }
+      };
       _pin.read = function(arg){
         // emits a digital read call
-        utils.socketGen(_pin.mode, 'read', _pin.pin);
-        utils.socket.on('return val', function(data){
-          this.val = data.val; // will prolly have to use that = this or bind for callsite
-        });
-      }
+        var fire = utils.socketGen(_pin.mode, 'read', _pin.pin);
+         _board.ready ? fire(wrappedArg) : eventQ.push({func: fire, args: [arg]});
+
+        // utils.socket.on('return val', function(data){
+        //   this.val = data.val; // will prolly have to use that = this or bind for callsite
+        // });
+      };
     } else if (_pin.mode === 'pwm'){
       _pin.write = function(){
         // emits a analog write call
-        utils.socketGen('analog', 'write', _pin.pin, arg);
+        var fire = utils.socketGen('analog', 'write', _pin.pin, arg);
+         _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
+
       }
       _pin.read = function(){
         // emits a analog read call
-        utils.socketGen('analog', 'read', _pin.pin);
+        var fire = utils.socketGen('analog', 'read', _pin.pin);
+         _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
+
         utils.socket.on('return val', function(data){
           this.val = data.val; // will prolly have to use that = this or bind for callsite
         });

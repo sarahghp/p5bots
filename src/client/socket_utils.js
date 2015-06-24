@@ -10,7 +10,7 @@ define(function (require) {
         });
       },
 
-      pinInit: function(num, direction){
+      pinInit: function(num, mode, direction){
         return function emitPin(){
           socket.emit('pin object', {
             pin: num,
@@ -26,6 +26,7 @@ define(function (require) {
           socket.emit('action', {
             action: kind + direction.charAt(0).toUpperCase() + direction.substring(1),
             pin: pin,
+            type: direction,
             arg: arg
           });
         }

@@ -1,3 +1,5 @@
+'use strict'
+
 var express = require('express'),
     app     = express(),
     server  = require('http').Server(app),
@@ -26,12 +28,12 @@ io.on('connect', function(socket){
   });
   
   // Board setup
-  var board;
+  var board, constructed;
 
   socket.emit('Just emitting');
 
   socket.on('board object', function(data){
-    boardData = data;
+    var boardData = data;
     board = new firmata.Board(data.port, function(err){
       if (err) {
         throw new Error(err);
@@ -52,11 +54,16 @@ io.on('connect', function(socket){
   socket.on('action', function(data){
     console.log('action data', data);
     var argument = data.arg;
+    console.log('action data arg', data.arg);
     if (argument){
       if (argument && (argument === 'HIGH' || argument === 'LOW')) {
         board[data.action](data.pin, board[argument])
+      } else if (data.type === 'read') { 
+        console.log('in read');
+        eval('constructed = ' + argument + ';');
+        board[data.action](data.pin, constructed);
       } else {
-        board[data.action](data.pin, board[argument])
+        board[data.action](data.pin, argument)
       }
     } else if (data.action === 'digitalRead' || data.action === 'analogRead') {
       board[data.action](data.pin, function(val){
