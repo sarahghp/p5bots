@@ -47,8 +47,8 @@ io.on('connect', function(socket){
   socket.on('pin object', function(data){
     console.log('pin object caught', data);
     data.mode === 'digital' ?
-       board.pinMode(data.pin, board.MODES[data.direction]) :
-       board.pinMode(data.pin, board.MODES[data.mode]);
+       board.pinMode(data.pin, board.MODES[data.direction.toUpperCase()]) :
+       board.pinMode(data.pin, board.MODES[data.mode.toUpperCase()]);
   });
 
   // Action functions
