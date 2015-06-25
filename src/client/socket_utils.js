@@ -14,7 +14,8 @@ define(function (require) {
         return function emitPin(){
           socket.emit('pin object', {
             pin: num,
-            direction: direction
+            mode: mode.toLowerCase(),
+            direction: direction.toLowerCase()
           });
         }
       },

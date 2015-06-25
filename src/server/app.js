@@ -46,13 +46,15 @@ io.on('connect', function(socket){
   // Pin setup
   socket.on('pin object', function(data){
     console.log('pin object caught', data);
-    board.pinMode(data.pin, board.MODES[data.direction]);
+    data.mode === 'digital' ?
+       board.pinMode(data.pin, board.MODES[data.direction]) :
+       board.pinMode(data.pin, board.MODES[data.mode]);
   });
 
   // Action functions
   
   socket.on('action', function(data){
-    console.log('action data', data);
+    // console.log('action data', data);
     var argument = data.arg;
     if (argument){
       if (argument && (argument === 'HIGH' || argument === 'LOW')) {
@@ -67,7 +69,6 @@ io.on('connect', function(socket){
         board[data.action](data.pin, argument)
       }
     } else if (data.type === 'read') {
-      console.log('right place');
       board[data.action](data.pin, function(val){
         socket.emit('return val', { val: val })
       });
