@@ -19,7 +19,7 @@ app.get('/', function(req, res){
 
 // App code
  
-io.on('connect', function(socket){
+io.of('/sensors').on('connect', function(socket){
   
   // Debugging
   socket.emit('hello', 'tiger');

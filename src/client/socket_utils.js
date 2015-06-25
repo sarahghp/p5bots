@@ -1,5 +1,5 @@
 define(function (require) {
-    var socket = io.connect('http://localhost:8000');
+    var socket = io.connect('http://localhost:8000/sensors');
     var utils =  {
 
       boardInit: function(port, type) {
