@@ -1,19 +1,31 @@
+#!/usr/bin/env node
 'use strict'
 
 var express = require('express'),
     app     = express(),
     server  = require('http').Server(app),
     io      = require('socket.io')(server),
-    firmata = require('firmata');
+    firmata = require('firmata'),
+    program = require('commander');
+
+// Parse command-line args
+program
+  .description('Let your board talk to your sketch')
+  .option('-d, --dir <d>', 'Set base directory for server')
+  .option('-f, --file <f>', 'Set file to use')
+  .parse(process.argv);
+
 
 // Setup server, sockets, and events
 
 server.listen(8000);
 
-app.use(express.static('p5sensors'));
+app.use(express.static(program.dir || __dirname));
+console.log('connected');
+
 
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
+  res.sendFile( program.file || (__dirname + '/index.html') );
 });
 
 

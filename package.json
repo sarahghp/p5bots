@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "description": "Get sensor data into your p5 sketches",
   "main": "src/app.js",
+  "scripts": {
+    "start": "node ./src/server/app.js",
+    "sensors-up": "node ./src/server/app.js"
+    },
   "devDependencies": {
     "amdclean": "~0.3.3",
     "concat-files": "^0.1.0",
@@ -23,6 +27,7 @@
     "phantomjs": "~1.9.2-4"
   },
   "dependencies": {
+    "commander": "^2.8.1",
     "firmata": "^0.5.4"
   },
   "author": "Sarah Groff-Palermo",
