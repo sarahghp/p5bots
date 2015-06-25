@@ -15,14 +15,15 @@
     "grunt-contrib-yuidoc": "0.5.2",
     "grunt-lib-phantomjs": "~0.4.0",
     "grunt-mocha": "~0.4.6",
+    "grunt-mocha-chai-sinon": "0.0.9",
     "grunt-newer": "^1.1.0",
     "grunt-update-json": "^0.2.1",
+    "mocha": "^2.2.5",
     "mock-socket.io": "^1.0.0",
     "phantomjs": "~1.9.2-4"
   },
   "dependencies": {
-    "firmata": "^0.5.4",
-    "reqwest": "~0.9.6"
+    "firmata": "^0.5.4"
   },
   "author": "Sarah Groff-Palermo",
   "license": "LGPL"

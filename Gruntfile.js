@@ -105,7 +105,7 @@ module.exports = function(grunt) {
       }
     },
 
-    // Set up the mocha task, used for running the automated tests.
+    // Set up the mocha task, used for the automated browser-side tests.
     mocha: {
       test: {
         src: ['test/**/*.html'],
@@ -116,6 +116,16 @@ module.exports = function(grunt) {
           logErrors: true
         }
       },
+    },
+
+    'mocha-chai-sinon': {
+      build: {
+        src: ['test/unit/server/app.js'],
+        options: {
+          ui: 'tdd',
+          reporter: reporter
+        }
+      }
     },
 
     // The actual compile step:  This should collect all the dependencies
@@ -233,13 +243,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-mocha');
+  grunt.loadNpmTasks('grunt-mocha-chai-sinon');
   grunt.loadNpmTasks('grunt-contrib-yuidoc');
   grunt.loadNpmTasks('grunt-update-json');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-newer');
 
   // Create the multitasks.
-  grunt.registerTask('test', ['connect', 'newer:jshint', 'requirejs', 'mocha']);
+  grunt.registerTask('test', ['connect', 'newer:jshint', 'requirejs', 'mocha', 'mocha-chai-sinon']);
   grunt.registerTask('yui', ['yuidoc']);
-  grunt.registerTask('default', ['connect', 'jshint', 'requirejs', 'mocha']);
+  grunt.registerTask('default', ['connect', 'jshint', 'requirejs', 'mocha', 'mocha-chai-sinon']);
 };
