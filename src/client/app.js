@@ -56,19 +56,21 @@ define(function (require) {
       _pin.write = function(arg){
         var fire = utils.socketGen(_pin.mode, 'write', _pin.pin);
         _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
+        return function nextWrite(){ fire(); return nextWrite };
       };
 
       _pin.read = function(arg){
-        var that = this;
         var fire = utils.socketGen(_pin.mode, 'read', _pin.pin);
-         _board.ready ? fire(wrappedArg) : eventQ.push({func: fire, args: [arg]});
+         _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
 
         utils.socket.on('return val', setVal.bind(this));
+        return function nextRead(){ fire(); return nextRead };
       };
     } else if (_pin.mode === 'pwm'){
       _pin.write = function(arg){
         var fire = utils.socketGen('analog', 'write', _pin.pin, arg);
          _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
+         return function nextWrite(){ fire(); return nextWrite };
       };
 
       _pin.read = function(arg){
@@ -76,6 +78,7 @@ define(function (require) {
          _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
          
          utils.socket.on('return val', setVal.bind(this));
+         return function nextRead(){ fire(); return nextRead };
       };
 
     } else {
