@@ -15,7 +15,7 @@ define(function (require) {
   };
 
   p5.Pin = function(num, mode, direction){
-    this.pin = num;
+    this.pin = mode.toLowerCase() === 'analog' ? num + 14 : num;
     this.mode = mode ? mode.toLowerCase() : 'digital';
     this.direction = direction ? direction.toLowerCase() : 'output';
 
@@ -40,7 +40,7 @@ define(function (require) {
 
   p5.pin = function(num, mode, direction){
     var _pin = new p5.Pin(num, mode, direction);
-    var init = utils.pinInit(num, mode, direction);
+    var init = utils.pinInit(_pin.pin, _pin.mode, _pin.direction);
     var setVal = function(data){
           this.val = data.val;
     };
