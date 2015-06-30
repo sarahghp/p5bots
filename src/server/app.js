@@ -31,28 +31,25 @@ app.get('/', function(req, res){
 
 // App code
  
+var board;
+
 io.of('/sensors').on('connect', function(socket){
-  
-  // Debugging
-  socket.emit('hello', 'tiger');
-  socket.on('browser', function(data){
-    console.log(data);
-  });
+  console.log('connect called');
   
   // Board setup
-  var board, constructed;
-
-  socket.emit('Just emitting');
-
   socket.on('board object', function(data){
-    var boardData = data;
-    board = new firmata.Board(data.port, function(err){
-      if (err) {
-        throw new Error(err);
-      }
+    if (!board) {
+      board = new firmata.Board(data.port, function(err){
+        if (err) {
+          throw new Error(err);
+        }
+        console.log('board object caught', data);
+        socket.emit('board ready');
+      });
+    } else {
       console.log('board object caught', data);
       socket.emit('board ready');
-    });
+    }
   });
 
   // Pin setup

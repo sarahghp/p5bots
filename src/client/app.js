@@ -24,6 +24,7 @@ define(function (require) {
   };
 
   p5.board = function (port, type){
+    console.log('p5.board called');
     _board = new p5.Board(port, type);
 
     // also emit board object & listen for return
