@@ -69,20 +69,25 @@ io.of('/sensors').on('connect', function(socket){
     // console.log('action data', data);
     var argument = data.arg;
     if (argument){
+      // If it is digtalWrite, augment the argument with `board` to match firmata call
       if (argument && (argument === 'HIGH' || argument === 'LOW')) {
-        board[data.action](data.pin, board[argument])
+        board[data.action](data.pin, board[argument]);
+      // or if it is either type of read, construct the callback & send
       } else if (data.type === 'read') { 
         var constructArg = function(args) { 
           return Function.apply(this, args); 
         };
         var constructed = constructArg(argument);
+        console.log('in read', data.action, data.pin, constructed);
         board[data.action](data.pin, constructed);
       } else {
-        board[data.action](data.pin, argument)
+        console.log('this else called', data.action, data.pin, argument);
+        board[data.action](data.pin, argument);
       }
+    // Otherwise it is read with no argument, set pin.val on update
     } else if (data.type === 'read') {
       board[data.action](data.pin, function(val){
-        socket.emit('return val', { val: val })
+        socket.emit('return val', { val: val });
       });
     }
     
