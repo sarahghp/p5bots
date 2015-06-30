@@ -46,6 +46,3 @@ p5.board('/dev/cu.usbmodem1421', 'arduino');
 // p.read(["val", "console.log('read val', val)"]);
 // p.read();
 // setInterval(function() { console.log(p.val) }, 500);
-
-p5.pin(9, 'DIGITAL', 'OUTPUT')
-p5.pin(9, 'DIGITAL', 'INPUT')
