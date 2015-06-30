@@ -15,7 +15,7 @@ define(function (require) {
   };
 
   p5.Pin = function(num, mode, direction){
-    this.pin = mode.toLowerCase() === 'analog' ? num + 14 : num;
+    this.pin = num;
     this.mode = mode ? mode.toLowerCase() : 'digital';
     this.direction = direction ? direction.toLowerCase() : 'output';
 
@@ -40,7 +40,7 @@ define(function (require) {
 
   p5.pin = function(num, mode, direction){
     var _pin = new p5.Pin(num, mode, direction);
-    var init = utils.pinInit(_pin.pin, _pin.mode, _pin.direction);
+    var init = utils.pinInit(num, mode, direction);
     var setVal = function(data){
           this.val = data.val;
     };
@@ -56,7 +56,7 @@ define(function (require) {
       _pin.write = function(arg){
         var fire = utils.socketGen(_pin.mode, 'write', _pin.pin);
         _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
-        return function nextWrite(){ fire(); return nextWrite };
+        return function nextWrite(arg){ fire(arg); return nextWrite };
       };
 
       _pin.read = function(arg){
@@ -64,13 +64,13 @@ define(function (require) {
          _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
 
         utils.socket.on('return val', setVal.bind(this));
-        return function nextRead(){ fire(); return nextRead };
+        return function nextRead(arg){ fire(arg); return nextRead };
       };
     } else if (_pin.mode === 'pwm'){
       _pin.write = function(arg){
         var fire = utils.socketGen('analog', 'write', _pin.pin, arg);
          _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
-         return function nextWrite(){ fire(); return nextWrite };
+         return function nextWrite(arg){ fire(arg); return nextWrite };
       };
 
       _pin.read = function(arg){
@@ -78,7 +78,7 @@ define(function (require) {
          _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
          
          utils.socket.on('return val', setVal.bind(this));
-         return function nextRead(){ fire(); return nextRead };
+         return function nextRead(arg){ fire(arg); return nextRead };
       };
 
     } else {
