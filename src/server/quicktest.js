@@ -24,9 +24,9 @@ console.log('quicktest');
 //////////////////////
 
 // Board setup — obviously you may need to change the port
-p5.board('/dev/cu.usbmodem1421', 'arduino');
+// p5.board('/dev/cu.usbmodem1421', 'arduino');
 
-// Test digital write
+// // Test digital write
 // var p = p5.pin(9, 'DIGITAL', 'OUTPUT');
 // p.write('HIGH');
 
@@ -47,8 +47,8 @@ p5.board('/dev/cu.usbmodem1421', 'arduino');
 // p.read();
 // setInterval(function() { console.log(p.val) }, 500);
 
-// Draw ellipses with a button -- these work on the same 
-// setup as the pin reads
+// // Draw ellipses with a button -- these work on the same 
+// // setup as the pin reads
 
 // var p;
 
@@ -67,4 +67,50 @@ p5.board('/dev/cu.usbmodem1421', 'arduino');
 //     fill(Math.random() * 255, Math.random() * 255, Math.random() * 255);
 //     ellipse(Math.random() * width, Math.random() * height, 60, 60);
 //   }
+// }
+
+// Click the circle to light the LED -- this works on the same 
+// setup as the pin writes
+// var pin;
+
+// function setup() {
+//   createCanvas(400, 400);
+//   noStroke();
+//   fill(62, 0, 255);
+//   ellipse(width/2, height/2, 100, 100);
+
+//   p5.board('/dev/cu.usbmodem1421', 'arduino');
+//   pin = p5.pin(9, 'DIGITAL', 'OUTPUT');
+// }
+
+// function mousePressed() {
+//   var d = dist(width/2, height/2, mouseX, mouseY);
+//   if (d < 100) {
+//     pin.write('HIGH');
+//   }
+// }
+
+// function mouseReleased() {
+//   pin.write('LOW');
+// }
+
+// // Click a button to light the LED -- this works on the same 
+// // setup as the pin writes & uses the p5.dom lib
+
+// function setup() {
+//   createCanvas(400, 400);
+
+//   p5.board('/dev/cu.usbmodem1421', 'arduino');
+//   var pin = p5.pin(9, 'DIGITAL', 'OUTPUT');
+
+  
+//   var button = createButton('LIGHT THE LED!!');
+//   button.position(width/2, height/2);
+//   button.mousePressed(function(){
+//     pin.write('HIGH');
+//   });
+
+//   button.mouseReleased(function(){
+//     pin.write('LOW');
+//   });
 // }
