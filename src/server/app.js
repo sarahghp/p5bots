@@ -75,10 +75,8 @@ io.of('/sensors').on('connect', function(socket){
           return Function.apply(this, args); 
         };
         var constructed = constructArg(argument);
-        console.log('in read', data.action, data.pin, constructed);
         board[data.action](data.pin, constructed);
       } else {
-        console.log('this else called', data.action, data.pin, argument);
         board[data.action](data.pin, argument);
       }
     // Otherwise it is read with no argument, set pin.val on update
