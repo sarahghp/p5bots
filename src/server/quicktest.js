@@ -69,8 +69,8 @@ console.log('quicktest');
 //   }
 // }
 
-// Click the circle to light the LED -- this works on the same 
-// setup as the pin writes
+// // Click the circle to light the LED -- this works on the same 
+// // setup as the pin writes
 // var pin;
 
 // function setup() {
@@ -113,4 +113,22 @@ console.log('quicktest');
 //   button.mouseReleased(function(){
 //     pin.write('LOW');
 //   });
+// }
+
+// PWM Slider -- Same setup as above
+
+// var slider, pin;
+
+// function setup() {
+//   slider = createSlider(0, 255, 150);
+//   slider.position = (10, 10);
+
+//   p5.board('/dev/cu.usbmodem1421', 'arduino');
+//   pin = p5.pin(9, 'PWM', 'OUTPUT');
+
+// }
+
+// function draw() {
+//   var val = slider.value();
+//   pin.write(val);
 // }
