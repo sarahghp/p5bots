@@ -9,23 +9,27 @@ var express = require('express'),
     program = require('commander');
 
 // Parse command-line args
+var directory, index, program;
+
 program
   .description('Let your board talk to your sketch')
   .option('-d, --dir <d>', 'Set base directory for server')
   .option('-f, --file <f>', 'Set file to use')
   .parse(process.argv);
 
+exports.program = program;
+exports.directory = directory = program.dir || __dirname;
+exports.index = index = program.file || (__dirname + '/index.html');
 
 // Setup server, sockets, and events
 
 server.listen(8000);
 
-app.use(express.static(program.dir || __dirname));
-console.log('connected');
+app.use(express.static(directory));
+console.log('server starting');
 
-
-app.get('/', function(req, res){
-  res.sendFile( program.file || (__dirname + '/index.html') );
+app.get('/', function(req, res) {
+  res.sendFile(index);
 });
 
 
@@ -33,13 +37,16 @@ app.get('/', function(req, res){
  
 var board;
 
-io.of('/sensors').on('connect', function(socket){
-  console.log('connect called');
+io.of('/sensors').on('connect', function(socket) {
+  console.log('connected');
   
   // Board setup
-  socket.on('board object', function(data){
+  
+  
+  socket.on('board object', function(data) {
+    console.log('board object caught', data);
     if (!board) {
-      board = new firmata.Board(data.port, function(err){
+      board = new firmata.Board(data.port, function(err) {
         if (err) {
           throw new Error(err);
         }
@@ -55,6 +62,7 @@ io.of('/sensors').on('connect', function(socket){
   // Pin setup
   socket.on('pin object', function(data){
     console.log('pin object caught', data);
+    // Digital pins are set to INPUT or OUTPUT in firmata
     data.mode === 'digital' ?
        board.pinMode(data.pin, board.MODES[data.direction.toUpperCase()]) :
        board.pinMode(data.pin, board.MODES[data.mode.toUpperCase()]);
@@ -62,6 +70,8 @@ io.of('/sensors').on('connect', function(socket){
 
   // Action functions
   
+  // The primary action function formats the read & write functions & sends
+  // these to firmata
   socket.on('action', function(data){
     // console.log('action data', data);
     var argument = data.arg;
@@ -85,8 +95,10 @@ io.of('/sensors').on('connect', function(socket){
         socket.emit('return val', { val: val });
       });
     }
-    
   });
+
+
+  // Sandboxery
 
   socket.on('blink', function(data){
     var ledPin = data.pin,
@@ -109,5 +121,5 @@ io.of('/sensors').on('connect', function(socket){
 
     }, 500);
   });
+});
 
-}); 

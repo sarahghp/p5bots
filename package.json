@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./src/server/app.js",
     "sensors-up": "node ./src/server/app.js"
-    },
+  },
   "devDependencies": {
     "amdclean": "~0.3.3",
     "concat-files": "^0.1.0",
