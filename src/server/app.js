@@ -42,7 +42,6 @@ io.of('/sensors').on('connect', function(socket) {
   
   // Board setup
   
-  
   socket.on('board object', function(data) {
     console.log('board object caught', data);
     if (!board) {
@@ -98,17 +97,13 @@ io.of('/sensors').on('connect', function(socket) {
   });
 
 
-  // Sandboxery
+  // Special functions
 
   socket.on('blink', function(data){
     var ledPin = data.pin,
         ledOn = true;
 
-    console.log('connected');
-
-    board.pinMode(ledPin, board.MODES[data.direction]);
-
-    setInterval(function() {
+    var blinkID = setInterval(function() {
       if (ledOn) {
         console.log('+');
         board.digitalWrite(ledPin, board.HIGH);
@@ -120,6 +115,14 @@ io.of('/sensors').on('connect', function(socket) {
       ledOn = !ledOn;
 
     }, 500);
+
+    socket.emit('blink id', { id: blinkID});
   });
+
+
+  socket.on('blink cancel', function(data) {
+    clearInterval(data.id);
+  });
+
 });
 
