@@ -11,7 +11,6 @@ define(function (require) {
       },
 
       pinInit: function(num, mode, direction){
-        console.log('in pin init', arguments);
         return function emitPin(){
           socket.emit('pin object', {
             pin: num,

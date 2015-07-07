@@ -90,7 +90,6 @@ define(function (require) {
     
     if (_pin.special) {
 
-      console.log('ELSEIF CALLED');
        _pin.write = construct('write', _pin.mode, _pin);
        _pin.read = construct('read', _pin.mode, _pin);
        specialMethods[_pin.special].fn(_pin);
