@@ -27,7 +27,7 @@ define(function (require) {
     
     if (specialMethods[this.mode]) {
       this.special = this.mode;
-      this.mode = specialMethods[this.mode].mode; 
+      this.mode = specialMethods[this.mode].mode;
     }
 
     this.write = function() { throw new Error(modeError) },
@@ -53,12 +53,6 @@ define(function (require) {
     var _pin = new p5.Pin(num, mode, direction);
     var init = utils.pinInit(_pin.pin, _pin.mode, _pin.direction);
     
-    var setVal = function(data){
-          this.val = data.val;
-    };
-
-    
-
     _board.ready ? init() 
                  : _board.eventQ.push({
                     func: init,

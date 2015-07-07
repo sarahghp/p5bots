@@ -39,6 +39,11 @@ var board;
 
 io.of('/sensors').on('connect', function(socket) {
   console.log('connected');
+
+  // Error handling
+  socket.on('error', function(err){
+    console.log(err);
+  });
   
   // Board setup
   
@@ -98,6 +103,9 @@ io.of('/sensors').on('connect', function(socket) {
 
 
   // Special functions
+   
+  
+  // LED.Blink
 
   socket.on('blink', function(data){
     var ledPin = data.pin,
@@ -105,10 +113,8 @@ io.of('/sensors').on('connect', function(socket) {
 
     var blinkID = setInterval(function() {
       if (ledOn) {
-        console.log('+');
         board.digitalWrite(ledPin, board.HIGH);
       } else {
-        console.log('-');
         board.digitalWrite(ledPin, board.LOW);
       }
 
@@ -116,13 +122,14 @@ io.of('/sensors').on('connect', function(socket) {
 
     }, 500);
 
-    socket.emit('blink id', { id: blinkID});
+    socket.on('blink cancel', function(data) {
+      clearInterval(blinkID);
+    });
+
   });
 
 
-  socket.on('blink cancel', function(data) {
-    clearInterval(data.id);
-  });
+
 
 });
 

@@ -1,6 +1,10 @@
 define(function (require) {
     
     var socket = io.connect('http://localhost:8000/sensors');
+    socket.on('error', function(err){
+      console.log(err);
+    });
+
     var utils =  {
 
       boardInit: function(port, type) {
@@ -17,12 +21,8 @@ define(function (require) {
         var mode = mode || pin.mode;
 
         function setVal(data) {
-              this.val = data.val;
+          this.val = data.val;
         };
-
-        function returnVal() {
-          return socket.on('return val', setVal.bind(this));
-        }
 
         pin.read = function(arg) {
           var fire = utils.socketGen(mode, 'read', pin.pin);

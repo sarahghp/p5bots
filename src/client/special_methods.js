@@ -9,8 +9,8 @@ define(function (require) {
           this.write('HIGH');  
         } else {
           this.mode = 'digital';
-          this.write = utils.construct('write', 'digital');
-          this.read = utils.construct('read', 'digital');
+          this.write = utils.constructFuncs('write', 'digital');
+          this.read = utils.constructFuncs('read', 'digital');
           this.write('HIGH')
         } 
       },
@@ -20,8 +20,8 @@ define(function (require) {
           this.write('LOW');  
         } else {
           this.mode = 'digital';
-          this.write = utils.construct('write', 'digital');
-          this.read = utils.construct('read', 'digital');
+          this.write = utils.constructFuncs('write', 'digital');
+          this.read = utils.constructFuncs('read', 'digital');
           this.write('LOW')
         }
       },
@@ -46,10 +46,6 @@ define(function (require) {
 
       pin.blink = function() {
 
-        utils.socket.on('blink id', function(data){
-          this.blinkID = data.id;
-        });
-
         if(this.mode !== 'pwm') {
           utils.socket.emit('blink', { pin: this.pin });  
         } else {
@@ -61,11 +57,11 @@ define(function (require) {
 
       pin.noBlink = function() {
         if(this.mode !== 'pwm') {
-          utils.socket.emit('no blink', { id: this.blinkID });  
+          utils.socket.emit('blink cancel');  
         } else {
           this.mode = 'digital';
           // reset read and write
-          utils.socket.emit('no blink', { id: this.blinkID });
+          utils.socket.emit('blink cancel');
         }
       }
 
