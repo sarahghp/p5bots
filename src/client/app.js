@@ -6,7 +6,6 @@ define(function (require) {
   var special = require('src/client/special_methods');
   var modeError = "Please check mode. Value should be 'analog', 'digital', or 'pwm'";
   var _board;
-  var eventQ = [];
 
   var specialMethods = {
     'led': { fn: special.led, mode: 'digital' }
@@ -17,6 +16,7 @@ define(function (require) {
     this.type = type.toLowerCase() || 'arduino';
     // Will be set when board is connected
     this.ready = false;
+    this.eventQ = [];
   };
 
   p5.Pin = function(num, mode, direction){
@@ -41,7 +41,7 @@ define(function (require) {
     utils.boardInit(port, type);
     utils.socket.on('board ready', function(){
      _board.ready = true;
-     eventQ.forEach(function(el){
+     _board.eventQ.forEach(function(el){
       el.func.apply(null, el.args);
      });
     });
@@ -57,31 +57,10 @@ define(function (require) {
           this.val = data.val;
     };
 
-    var construct = function(readOrWrite, mode) {
-
-      function returnVal() {
-        return utils.socket.on('return val', setVal.bind(this));
-      }
-
-      function noop() {
-        return;
-      }
-
-      var finalFuncs = {
-        read: function nextRead(arg){ fire(arg) },
-        write: function nextWrite(arg){ fire(arg) }
-      }
-
-      return function(arg) {
-        var fire = utils.socketGen(mode, readOrWrite, _pin.pin);
-        _board.ready ? fire(arg) : eventQ.push({func: fire, args: [arg]});
-        readOrWrite === 'read' ? returnVal() : noop();
-        return finalFuncs[readOrWrite];
-      }
-    }
+    
 
     _board.ready ? init() 
-                 : eventQ.push({
+                 : _board.eventQ.push({
                     func: init,
                     args: []
                   }); 
@@ -90,19 +69,16 @@ define(function (require) {
     
     if (_pin.special) {
 
-       _pin.write = construct('write', _pin.mode, _pin);
-       _pin.read = construct('read', _pin.mode, _pin);
-       specialMethods[_pin.special].fn(_pin);
+       _pin = utils.constructFuncs(_pin, _board);
+       _pin = specialMethods[_pin.special].fn(_pin);
 
     } else if (_pin.mode === 'digital' || _pin.mode === 'analog') {
 
-      _pin.write = construct('write', _pin.mode, _pin);
-      _pin.read = construct('read', _pin.mode, _pin);
+      _pin = utils.constructFuncs(_pin, _board);
 
     } else if (_pin.mode === 'pwm') {
 
-      _pin.write = construct('write', 'analog', _pin);
-      _pin.read = construct('read', 'analog', _pin);
+      _pin = utils.constructFuncs(_pin, _board, 'analog');
 
     } else {
 

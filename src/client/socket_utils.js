@@ -1,4 +1,5 @@
 define(function (require) {
+    
     var socket = io.connect('http://localhost:8000/sensors');
     var utils =  {
 
@@ -8,6 +9,35 @@ define(function (require) {
           board: type,
           port: port
         });
+      },
+
+      constructFuncs: function(pin, board, mode) {
+
+        // Let an explicit passed mode override the pin's user-facing mode
+        var mode = mode || pin.mode;
+
+        function setVal(data) {
+              this.val = data.val;
+        };
+
+        function returnVal() {
+          return socket.on('return val', setVal.bind(this));
+        }
+
+        pin.read = function(arg) {
+          var fire = utils.socketGen(mode, 'read', pin.pin);
+          board.ready ? fire(arg) : board.eventQ.push({func: fire, args: [arg]});
+          socket.on('return val', setVal.bind(this));
+          return function nextRead(arg){ fire(arg) };
+        }
+
+        pin.write = function(arg) {
+          var fire = utils.socketGen(mode, 'write', pin.pin);
+          board.ready ? fire(arg) : board.eventQ.push({func: fire, args: [arg]});
+          return function nextWrite(arg){ fire(arg) };
+        }
+
+        return pin;
       },
 
       pinInit: function(num, mode, direction){

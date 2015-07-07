@@ -46,26 +46,26 @@ define(function (require) {
 
       pin.blink = function() {
 
-        socket.on('blink id', function(data){
+        utils.socket.on('blink id', function(data){
           this.blinkID = data.id;
         });
 
         if(this.mode !== 'pwm') {
-          socket.emit('blink', { pin: this.pin });  
+          utils.socket.emit('blink', { pin: this.pin });  
         } else {
           this.mode = 'digital';
           // reset read and write
-          socket.emit('blink', { pin: this.pin });
+          utils.socket.emit('blink', { pin: this.pin });
         }
       },
 
       pin.noBlink = function() {
         if(this.mode !== 'pwm') {
-          socket.emit('no blink', { id: this.blinkID });  
+          utils.socket.emit('no blink', { id: this.blinkID });  
         } else {
           this.mode = 'digital';
           // reset read and write
-          socket.emit('no blink', { id: this.blinkID });
+          utils.socket.emit('no blink', { id: this.blinkID });
         }
       }
 
