@@ -15,7 +15,9 @@ define(function (require) {
         });
       },
 
-      constructFuncs: function(pin, board, mode) {
+      board: undefined,
+
+      constructFuncs: function(pin, mode) {
 
         // Let an explicit passed mode override the pin's user-facing mode
         var mode = mode || pin.mode;
@@ -26,18 +28,22 @@ define(function (require) {
 
         pin.read = function(arg) {
           var fire = utils.socketGen(mode, 'read', pin.pin);
-          board.ready ? fire(arg) : board.eventQ.push({func: fire, args: [arg]});
+          utils.dispatch(fire, arg);
           socket.on('return val', setVal.bind(this));
           return function nextRead(arg){ fire(arg) };
         }
 
-        pin.write = function(arg) {
+        pin.write = function(arg) {         
           var fire = utils.socketGen(mode, 'write', pin.pin);
-          board.ready ? fire(arg) : board.eventQ.push({func: fire, args: [arg]});
+           utils.dispatch(fire, arg);
           return function nextWrite(arg){ fire(arg) };
         }
 
         return pin;
+      },
+
+      dispatch: function(fn, arg){
+        this.board.ready ? fn(arg) : this.board.eventQ.push({func: fn, args: [arg]});
       },
 
       pinInit: function(num, mode, direction){

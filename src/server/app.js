@@ -41,6 +41,7 @@ io.of('/sensors').on('connect', function(socket) {
   console.log('connected');
 
   // Error handling
+  
   socket.on('error', function(err){
     console.log(err);
   });
@@ -48,7 +49,6 @@ io.of('/sensors').on('connect', function(socket) {
   // Board setup
   
   socket.on('board object', function(data) {
-    console.log('board object caught', data);
     if (!board) {
       board = new firmata.Board(data.port, function(err) {
         if (err) {
@@ -64,6 +64,7 @@ io.of('/sensors').on('connect', function(socket) {
   });
 
   // Pin setup
+  
   socket.on('pin object', function(data){
     console.log('pin object caught', data);
     // Digital pins are set to INPUT or OUTPUT in firmata
@@ -76,6 +77,7 @@ io.of('/sensors').on('connect', function(socket) {
   
   // The primary action function formats the read & write functions & sends
   // these to firmata
+  
   socket.on('action', function(data){
     // console.log('action data', data);
     var argument = data.arg;
@@ -101,15 +103,15 @@ io.of('/sensors').on('connect', function(socket) {
     }
   });
 
-
   // Special functions
-   
   
   // LED.Blink
 
   socket.on('blink', function(data){
     var ledPin = data.pin,
         ledOn = true;
+
+    board.pinMode(ledPin, board.MODES.OUTPUT);
 
     var blinkID = setInterval(function() {
       if (ledOn) {
@@ -131,7 +133,6 @@ io.of('/sensors').on('connect', function(socket) {
   // LED.Fade
   
   socket.on('fade', function(data){
-    console.log('fade called', data, board.pins);
     board.pinMode(data.pin, board.MODES.PWM);
 
     var time     = data.time,
@@ -157,10 +158,6 @@ io.of('/sensors').on('connect', function(socket) {
         }, num * inc);
       })(i);
     }
-    
-
-    
-
   });
 
 

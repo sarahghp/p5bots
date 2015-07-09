@@ -5,7 +5,7 @@ define(function (require) {
   var utils = require('src/client/socket_utils');
   var special = require('src/client/special_methods');
   var modeError = "Please check mode. Value should be 'analog', 'digital', or 'pwm'";
-  var _board;
+  // var _board = utils.board;
 
   var specialMethods = {
     'led': { fn: special.led, mode: 'digital' }
@@ -35,26 +35,26 @@ define(function (require) {
   };
 
   p5.board = function (port, type){
-    _board = new p5.Board(port, type);
+    utils.board = new p5.Board(port, type);
 
     // also emit board object & listen for return
     utils.boardInit(port, type);
     utils.socket.on('board ready', function(){
-     _board.ready = true;
-     _board.eventQ.forEach(function(el){
+     utils.board.ready = true;
+     utils.board.eventQ.forEach(function(el){
       el.func.apply(null, el.args);
      });
     });
      
-    return _board;
+    return utils.board;
   };
 
   p5.pin = function(num, mode, direction){
     var _pin = new p5.Pin(num, mode, direction);
     var init = utils.pinInit(_pin.pin, _pin.mode, _pin.direction);
     
-    _board.ready ? init() 
-                 : _board.eventQ.push({
+    utils.board.ready ? init() 
+                 : utils.board.eventQ.push({
                     func: init,
                     args: []
                   }); 
@@ -63,16 +63,16 @@ define(function (require) {
     
     if (_pin.special) {
 
-       _pin = utils.constructFuncs(_pin, _board);
+       _pin = utils.constructFuncs(_pin);
        _pin = specialMethods[_pin.special].fn(_pin);
 
     } else if (_pin.mode === 'digital' || _pin.mode === 'analog') {
 
-      _pin = utils.constructFuncs(_pin, _board);
+      _pin = utils.constructFuncs(_pin);
 
     } else if (_pin.mode === 'pwm') {
 
-      _pin = utils.constructFuncs(_pin, _board, 'analog');
+      _pin = utils.constructFuncs(_pin, 'analog');
 
     } else {
 
@@ -84,3 +84,4 @@ define(function (require) {
   };
 
 });
+
