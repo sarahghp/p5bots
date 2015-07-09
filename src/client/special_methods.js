@@ -9,7 +9,7 @@ define(function (require) {
           this.write('HIGH');  
         } else {
           this.mode = 'digital';
-          this.write = utils.constructFuncs('write', 'digital');
+          this.write = utils.constructFuncs('write', 'digital'); // rewrite these to use own construction since is obvs ready
           this.read = utils.constructFuncs('read', 'digital');
           this.write('HIGH')
         } 
@@ -26,22 +26,31 @@ define(function (require) {
         }
       },
 
-      pin.fade = function(step, val) {
-        var step = step || 5;
-        this.val = val || 255,
+      // pin.fade = function(step, val) {
+      //   var step = step || 5;
+      //   var val = val || this.val || 255;
 
-        function fadeMe() {
-          this.write(this.val);
-          this.val -= step;
-        }
+      //   this.val = val;
 
-        if(this.mode === 'pwm') {
-          fadeMe()
-        } else {
-          this.mode = 'pwm';
-          // reset read and write
-          fadeMe();
-        }
+      //   var fadeMe = function() {
+      //     this.write(this.val);
+      //     this.val = this.val < 0 ? 255 : this.val - step;
+      //   }.bind(this);
+
+      //   if(this.mode === 'pwm') {
+      //     fadeMe();
+      //   } else {
+      //     this.mode = 'pwm';
+      //     utils.constructFuncs(this, { ready: true }, 'analog');
+      //     fadeMe();
+      //   }
+      // },
+      // 
+      
+      pin.fade = function(start, stop, totalTime, increment) {
+        var totalTime = totalTime || 3000,
+            inc       = increment || 200;
+        utils.socket.emit('fade', { pin: this.pin, start: start, stop: stop, time: totalTime, inc: inc });
       },
 
       pin.blink = function() {

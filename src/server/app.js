@@ -128,6 +128,41 @@ io.of('/sensors').on('connect', function(socket) {
 
   });
 
+  // LED.Fade
+  
+  socket.on('fade', function(data){
+    console.log('fade called', data, board.pins);
+    board.pinMode(data.pin, board.MODES.PWM);
+
+    var time     = data.time,
+        start    = data.start,
+        stop     = data.stop,
+        inc      = data.inc,
+        steps    = time / inc,
+        span     = Math.abs(start - stop),
+        vps      = span / steps,
+        mult     = stop > start ? 1 : -1,
+        val      = start;
+
+
+    function nextVal(a, b) {
+      return a + mult * b;
+    }
+  
+    for (var i = 0; i <= steps; i++){
+      (function(num){
+        setTimeout(function(){
+          board.analogWrite(data.pin, val);
+          val = nextVal(val, vps);
+        }, num * inc);
+      })(i);
+    }
+    
+
+    
+
+  });
+
 
 
 
