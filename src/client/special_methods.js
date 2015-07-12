@@ -130,14 +130,24 @@ define(function (require) {
       // Can take in p5 color object
       
       pin.write = function(color){
-        
+
         pin.color = Array.isArray(color) ?  p5.prototype.color(color) : color;
+        pin.color.writeArr = [];
+
+        if (pin.common === 'anode'){
+          pin.color.writeArr[0] = 255 - pin.color.rgba[0];
+          pin.color.writeArr[1] = 255 - pin.color.rgba[1];
+          pin.color.writeArr[2] = 255 - pin.color.rgba[2];
+        } else {
+          pin.color.writeArr = pin.color.rgba;
+        }
+
 
         function rgbWrite(){
           utils.socket.emit('rgb write', {
-            red: [pin.redPin, pin.color.rgba[0]],
-            green: [pin.greenPin, pin.color.rgba[1]],
-            blue: [pin.bluePin, pin.color.rgba[2]]
+            red: [pin.redPin, pin.color.writeArr[0]],
+            green: [pin.greenPin, pin.color.writeArr[1]],
+            blue: [pin.bluePin, pin.color.writeArr[2]]
           });
         }
 
