@@ -9,7 +9,8 @@ define(function (require) {
 
   var specialMethods = {
     'led': { fn: special.led, mode: 'digital' },
-    'motor': { fn: special.motor, mode: 'pwm' }
+    'motor': { fn: special.motor, mode: 'pwm' },
+    'rgbled': { fn: special.rgbled, mode: 'pwm' }
   };
 
   p5.Board = function (port, type){
@@ -52,27 +53,26 @@ define(function (require) {
 
   p5.pin = function(num, mode, direction){
     var _pin = new p5.Pin(num, mode, direction);
-    var init = utils.pinInit(_pin.pin, _pin.mode, _pin.direction);
     
-    utils.board.ready ? init() 
-                 : utils.board.eventQ.push({
-                    func: init,
-                    args: []
-                  }); 
-    
-    // add basic methods based on mode
+    // if (Array.isArray(num)){
+    //   num.forEach(function(el){
+    //     utils.dispatch(utils.pinInit(el, _pin.mode, _pin.direction));
+    //   });
+    // } else {
+    //   utils.dispatch(utils.pinInit(_pin.pin, _pin.mode, _pin.direction));
+    // }
+
     
     if (_pin.special) {
 
-       _pin = utils.constructFuncs(_pin);
        _pin = specialMethods[_pin.special].fn(_pin);
 
     } else if (_pin.mode === 'digital' || _pin.mode === 'analog') {
-
+      utils.dispatch(utils.pinInit(_pin.pin, _pin.mode, _pin.direction));
       _pin = utils.constructFuncs(_pin);
 
     } else if (_pin.mode === 'pwm') {
-
+      utils.dispatch(utils.pinInit(_pin.pin, _pin.mode, _pin.direction));
       _pin = utils.constructFuncs(_pin, 'analog');
 
     } else {

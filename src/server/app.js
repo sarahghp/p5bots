@@ -6,7 +6,8 @@ var express = require('express'),
     server  = require('http').Server(app),
     io      = require('socket.io')(server),
     firmata = require('firmata'),
-    program = require('commander');
+    program = require('commander'),
+    gamma   = require('./gamma.js');
 
 // Parse command-line args
 var directory, index, program;
@@ -132,7 +133,7 @@ io.of('/sensors').on('connect', function(socket) {
 
   // LED.Fade
   
-  socket.on('fade', function(data){
+  socket.on('fade', function(data) {
     board.pinMode(data.pin, board.MODES.PWM);
 
     var time     = data.time,
@@ -160,7 +161,17 @@ io.of('/sensors').on('connect', function(socket) {
     }
   });
 
+  // RGB.Write
+  
+  socket.on('rgb write', function(data) {
+    var keys = Object.keys(data);
 
+    keys.forEach(function(key){
+      board.pinMode(data[key][0], board.MODES.PWM);
+      board.analogWrite(data[key][0], gamma[data[key][1]]);
+    });
+
+  }); 
 
 
 });
