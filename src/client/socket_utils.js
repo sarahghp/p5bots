@@ -35,7 +35,7 @@ define(function (require) {
 
         pin.write = function(arg) {         
           var fire = utils.socketGen(mode, 'write', pin.pin);
-           utils.dispatch(fire, arg);
+          utils.dispatch(fire, arg);
           return function nextWrite(arg){ fire(arg) };
         }
 

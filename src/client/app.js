@@ -8,7 +8,8 @@ define(function (require) {
   // var _board = utils.board;
 
   var specialMethods = {
-    'led': { fn: special.led, mode: 'digital' }
+    'led': { fn: special.led, mode: 'digital' },
+    'motor': { fn: special.motor, mode: 'pwm' }
   };
 
   p5.Board = function (port, type){

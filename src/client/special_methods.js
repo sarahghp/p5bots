@@ -63,6 +63,39 @@ define(function (require) {
       }
 
       return pin
+    },
+
+    motor: function(pin) {
+      pin.on = function() {
+        
+        function motorOn() {
+          if(this.mode !== 'pwm') {
+            this.write('HIGH');  
+          } else {
+            this.write(255)
+          } 
+        }
+
+        utils.dispatch(motorOn.bind(this));
+        
+      },
+
+      pin.off = function() {
+
+        function motorOff() {
+          if(this.mode !== 'pwm') {
+            this.write('LOW');  
+          } else {
+            console.log('motor off called in special');
+            this.write(10);
+          }
+        }
+
+        utils.dispatch(motorOff.bind(this));
+
+      }
+
+      return pin;
     }
   }
 
