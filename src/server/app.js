@@ -176,9 +176,43 @@ io.of('/sensors').on('connect', function(socket) {
         var val = board.pins[pins[key]].value;
         socket.emit( 'rgb return ' + key, { type: key, val: val } );
       });
-  
-  }); 
+  });
 
+  // RGB.Blink
+  
+  socket.on('rgb blink', function(data){
+    var pinsArray = Object.keys(data.pins),
+        length = data.length || 500,
+        idsArray = [];
+    
+    pinsArray.forEach(function(key){
+      var ledPin = data.pins[key][0],
+          ledOn = true;
+
+      board.pinMode(ledPin, board.MODES.PWM);
+
+      var blinkID = setInterval(function() {
+        if (ledOn) {
+          board.analogWrite(ledPin, data.pins[key][1]);
+        } else {
+          board.analogWrite(ledPin, 0);
+        }
+
+        ledOn = !ledOn;
+
+      }, length);
+
+      idsArray.push(blinkID);
+    });
+
+
+    socket.on('rgb blink cancel', function(data) {
+      idsArray.forEach(function(id) {
+        clearInterval(id);
+      });
+    });
+
+  });
 
 });
 

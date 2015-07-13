@@ -47,7 +47,7 @@ define(function (require) {
       pin.blink = function(length) {
 
         function ledBlink() {
-          utils.socket.emit('blink', { pin: this.pin, length: length });
+          utils.socket.emit('blink', { pin: [this.pin], length: length });
         }
 
         utils.dispatch(ledBlink.bind(this));
@@ -194,13 +194,32 @@ define(function (require) {
 
       };
 
-      // 
-      // On
-      // If there is already a pin.color, just write that out,
-      // otherwise high / 255
-      // 
-      // Off
-      // Just write low / off
+
+      pin.blink = function() {
+        function rgbBlink() {
+          utils.socket.emit('rgb blink', { 
+            pins: {
+              red: [this.redPin, this.color.writeArr[0] || 255],
+              green: [this.greenPin, this.color.writeArr[1] || 255],
+              blue: [this.bluePin, this.color.writeArr[2] || 255]
+            },
+            length: length 
+          });
+        }
+
+        utils.dispatch(rgbBlink.bind(this));
+      };
+
+      pin.noBlink = function() {
+      
+        function rgbNoBlink() {
+          utils.socket.emit('rgb blink cancel');
+        }
+
+        utils.dispatch(rgbNoBlink);
+
+      };
+
       // 
       // Blink
       // No Blink
