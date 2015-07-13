@@ -5,7 +5,7 @@ define(function (require) {
   var special = {
     led: function(pin) {
       utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
-      pin = utils.dispatch(utils.constructFuncs(pin));
+      utils.dispatch(utils.constructFuncs, pin);
       pin.on = function() {
         
         function ledOn() {
@@ -44,10 +44,10 @@ define(function (require) {
         utils.dispatch(ledFade.bind(this));
       };
 
-      pin.blink = function() {
+      pin.blink = function(length) {
 
         function ledBlink() {
-          utils.socket.emit('blink', { pin: this.pin });
+          utils.socket.emit('blink', { pin: this.pin, length: length });
         }
 
         utils.dispatch(ledBlink.bind(this));
@@ -69,7 +69,7 @@ define(function (require) {
 
     motor: function(pin) {
       utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
-      pin = utils.dispatch(utils.constructFuncs(pin));
+      utils.dispatch(utils.constructFuncs, pin);
       pin.on = function() {
         
         function motorOn() {

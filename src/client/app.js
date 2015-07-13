@@ -5,7 +5,6 @@ define(function (require) {
   var utils = require('src/client/socket_utils');
   var special = require('src/client/special_methods');
   var modeError = "Please check mode. Value should be 'analog', 'digital', or 'pwm'";
-  // var _board = utils.board;
 
   var specialMethods = {
     'led': { fn: special.led, mode: 'digital' },
@@ -54,17 +53,7 @@ define(function (require) {
   p5.pin = function(num, mode, direction){
     var _pin = new p5.Pin(num, mode, direction);
     
-    // if (Array.isArray(num)){
-    //   num.forEach(function(el){
-    //     utils.dispatch(utils.pinInit(el, _pin.mode, _pin.direction));
-    //   });
-    // } else {
-    //   utils.dispatch(utils.pinInit(_pin.pin, _pin.mode, _pin.direction));
-    // }
-
-    
     if (_pin.special) {
-
        _pin = specialMethods[_pin.special].fn(_pin);
 
     } else if (_pin.mode === 'digital' || _pin.mode === 'analog') {

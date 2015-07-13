@@ -103,7 +103,8 @@ io.of('/sensors').on('connect', function(socket) {
 
   socket.on('blink', function(data){
     var ledPin = data.pin,
-        ledOn = true;
+        ledOn = true,
+        length = data.length || 500;
 
     board.pinMode(ledPin, board.MODES.OUTPUT);
 
@@ -116,7 +117,7 @@ io.of('/sensors').on('connect', function(socket) {
 
       ledOn = !ledOn;
 
-    }, 500);
+    }, length);
 
     socket.on('blink cancel', function(data) {
       clearInterval(blinkID);
