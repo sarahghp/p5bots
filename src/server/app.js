@@ -214,5 +214,43 @@ io.of('/sensors').on('connect', function(socket) {
 
   });
 
+  socket.on('rgb fade', function(data) {
+
+    var keys = Object.keys(data),
+        mult;
+
+    function nextVal(a, b) {
+      return a + mult * b;
+    }
+
+    keys.forEach(function(key) {
+      var el = data[key];
+
+      var time     = el.time,
+          start    = el.start,
+          stop     = el.stop,
+          inc      = el.inc,
+          steps    = time / inc,
+          span     = Math.abs(start - stop),
+          vps      = span / steps,
+          val      = start;
+
+      mult = stop > start ? 1 : -1;
+
+      board.pinMode(el.pin, board.MODES.PWM);
+
+      for (var i = 0; i <= steps; i++){
+        (function(num){
+          setTimeout(function(){
+            board.analogWrite(el.pin, val);
+            val = nextVal(val, vps);
+          }, num * inc);
+        })(i);
+      }
+
+    });
+
+  });
+
 });
 

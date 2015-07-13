@@ -220,9 +220,36 @@ define(function (require) {
 
       };
 
-      // 
-      // Blink
-      // No Blink
+    pin.fade = function (red, green, blue) {
+      function rgbFade() {
+        utils.socket.emit('rgb fade', {
+          red: { 
+            pin: this.redPin, 
+            start: red[0], 
+            stop: red[1], 
+            time: red[2] || 3000, 
+            inc: red[3] || 200 
+          },
+          green: { 
+            pin: this.greenPin, 
+            start: green[0], 
+            stop: green[1], 
+            time: green[2] || 3000, 
+            inc: green[3] || 200 
+          },
+          blue: { 
+            pin: this.bluePin, 
+            start: blue[0], 
+            stop: blue[1], 
+            time: blue[2] || 3000, 
+            inc: blue[3] || 200 
+          }
+        });
+      }
+
+      utils.dispatch(rgbFade.bind(this));
+    };
+
       // Fade
 
     
