@@ -158,7 +158,6 @@ io.of('/sensors').on('connect', function(socket) {
   
   socket.on('rgb write', function(data) {
     var keys = Object.keys(data);
-
     keys.forEach(function(key){
       board.pinMode(data[key][0], board.MODES.PWM);
       board.analogWrite(data[key][0], gamma[data[key][1]]);
@@ -169,19 +168,14 @@ io.of('/sensors').on('connect', function(socket) {
   // RGB.Read
   
   socket.on('rgb read', function(data){
-    var returnedData = [],
-        pins = data.pins,
+    var pins = data.pins,
         pKeys = Object.keys(pins);
 
-    if(data.arg) {
-
-    } else {
       pKeys.forEach(function(key) {
-        analogRead(pins[key], function(val) {
-          socket.emit( 'rgb return ' + key, { type: key, val: val } );
-        });
+        var val = board.pins[pins[key]].value;
+        socket.emit( 'rgb return ' + key, { type: key, val: val } );
       });
-    }
+  
   }); 
 
 

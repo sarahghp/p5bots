@@ -134,7 +134,6 @@ define(function (require) {
           pin.color.writeArr = pin.color.rgba;
         }
 
-
         function rgbWrite() {
           utils.socket.emit('rgb write', {
             red: [this.redPin, this.color.writeArr[0]],
@@ -148,22 +147,21 @@ define(function (require) {
       };
 
       pin.read = function(arg) {
+        this.incomingColor = {};
+
         function rgbRead() {
+          if (arg) { this.readcb = arg; }
           utils.socket.emit('rgb read', {
             pins: { red: this.redPin, green: this.greenPin, blue:this.bluePin },
             arg: arg
           });
 
-          utils.dispatch(rgbRead.bind(this));
-
-
           function setRGBvals(data){
-            var incomingColor = { };
+            this.incomingColor[data.type] = data.val;
 
-            incomingColor[data.type] = data.val;
-
-            if (Object.keys(incomingColor).length === 3) {
-              this.color = p5.prototype.color([incomingColor.red, incomingColor.green, incomingColor.blue]);
+            if (Object.keys(this.incomingColor).length === 3) {
+              this.color = p5.prototype.color([this.incomingColor.red, this.incomingColor.green, this.incomingColor.blue]);
+              this.readcb(this.color);
             }
           }
 
@@ -171,6 +169,9 @@ define(function (require) {
           utils.socket.on('rgb return green', setRGBvals.bind(this));
           utils.socket.on('rgb return blue', setRGBvals.bind(this));
         }
+
+        utils.dispatch(rgbRead.bind(this));
+
       }
 
       // 
