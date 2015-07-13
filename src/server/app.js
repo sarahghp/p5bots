@@ -86,13 +86,6 @@ io.of('/sensors').on('connect', function(socket) {
       // If it is digtalWrite, augment the argument with `board` to match firmata call
       if (argument && (argument === 'HIGH' || argument === 'LOW')) {
         board[data.action](data.pin, board[argument]);
-      // or if it is either type of read, construct the callback & send
-      } else if (data.type === 'read') { 
-        var constructArg = function(args) { 
-          return Function.apply(this, args); 
-        };
-        var constructed = constructArg(argument);
-        board[data.action](data.pin, constructed);
       } else {
         board[data.action](data.pin, argument);
       }
@@ -171,6 +164,24 @@ io.of('/sensors').on('connect', function(socket) {
       board.analogWrite(data[key][0], gamma[data[key][1]]);
     });
 
+  });
+
+  // RGB.Read
+  
+  socket.on('rgb read', function(data){
+    var returnedData = [],
+        pins = data.pins,
+        pKeys = Object.keys(pins);
+
+    if(data.arg) {
+
+    } else {
+      pKeys.forEach(function(key) {
+        analogRead(pins[key], function(val) {
+          socket.emit( 'rgb return ' + key, { type: key, val: val } );
+        });
+      });
+    }
   }); 
 
 

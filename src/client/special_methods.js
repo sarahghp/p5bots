@@ -120,21 +120,13 @@ define(function (require) {
           low  = pin.common === 'anode' ? 'HIGH' : 'LOW',
           zero = pin.common === 'anode' ? 255 : 0,
           top  = pin.common === 'anode' ? 0 : 255;
-
-      // Read function
-      // Get values from pins
-      // Create / return p5 color object
-      // 
-      // 
-      // Write function
-      // Can take in p5 color object
-      
-      pin.write = function(color){
+    
+      pin.write = function(color) {
 
         pin.color = Array.isArray(color) ?  p5.prototype.color(color) : color;
         pin.color.writeArr = [];
 
-        if (pin.common === 'anode'){
+        if (pin.common === 'anode') {
           pin.color.writeArr[0] = 255 - pin.color.rgba[0];
           pin.color.writeArr[1] = 255 - pin.color.rgba[1];
           pin.color.writeArr[2] = 255 - pin.color.rgba[2];
@@ -143,17 +135,43 @@ define(function (require) {
         }
 
 
-        function rgbWrite(){
+        function rgbWrite() {
           utils.socket.emit('rgb write', {
-            red: [pin.redPin, pin.color.writeArr[0]],
-            green: [pin.greenPin, pin.color.writeArr[1]],
-            blue: [pin.bluePin, pin.color.writeArr[2]]
+            red: [this.redPin, this.color.writeArr[0]],
+            green: [this.greenPin, this.color.writeArr[1]],
+            blue: [this.bluePin, this.color.writeArr[2]]
           });
         }
 
          utils.dispatch(rgbWrite.bind(this));
 
       };
+
+      pin.read = function(arg) {
+        function rgbRead() {
+          utils.socket.emit('rgb read', {
+            pins: { red: this.redPin, green: this.greenPin, blue:this.bluePin },
+            arg: arg
+          });
+
+          utils.dispatch(rgbRead.bind(this));
+
+
+          function setRGBvals(data){
+            var incomingColor = { };
+
+            incomingColor[data.type] = data.val;
+
+            if (Object.keys(incomingColor).length === 3) {
+              this.color = p5.prototype.color([incomingColor.red, incomingColor.green, incomingColor.blue]);
+            }
+          }
+
+          utils.socket.on('rgb return red', setRGBvals.bind(this));
+          utils.socket.on('rgb return green', setRGBvals.bind(this));
+          utils.socket.on('rgb return blue', setRGBvals.bind(this));
+        }
+      }
 
       // 
       // On

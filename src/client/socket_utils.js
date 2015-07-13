@@ -23,6 +23,7 @@ define(function (require) {
         var mode = mode || pin.mode;
 
         function setVal(data) {
+          this.readcb && this.readcb(data.val);
           this.val = data.val;
         };
 
@@ -60,6 +61,9 @@ define(function (require) {
 
       socketGen: function(kind, direction, pin) {
         return function action(arg) {
+          if (direction === 'read') {
+            this.readcb = arg;
+          }
           socket.emit('action', {
             action: kind + direction.charAt(0).toUpperCase() + direction.substring(1),
             pin: pin,
