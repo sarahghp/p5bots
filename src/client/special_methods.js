@@ -114,24 +114,18 @@ define(function (require) {
       utils.dispatch(utils.pinInit(pin.redPin, pin.mode, pin.direction));
       utils.dispatch(utils.pinInit(pin.greenPin, pin.mode, pin.direction));
       utils.dispatch(utils.pinInit(pin.bluePin, pin.mode, pin.direction));
-
-      // Reverse high/low values for common anode LEDs
-      var high = pin.common === 'anode' ? 'LOW' : 'HIGH',
-          low  = pin.common === 'anode' ? 'HIGH' : 'LOW',
-          zero = pin.common === 'anode' ? 255 : 0,
-          top  = pin.common === 'anode' ? 0 : 255;
     
       pin.write = function(color) {
 
-        pin.color = Array.isArray(color) ?  p5.prototype.color(color) : color;
-        pin.color.writeArr = [];
+        this.color = Array.isArray(color) ?  p5.prototype.color(color) : color;
+        this.color.writeArr = [];
 
-        if (pin.common === 'anode') {
-          pin.color.writeArr[0] = 255 - pin.color.rgba[0];
-          pin.color.writeArr[1] = 255 - pin.color.rgba[1];
-          pin.color.writeArr[2] = 255 - pin.color.rgba[2];
+        if (this.common === 'anode') {
+          this.color.writeArr[0] = 255 - this.color.rgba[0];
+          this.color.writeArr[1] = 255 - this.color.rgba[1];
+          this.color.writeArr[2] = 255 - this.color.rgba[2];
         } else {
-          pin.color.writeArr = pin.color.rgba;
+          this.color.writeArr = this.color.rgba;
         }
 
         function rgbWrite() {
@@ -142,7 +136,7 @@ define(function (require) {
           });
         }
 
-         utils.dispatch(rgbWrite.bind(this));
+        utils.dispatch(rgbWrite.bind(this));
 
       };
 
@@ -172,7 +166,33 @@ define(function (require) {
 
         utils.dispatch(rgbRead.bind(this));
 
-      }
+      };
+
+      // Reverse high/low values for common anode LEDs
+      var zero = pin.common === 'anode' ? 255 : 0,
+          top  = pin.common === 'anode' ? 0 : 255;
+
+      pin.on = function() {
+
+        function rgbOn() {
+          var setTo = this.offSaved || this.color.writeArr || [top, top, top];
+          this.write(setTo);
+        }
+
+        utils.dispatch(rgbOn.bind(this));
+
+      };
+
+      pin.off = function() {
+        this.offSaved = this.color.writeArr.slice();
+
+        function rgbOff() {
+          this.write([zero, zero, zero]);
+        }
+
+        utils.dispatch(rgbOff.bind(this));
+
+      };
 
       // 
       // On
