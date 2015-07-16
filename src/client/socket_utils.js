@@ -31,13 +31,13 @@ define(function (require) {
           var fire = utils.socketGen(mode, 'read', pin.pin);
           utils.dispatch(fire, arg);
           socket.on('return val', setVal.bind(this));
-          return function nextRead(arg){ fire(arg) };
+          // return function nextRead(arg){ fire(arg) };
         }
 
         pin.write = function(arg) {         
           var fire = utils.socketGen(mode, 'write', pin.pin);
           utils.dispatch(fire, arg);
-          return function nextWrite(arg){ fire(arg) };
+          // return function nextWrite(arg){ fire(arg) };
         }
 
         return pin;

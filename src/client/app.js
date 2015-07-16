@@ -4,12 +4,13 @@ define(function (require) {
 
   var utils = require('src/client/socket_utils');
   var special = require('src/client/special_methods');
-  var modeError = "Please check mode. Value should be 'analog', 'digital', or 'pwm'";
+  var modeError = "Please check mode. Value should be 'analog', 'digital', 'pwm', or servo";
 
   var specialMethods = {
     'led': { fn: special.led, mode: 'digital' },
     'motor': { fn: special.motor, mode: 'pwm' },
-    'rgbled': { fn: special.rgbled, mode: 'pwm' }
+    'rgbled': { fn: special.rgbled, mode: 'pwm' },
+    'servo': { fn: special.servo, mode: 'servo' }
   };
 
   p5.Board = function (port, type){

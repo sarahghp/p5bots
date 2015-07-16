@@ -220,46 +220,89 @@ define(function (require) {
 
       };
 
-    pin.fade = function (red, green, blue) {
-      function rgbFade() {
-        utils.socket.emit('rgb fade', {
-          red: { 
-            pin: this.redPin, 
-            start: red[0], 
-            stop: red[1], 
-            time: red[2] || 3000, 
-            inc: red[3] || 200 
-          },
-          green: { 
-            pin: this.greenPin, 
-            start: green[0], 
-            stop: green[1], 
-            time: green[2] || 3000, 
-            inc: green[3] || 200 
-          },
-          blue: { 
-            pin: this.bluePin, 
-            start: blue[0], 
-            stop: blue[1], 
-            time: blue[2] || 3000, 
-            inc: blue[3] || 200 
-          }
-        });
-      }
+      pin.fade = function (red, green, blue) {
+        function rgbFade() {
+          utils.socket.emit('rgb fade', {
+            red: { 
+              pin: this.redPin, 
+              start: red[0], 
+              stop: red[1], 
+              time: red[2] || 3000, 
+              inc: red[3] || 200 
+            },
+            green: { 
+              pin: this.greenPin, 
+              start: green[0], 
+              stop: green[1], 
+              time: green[2] || 3000, 
+              inc: green[3] || 200 
+            },
+            blue: { 
+              pin: this.bluePin, 
+              start: blue[0], 
+              stop: blue[1], 
+              time: blue[2] || 3000, 
+              inc: blue[3] || 200 
+            }
+          });
+        }
 
-      utils.dispatch(rgbFade.bind(this));
-    };
+        utils.dispatch(rgbFade.bind(this));
+      
+      };
 
-      // Fade
+      return pin;
+    },
 
-    
+    servo: function(pin) {
+      utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
+      utils.dispatch(utils.constructFuncs, pin);
+      this.rangeMin = 0;
+      this.rangeMax = 45;
+      
+      // Overwrite defualt write returned from construct funcs with servoWrite
+      pin.write = function(arg) {
+        var fire = utils.socketGen('servo', 'write', pin.pin);
+        utils.dispatch(fire, arg);
+      };
 
+      pin.range = function(arg) {
+        this.rangeMin = arg[0];
+        this.rangeMax = arg[1];
+        function servoRange() {
+          utils.socket.emit('range', {
+            pin: this.pin,
+            range: arg
+          });
+        }
+
+        utils.dispatch(servoRange.bind(this));
+
+      };
+
+      pin.sweep = function(inc) {
+        function servoSweep() {
+          utils.socket.emit('sweep', {
+            pin: this.pin,
+            min: this.rangeMin,
+            max: this.rangeMax,
+            inc: inc
+          });
+        }
+        utils.dispatch(servoSweep.bind(this));
+      };
+
+      pin.noSweep = function() {
+        function cancelSweep() {
+          utils.socket.emit('sweep cancel');
+        }
+        utils.dispatch(cancelSweep.bind(this));
+      }; 
 
       return pin;
     }
 
-
-  }
+  };
 
   return special;
 
