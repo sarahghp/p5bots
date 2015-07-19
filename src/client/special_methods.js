@@ -3,9 +3,46 @@ define(function (require) {
   var utils = require('src/client/socket_utils');
   
   var special = {
+    button: function(pin) {
+
+      pin.direction = 'input';
+
+      utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
+      utils.constructFuncs(pin);
+      
+      pin.pressed = function(cb) {
+        function pinPress() {
+          this.buttonPressedcb = cb;
+        }
+        utils.dispatch(pinPress.bind(this));
+      };
+
+      pin.released = function(cb) {
+        function pinRelease() {
+          this.buttonReleasedcb = cb;
+        }
+        utils.dispatch(pinRelease.bind(this));
+      };
+
+      pin.held = function(cb, threshold) {
+        
+        function pinHeld() {
+          this.buttonHeldcb = function() {
+            var timeout = setTimeout(cb, threshold);
+            return timeout;
+          }
+        }
+
+        utils.dispatch(pinHeld.bind(this));
+
+      };
+
+      return pin;
+    },
+
     led: function(pin) {
       utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
-      utils.dispatch(utils.constructFuncs, pin);
+      utils.constructFuncs(pin);
       pin.on = function() {
         
         function ledOn() {
@@ -69,7 +106,7 @@ define(function (require) {
 
     motor: function(pin) {
       utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
-      utils.dispatch(utils.constructFuncs, pin);
+      utils.constructFuncs(pin);
       pin.on = function() {
         
         function motorOn() {
@@ -256,7 +293,7 @@ define(function (require) {
 
     servo: function(pin) {
       utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
-      utils.dispatch(utils.constructFuncs, pin);
+      utils.constructFuncs(pin);
       this.rangeMin = 0;
       this.rangeMax = 45;
       

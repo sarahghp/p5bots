@@ -7,6 +7,7 @@ define(function (require) {
   var modeError = "Please check mode. Value should be 'analog', 'digital', 'pwm', or servo";
 
   var specialMethods = {
+    'button': { fn: special.button, mode: 'digital' },
     'led': { fn: special.led, mode: 'digital' },
     'motor': { fn: special.motor, mode: 'pwm' },
     'rgbled': { fn: special.rgbled, mode: 'pwm' },
@@ -32,8 +33,8 @@ define(function (require) {
       this.mode = specialMethods[this.mode].mode;
     }
 
-    this.write = function() { throw new Error(modeError) },
-    this.read = function() { throw new Error(modeError) }
+    this.write = function() { throw new Error('Write undefined') },
+    this.read = function() { throw new Error('Read undefined') }
   };
 
   p5.board = function (port, type){
@@ -55,15 +56,15 @@ define(function (require) {
     var _pin = new p5.Pin(num, mode, direction);
     
     if (_pin.special) {
-       _pin = specialMethods[_pin.special].fn(_pin);
+       specialMethods[_pin.special].fn(_pin);
 
     } else if (_pin.mode === 'digital' || _pin.mode === 'analog') {
       utils.dispatch(utils.pinInit(_pin.pin, _pin.mode, _pin.direction));
-      _pin = utils.constructFuncs(_pin);
+      utils.constructFuncs(_pin);
 
     } else if (_pin.mode === 'pwm') {
       utils.dispatch(utils.pinInit(_pin.pin, _pin.mode, _pin.direction));
-      _pin = utils.constructFuncs(_pin, 'analog');
+      utils.constructFuncs(_pin, 'analog');
 
     } else {
 
