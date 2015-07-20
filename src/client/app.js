@@ -56,7 +56,7 @@ define(function (require) {
     var _pin = new p5.Pin(num, mode, direction);
     
     if (_pin.special) {
-       specialMethods[_pin.special].fn(_pin);
+      specialMethods[_pin.special].fn(_pin);
 
     } else if (_pin.mode === 'digital' || _pin.mode === 'analog') {
       utils.dispatch(utils.pinInit(_pin.pin, _pin.mode, _pin.direction));
