@@ -1,4 +1,7 @@
-var socket = require('./app.js').socket;
+
+// var io = require('socket.io-client'),
+//     socket = io('http://localhost:8000/sensors');
+
 var sp = require('serialport'),
     SerialPort = sp.SerialPort,
     serialport,
@@ -20,7 +23,7 @@ exports.init = function(data) {
 
 exports.read = function() {
   function sRead(){
-    serialport.on('data', function(data){
+    serialport.on('data', function(data) {
       socket.emit('serial read return', { data: data });
     });
   }
@@ -38,7 +41,8 @@ exports.write = function(arg) {
 };
 
 exports.list = function() {
-  serialPort.list(function (err, ports) {
+  console.log('socket in list', socket);
+  sp.list(function (err, ports) {
     var portsArr = [];
     ports.forEach(function(port) {
       var inner = {};
@@ -47,6 +51,6 @@ exports.list = function() {
       inner.manufacturer = port.manufacturer;
       portsArr.push(inner);
     });
-    socket.emit('serial list return', { ports: portsArr });
+    socket.broadcast.emit('serial list return', { ports: portsArr });
   });
 };

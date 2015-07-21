@@ -7,7 +7,6 @@ var express    = require('express'),
     io         = require('socket.io')(server),
     firmata    = require('firmata'),
     program    = require('commander'),
-    serialport = require(''),
     gamma      = require('./gamma.js');
 
 // Parse command-line args
@@ -37,7 +36,7 @@ app.get('/', function(req, res) {
 
 // App code
 
-var serial = require('./serial.js'); 
+// var serial = require('./serial.js'); 
 var board;
 
 io.of('/sensors').on('connect', function(socket) {
@@ -285,10 +284,63 @@ io.of('/sensors').on('connect', function(socket) {
   });
 
   // Serial listeners
-  socket.on('serial init', serial.init);
-  socket.on('serial read', serial.read);
-  socket.on('serial write', serial.write);
-  socket.on('serial list', serial.list);
+
+  var sp = require('serialport'),
+      SerialPort = sp.SerialPort,
+      serialport,
+      serialQ = [];
+
+  function serialDispatch(fn, args){
+    serialport.isOpen ? fn.apply(null, args) : serialQ.push({ func: fn, args: args });
+  }
+
+  var sinit = function(data) {
+    serialport = new SerialPort(data.path, data.config);
+    serialport.on('open', function(){
+      // call eventQ functions
+      serialQ.forEach(function(el) {
+        el.func.apply(null, el.args);
+      });
+    });
+  };
+
+  var sread = function() {
+    function sRead(){
+      serialport.on('data', function(data) {
+        socket.emit('serial read return', { data: data });
+      });
+    }
+    serialDispatch(sRead);
+  };
+
+  var swrite = function(arg) {
+    function sWrite() {
+      serialport.write(arg, function(err, results) {
+        if (err) { console.log('Serial write error', err); }
+        socket.emit('serial write return', { results: results });
+      });
+    }
+    serialDispatch(sWrite, arg);
+  };
+
+  var slist = function() {
+    sp.list(function (err, ports) {
+      var portsArr = [];
+      ports.forEach(function(port) {
+        var inner = {};
+        inner.comName = port.comName;
+        inner.pnpId = port.pnpId;
+        inner.manufacturer = port.manufacturer;
+        portsArr.push(inner);
+      });
+      socket.emit('serial list return', { ports: portsArr });
+    });
+  };
+
+  socket.on('serial init', sinit);
+  socket.on('serial read', sread);
+  socket.on('serial write', swrite);
+  socket.on('serial list', slist);
 
 });
 
