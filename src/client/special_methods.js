@@ -1,6 +1,6 @@
 define(function (require) {
 
-  var utils = require('src/client/socket_utils');
+  var utils   = require('src/client/socket_utils');
   
   var special = {
     button: function(pin) {
@@ -290,6 +290,8 @@ define(function (require) {
 
       return pin;
     },
+
+    serial: require('src/client/serial'),
 
     servo: function(pin) {
       utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));

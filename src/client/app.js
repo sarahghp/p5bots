@@ -75,5 +75,7 @@ define(function (require) {
     return _pin;
   };
 
+  p5.serial = special.serial;
+
 });
 

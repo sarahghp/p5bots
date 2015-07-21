@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 'use strict'
 
-var express = require('express'),
-    app     = express(),
-    server  = require('http').Server(app),
-    io      = require('socket.io')(server),
-    firmata = require('firmata'),
-    program = require('commander'),
-    gamma   = require('./gamma.js');
+var express    = require('express'),
+    app        = express(),
+    server     = require('http').Server(app),
+    io         = require('socket.io')(server),
+    firmata    = require('firmata'),
+    program    = require('commander'),
+    serialport = require(''),
+    gamma      = require('./gamma.js');
 
 // Parse command-line args
 var directory, index, program;
@@ -35,11 +36,13 @@ app.get('/', function(req, res) {
 
 
 // App code
- 
+
+var serial = require('./serial.js'); 
 var board;
 
 io.of('/sensors').on('connect', function(socket) {
   console.log('connected');
+  exports.socket = socket;
 
   // Error handling
   
@@ -280,6 +283,12 @@ io.of('/sensors').on('connect', function(socket) {
       clearInterval(sweepID);
     });
   });
+
+  // Serial listeners
+  socket.on('serial init', serial.init);
+  socket.on('serial read', serial.read);
+  socket.on('serial write', serial.write);
+  socket.on('serial list', serial.list);
 
 });
 
