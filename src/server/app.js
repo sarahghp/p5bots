@@ -6,8 +6,7 @@ var express    = require('express'),
     server     = require('http').Server(app),
     io         = require('socket.io')(server),
     firmata    = require('firmata'),
-    program    = require('commander'),
-    gamma      = require('./gamma.js');
+    program    = require('commander');
 
 // Parse command-line args
 var directory, index, program;
@@ -36,9 +35,6 @@ app.get('/', function(req, res) {
 
 // App code
 
-// var serial = require('./serial.js'); 
-var board;
-
 io.of('/sensors').on('connect', function(socket) {
   console.log('connected');
   exports.socket = socket;
@@ -51,18 +47,29 @@ io.of('/sensors').on('connect', function(socket) {
   
   // Board setup
   
+  var board;
+
   socket.on('board object', function(data) {
+
+    function init() {
+      console.log('board object caught', data);
+      initializeSpecialFuncs(board);
+      socket.emit('board ready');
+    }
+
+    // If the board has already been initialized in firmata, it won't
+    // call the callback again on client reload; this way the init
+    // functions are called without restarting the whole proces
+    
     if (!board) {
       board = new firmata.Board(data.port, function(err) {
         if (err) {
           throw new Error(err);
         }
-        console.log('board object caught', data);
-        socket.emit('board ready');
+        init();
       });
     } else {
-      console.log('board object caught', data);
-      socket.emit('board ready');
+      init();
     }
   });
 
@@ -101,246 +108,33 @@ io.of('/sensors').on('connect', function(socket) {
 
   // Special functions
   
-  // LED.Blink
-
-  socket.on('blink', function(data){
-    var ledPin = data.pin,
-        ledOn = true,
-        length = data.length || 500;
-
-    board.pinMode(ledPin, board.MODES.OUTPUT);
-
-    var blinkID = setInterval(function() {
-      if (ledOn) {
-        board.digitalWrite(ledPin, board.HIGH);
-      } else {
-        board.digitalWrite(ledPin, board.LOW);
-      }
-
-      ledOn = !ledOn;
-
-    }, length);
-
-    socket.on('blink cancel', function(data) {
-      clearInterval(blinkID);
-    });
-
-  });
-
-  // LED.Fade
-  
-  socket.on('fade', function(data) {
-    board.pinMode(data.pin, board.MODES.PWM);
-
-    var time     = data.time,
-        start    = data.start,
-        stop     = data.stop,
-        inc      = data.inc,
-        steps    = time / inc,
-        span     = Math.abs(start - stop),
-        vps      = span / steps,
-        mult     = stop > start ? 1 : -1,
-        val      = start;
-
-
-    function nextVal(a, b) {
-      return a + mult * b;
-    }
-  
-    for (var i = 0; i <= steps; i++){
-      (function(num){
-        setTimeout(function(){
-          board.analogWrite(data.pin, val);
-          val = nextVal(val, vps);
-        }, num * inc);
-      })(i);
-    }
-  });
-
-  // RGB.Write
-  
-  socket.on('rgb write', function(data) {
-    var keys = Object.keys(data);
-    keys.forEach(function(key){
-      board.pinMode(data[key][0], board.MODES.PWM);
-      board.analogWrite(data[key][0], gamma[data[key][1]]);
-    });
-
-  });
-
-  // RGB.Read
-  
-  socket.on('rgb read', function(data){
-    var pins = data.pins,
-        pKeys = Object.keys(pins);
-
-      pKeys.forEach(function(key) {
-        var val = board.pins[pins[key]].value;
-        socket.emit( 'rgb return ' + key, { type: key, val: val } );
-      });
-  });
-
-  // RGB.Blink
-  
-  socket.on('rgb blink', function(data){
-    var pinsArray = Object.keys(data.pins),
-        length = data.length || 500,
-        idsArray = [];
+  function initializeSpecialFuncs(board) {
     
-    pinsArray.forEach(function(key){
-      var ledPin = data.pins[key][0],
-          ledOn = true;
+    // LED
+    var led = require('./led.js');
+    led.blink(board, socket);
+    led.fade(board, socket);
+    
+    // RGB
+    var rgb = require('./rgb.js');
+    rgb.write(board, socket);
+    rgb.read(board, socket);
+    rgb.blink(board, socket);
+    rgb.fade(board, socket);
 
-      board.pinMode(ledPin, board.MODES.PWM);
-
-      var blinkID = setInterval(function() {
-        if (ledOn) {
-          board.analogWrite(ledPin, data.pins[key][1]);
-        } else {
-          board.analogWrite(ledPin, 0);
-        }
-
-        ledOn = !ledOn;
-
-      }, length);
-
-      idsArray.push(blinkID);
-    });
-
-
-    socket.on('rgb blink cancel', function(data) {
-      idsArray.forEach(function(id) {
-        clearInterval(id);
-      });
-    });
-  });
-
-  // RGB.Fade
-
-  socket.on('rgb fade', function(data) {
-
-    var keys = Object.keys(data),
-        mult;
-
-    function nextVal(a, b) {
-      return a + mult * b;
-    }
-
-    keys.forEach(function(key) {
-      var el = data[key];
-
-      var time     = el.time,
-          start    = el.start,
-          stop     = el.stop,
-          inc      = el.inc,
-          steps    = time / inc,
-          span     = Math.abs(start - stop),
-          vps      = span / steps,
-          val      = start;
-
-      mult = stop > start ? 1 : -1;
-
-      board.pinMode(el.pin, board.MODES.PWM);
-
-      for (var i = 0; i <= steps; i++){
-        (function(num){
-          setTimeout(function(){
-            board.analogWrite(el.pin, val);
-            val = nextVal(val, vps);
-          }, num * inc);
-        })(i);
-      }
-    });
-  });
-
-  // Servo.Range
-   
-  socket.on('range', function(data){
-    board.servoConfig(data.pin, data.range[0], data.range[1])
-  });
-
-
-  // Servo.Sweep
-   
-  socket.on('sweep', function(data){
-    var degrees = 10,
-        incrementer = data.inc || 10,
-        min = data.min || 0,
-        max = data.max || 180;
-
-    board.servoWrite(data.pin, data.min || 0);
-
-    var sweepID = setInterval(function() {
-      if (degrees >= max || degrees === min) {
-        incrementer *= -1;
-      }
-      degrees += incrementer;
-      board.servoWrite(data.pin, degrees);
-    }, 500);
-
-    socket.on('sweep cancel', function(){
-      clearInterval(sweepID);
-    });
-  });
-
-  // Serial listeners
-
-  var sp = require('serialport'),
-      SerialPort = sp.SerialPort,
-      serialport,
-      serialQ = [];
-
-  function serialDispatch(fn, args){
-    serialport.isOpen ? fn.apply(null, args) : serialQ.push({ func: fn, args: args });
+    // Servo
+    var servo = require('./servo.js');
+    servo.range(board, socket);
+    servo.sweep(board, socket);
   }
 
-  var sinit = function(data) {
-    serialport = new SerialPort(data.path, data.config);
-    serialport.on('open', function(){
-      // call eventQ functions
-      serialQ.forEach(function(el) {
-        el.func.apply(null, el.args);
-      });
-    });
-  };
-
-  var sread = function() {
-    function sRead(){
-      serialport.on('data', function(data) {
-        socket.emit('serial read return', { data: data });
-      });
-    }
-    serialDispatch(sRead);
-  };
-
-  var swrite = function(arg) {
-    function sWrite() {
-      serialport.write(arg, function(err, results) {
-        if (err) { console.log('Serial write error', err); }
-        socket.emit('serial write return', { results: results });
-      });
-    }
-    serialDispatch(sWrite, arg);
-  };
-
-  var slist = function() {
-    sp.list(function (err, ports) {
-      var portsArr = [];
-      ports.forEach(function(port) {
-        var inner = {};
-        inner.comName = port.comName;
-        inner.pnpId = port.pnpId;
-        inner.manufacturer = port.manufacturer;
-        portsArr.push(inner);
-      });
-      socket.emit('serial list return', { ports: portsArr });
-    });
-  };
-
-  socket.on('serial init', sinit);
-  socket.on('serial read', sread);
-  socket.on('serial write', swrite);
-  socket.on('serial list', slist);
+  // Serial does not require firmata board
+  var serial = require('./serial.js');
+  console.log(serial);
+  serial.init(socket);
+  serial.read(socket);
+  serial.write(socket);
+  serial.list(socket);
 
 });
 
