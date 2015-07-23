@@ -7,7 +7,6 @@ exports.write = function rgbWrite(board, socket) {
       board.pinMode(data[key][0], board.MODES.PWM);
       board.analogWrite(data[key][0], gamma[data[key][1]]);
     });
-
   });
 };
 

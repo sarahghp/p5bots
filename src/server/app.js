@@ -83,8 +83,7 @@ io.of('/sensors').on('connect', function(socket) {
        board.pinMode(data.pin, board.MODES[data.mode.toUpperCase()]);
   });
 
-  // Action functions
-  
+  // Action functions:
   // The primary action function formats the read & write functions & sends
   // these to firmata
   
@@ -130,7 +129,6 @@ io.of('/sensors').on('connect', function(socket) {
 
   // Serial does not require firmata board
   var serial = require('./serial.js');
-  console.log(serial);
   serial.init(socket);
   serial.read(socket);
   serial.write(socket);
