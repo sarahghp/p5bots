@@ -1,5 +1,5 @@
 /**
- *  This is the Gruntfile for p5sensors.
+ *  This is the Gruntfile for p5bots.
  *  It is a modified version of the Gruntfile for p5.js. Grunt is a task 
  *  runner/builder, used to build the source code into the library
  *  and handle other housekeeping tasks.
@@ -136,7 +136,7 @@ module.exports = function(grunt) {
           baseUrl: '.', // whence do the files come?
           findNestedDependencies: true,
           optimize: 'none', // skip running uglify on the concatenated code
-          out: 'lib/p5sensors.js', // name of the output file
+          out: 'lib/p5bots.js', // name of the output file
           useStrict: true, // Allow "use strict"; be included in the RequireJS files.
           //findNestedDependencies: true,   // automatically find nested deps.  Doesn't appear to effect the code?
           include: ['src/client/app.js'], // this is the file which we are actually building
@@ -166,8 +166,8 @@ module.exports = function(grunt) {
 
           done: function(done, output) {
             require('concat-files')([
-              'lib/p5sensors.js',
-            ], 'lib/p5sensors.js', function() {
+              'lib/p5bots.js',
+            ], 'lib/p5bots.js', function() {
               done();
             });
           }

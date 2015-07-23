@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "file": "/Users/breakers/sites/p5sensors/docs/yuidoc-p5-theme/assets/js/reference.js",
+  "file": "/Users/breakers/sites/p5bots/docs/yuidoc-p5-theme/assets/js/reference.js",
   "sources": [
     "vendor/underscore-amd/underscore.js",
     "vendor/backbone-amd/backbone.js",
