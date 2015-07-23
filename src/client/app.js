@@ -11,7 +11,8 @@ define(function (require) {
     'led': { fn: special.led, mode: 'digital' },
     'motor': { fn: special.motor, mode: 'pwm' },
     'rgbled': { fn: special.rgbled, mode: 'pwm' },
-    'servo': { fn: special.servo, mode: 'servo' }
+    'servo': { fn: special.servo, mode: 'servo' },
+    'vres': { fn: special.vres, mode: 'analog' }
   };
 
   p5.Board = function (port, type){
@@ -75,6 +76,8 @@ define(function (require) {
     return _pin;
   };
 
+  // Serial does not pass through firmata & therefore not through 
+  // board & pin constructors
   p5.serial = special.serial;
 
 });

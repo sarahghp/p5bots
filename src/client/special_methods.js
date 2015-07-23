@@ -1,6 +1,6 @@
 define(function (require) {
 
-  var utils   = require('src/client/socket_utils');
+  var utils = require('src/client/socket_utils');
   
   var special = {
     button: function(pin) {
@@ -339,7 +339,9 @@ define(function (require) {
       }; 
 
       return pin;
-    }
+    },
+
+    vres: require('src/client/variable_resistor')
 
   };
 

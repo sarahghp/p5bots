@@ -35,6 +35,10 @@ define(function (require) {
           }
         }
 
+        function vresTests(val){
+          this.readRange && this.readRange();
+        }
+
         function setVal(data) {
           // Check for callbacks, and if they exist, call them
           // Callbacks set in socketGen for generic read & special calls
@@ -43,6 +47,8 @@ define(function (require) {
 
           if (this.special === 'button'){
             buttonTests.call(this, data.val);
+          } else if (this.special === 'vres'){
+            vresTests.call(this);
           }
           
         };
