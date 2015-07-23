@@ -36,7 +36,7 @@
 // Client-Side Sandbox     //
 /////////////////////////////
 
-// console.log('quicktest');
+console.log('quicktest');
 // p5.board('/dev/cu.usbmodem1421', 'arduino');
 
 
@@ -68,8 +68,8 @@
 // p.read();
 // setInterval(function() { console.log(p.val) }, 500);
 
-// // Draw ellipses with a button -- these work on the same 
-// // setup as the pin reads
+// Draw ellipses with a button -- these work on the same 
+// setup as the pin reads
 
 // var p;
 
@@ -300,3 +300,97 @@
 //     motor.write(100);
 //   }
 // }
+ 
+// Servo Tests -- Servo plugged directly into board and pin 9
+
+// var servo;
+
+// function setup() {
+//   p5.board('/dev/cu.usbmodem1421', 'arduino');
+//   servo = p5.pin(9, 'SERVO');
+//   servo.range([0, 60]);
+// }
+
+// function keyPressed() {
+//    if (keyCode === LEFT_ARROW) {
+//      console.log('l')
+//      servo.write(15);
+//    } else if (keyCode === RIGHT_ARROW) {
+//      console.log('r')
+//      servo.write(45);
+//    } else if (keyCode === UP_ARROW) {
+//      console.log('u')
+//      servo.sweep();
+//    } else if (keyCode === DOWN_ARROW) {
+//      console.log('d')
+//      servo.noSweep();
+//    } 
+// }
+
+// // Button tests -- Same as digital and analog read above
+
+// var button;
+
+// function setup() {
+
+//   createCanvas(600, 200);
+
+//   p5.board('/dev/cu.usbmodem1421', 'arduino');
+//   button = p5.pin(9, 'BUTTON');
+
+//   function redEllipse() {
+//     console.log('pressed');
+//     clear();
+//     noStroke();
+//     fill(255, 0, 0);
+//     ellipse(100, 100, 40, 40);
+//   }
+
+//   function blueEllipse() {
+//     console.log('released');
+//     clear();
+//     noStroke();
+//     fill(0, 0, 255);
+//     ellipse(200, 100, 40, 40);
+//   }
+
+//   function greenEllipse() {
+//     console.log('held')
+//     clear();
+//     noStroke();
+//     fill(0, 255, 136);
+//     ellipse(300, 100, 40, 40);
+//   }
+  
+//   button.read();
+//   button.pressed(redEllipse);
+//   button.released(blueEllipse);
+//   button.held(greenEllipse, 3000);
+
+// }
+// 
+// Variable Resistor Tests -- Potentiometer hooked up to A0
+var pmeter;
+
+function setup() {
+  p5.board('/dev/cu.usbmodem1421', 'arduino');
+  pmeter = p5.pin(0, 'VRES');
+
+  pmeter.read(function(val){ console.log('pmeter read', val)});
+  pmeter.range([10, 400]);
+  pmeter.threshold(600);
+}
+
+function keyPressed() {
+  console.log('is over?', pmeter.val, pmeter.overThreshold());
+}
+
+// // Serial Tests
+
+// function setup() {
+//   var serial = p5.serial();
+//   // serial.list();
+
+//   serial.connect('/dev/cu.usbmodem1421');
+//   serial.read(function(data){ console.log(data); })
+// }  
