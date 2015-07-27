@@ -6,9 +6,9 @@ define(function (require) {
     // Unpack pin object & initialize pins
     var settings = pin.pin;
     
-    pin.redPin = settings.r;
-    pin.greenPin = settings.g;
-    pin.bluePin = settings.b;
+    pin.redPin = settings.r || settings.red;
+    pin.greenPin = settings.g || settings.green;
+    pin.bluePin = settings.b || settings.blue;
     pin.common = settings.common || settings.c || 'cathode';
 
     utils.dispatch(utils.pinInit(pin.redPin, pin.mode, pin.direction));
