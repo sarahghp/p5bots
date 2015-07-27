@@ -14,6 +14,8 @@ define(function (require) {
 
     servo: require('src/client/servo'),
 
+    temp: require('src/client/temp'),
+
     vres: require('src/client/variable_resistor')
 
   };
