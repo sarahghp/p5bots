@@ -3,7 +3,7 @@ define(function (require) {
   'use strict';
 
   var utils = require('src/client/socket_utils');
-  var special = require('src/client/special_methods');
+  var special = require('src/client/special_methods_index');
   var modeError = "Please check mode. Value should be 'analog', 'digital', 'pwm', or servo";
 
   var specialMethods = {
@@ -12,6 +12,7 @@ define(function (require) {
     'motor': { fn: special.motor, mode: 'pwm' },
     'rgbled': { fn: special.rgbled, mode: 'pwm' },
     'servo': { fn: special.servo, mode: 'servo' },
+    'temp': { fn: special.temp, mode: 'analog' },
     'vres': { fn: special.vres, mode: 'analog' }
   };
 
@@ -43,8 +44,9 @@ define(function (require) {
 
     // also emit board object & listen for return
     utils.boardInit(port, type);
-    utils.socket.on('board ready', function(){
+    utils.socket.on('board ready', function(data) {
      utils.board.ready = true;
+     // utils.board.analogPins = data.analogArr;
      utils.board.eventQ.forEach(function(el){
       el.func.apply(null, el.args);
      });

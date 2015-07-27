@@ -54,7 +54,7 @@ io.of('/sensors').on('connect', function(socket) {
     function init() {
       console.log('board object caught', data);
       initializeSpecialFuncs(board);
-      socket.emit('board ready');
+      socket.emit('board ready', { analogArr: board.analogPins });
     }
 
     // If the board has already been initialized in firmata, it won't

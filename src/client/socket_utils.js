@@ -21,36 +21,14 @@ define(function (require) {
 
         // Let an explicit passed mode override the pin's user-facing mode
         var mode = mode || pin.mode,
-            pressedOnce = false,
             timeout;
 
-        function buttonTests(val) {
-          if (val === 1) {
-            pressedOnce = true;
-            this.buttonPressedcb && this.buttonPressedcb();
-            timeout = this.buttonHeldcb ? this.buttonHeldcb() : false;
-          } else if (val === 0) {
-            pressedOnce && this.buttonReleasedcb && this.buttonReleasedcb();
-            timeout && clearTimeout(timeout);
-          }
-        }
-
-        function vresTests(val){
-          this.readRange && this.readRange();
-        }
-
         function setVal(data) {
-          // Check for callbacks, and if they exist, call them
-          // Callbacks set in socketGen for generic read & special calls
+          // Callbacks set in socketGen for generic read & in special constructors for special
           this.readcb && this.readcb(data.val);
           this.val = data.val;
 
-          if (this.special === 'button'){
-            buttonTests.call(this, data.val);
-          } else if (this.special === 'vres'){
-            vresTests.call(this);
-          }
-          
+          utils.readTests[this.special] && utils.readTests[this.special].call(this, data.val);          
         };
 
         pin.read = function(arg) {
@@ -73,15 +51,49 @@ define(function (require) {
         this.board.ready ? fn(arg) : this.board.eventQ.push({func: fn, args: [arg]});
       },
 
-      pinInit: function(num, mode, direction){
+      pinInit: function(pin, mode, direction){
         return function emitPin(){
           socket.emit('pin object', {
-            pin: num,
+            pin: pin,
             mode: mode.toLowerCase(),
             direction: direction.toLowerCase()
           });
         }
       },
+
+      readTests: {
+        button: function buttonTests(val) {
+          this.pressedOnce = false;
+          if (val === 1) {
+            pressedOnce = true;
+            this.buttonPressedcb && this.buttonPressedcb();
+            timeout = this.buttonHeldcb ? this.buttonHeldcb() : false;
+          } else if (val === 0) {
+            pressedOnce && this.buttonReleasedcb && this.buttonReleasedcb();
+            timeout && clearTimeout(timeout);
+          }
+        },
+
+        temp: function tempSettings(val){
+          var conversions = {
+            'CtoF': function(value) {
+              return value * 1.8 + 32;
+            },
+            'CtoK': function(value) {
+               return value + 273.15;
+            }
+          };
+
+          this.C = ((val * ((this._voltsIn * 1000) / 1024)) - 500) / 10;
+          this.F = conversions.CtoF(this.C);
+          this.K = conversions.CtoK(this.C);
+          this.pressedOnce = true;
+        },
+
+        vres: function vresTests(val){
+          this.readRange && this.readRange();
+        }
+      }, 
 
       socket: socket,
 
