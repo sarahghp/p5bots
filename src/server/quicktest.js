@@ -68,8 +68,8 @@ console.log('quicktest');
 // p.read();
 // setInterval(function() { console.log(p.val) }, 500);
 
-// Draw ellipses with a button -- these work on the same 
-// setup as the pin reads
+// // Draw ellipses with a button -- these work on the same 
+// // setup as the pin reads
 
 // var p;
 
@@ -161,7 +161,7 @@ console.log('quicktest');
 
 // function setup() {
 //   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   led = p5.pin(2, 'LED');
+//   led = p5.pin(9, 'LED');
 //   console.log(led);
 // }
 
@@ -217,7 +217,7 @@ console.log('quicktest');
 //   ellipse(80, 80, 40, 40);
 // }
 
-// RGB LED Read -- Same as above
+// // RGB LED Read -- Same as above
 
 // var rgb, c;
 
@@ -369,28 +369,96 @@ console.log('quicktest');
 
 // }
 // 
-// Variable Resistor Tests -- Potentiometer hooked up to A0
-var pmeter;
+// // Variable Resistor Tests -- Potentiometer hooked up to A0
+// var pmeter;
 
-function setup() {
-  p5.board('/dev/cu.usbmodem1421', 'arduino');
-  pmeter = p5.pin(0, 'VRES');
+// function setup() {
+//   p5.board('/dev/cu.usbmodem1421', 'arduino');
+//   pmeter = p5.pin(0, 'VRES');
 
-  pmeter.read(function(val){ console.log('pmeter read', val)});
-  pmeter.range([10, 400]);
-  pmeter.threshold(600);
-}
+//   pmeter.read(function(val){ console.log('pmeter read', val)});
+//   pmeter.range([10, 400]);
+//   pmeter.threshold(600);
+// }
 
-function keyPressed() {
-  console.log('is over?', pmeter.val, pmeter.overThreshold());
-}
+// function keyPressed() {
+//   console.log('is over?', pmeter.val, pmeter.overThreshold());
+// }
+ 
+// Temp Tests -- Temp sensor in A2
+ 
+// var thermo;
+
+// function setup() {
+//   p5.board('/dev/cu.usbmodem1421', 'arduino');
+//   thermo = p5.pin({ pin: 0, voltsIn: 5 }, 'TEMP');
+//   thermo.read();
+// }
+
+// function keyPressed() {
+//   if (keyCode === LEFT_ARROW) {
+//     console.log('f');
+//     console.log(thermo.F);
+//   } else if (keyCode === RIGHT_ARROW) {
+//     console.log('c');
+//     console.log(thermo.C);
+//   } else if (keyCode === UP_ARROW) {
+//     console.log('v');
+//     console.log(thermo);
+//   } else if (keyCode === DOWN_ARROW) {
+//     console.log('k')
+//     console.log(thermo.K);
+//   }
+// }
+
+// // Tone Test -- Piezo in pin 8 and ground
+
+// var t;
+
+// function setup() {
+//   p5.board('/dev/cu.usbmodem1421', 'arduino');
+//   t = p5.pin(8, 'TONE'); // Can also set mode to 'PIEZO'
+// }
+
+// function keyPressed() {
+//   if (keyCode === LEFT_ARROW) {
+//     console.log('note');
+//     t.tone('e7', 10000)
+//   } else if (keyCode === RIGHT_ARROW) {
+//     console.log('freq');
+//     t.tone(600, 400);
+//   } else if (keyCode === UP_ARROW) {
+//     console.log('up does nothing!!');
+//     console.log(t);
+//   } else if (keyCode === DOWN_ARROW) {
+//     console.log('nT')
+//     t.noTone();
+//   }
+// }
+ 
+// // Knock Test -- Piezo in A0 and ground
+
+// var k;
+
+// function setup() {
+//  p5.board('/dev/cu.usbmodem1421', 'arduino');
+//  k = p5.pin(0, 'KNOCK'); // Can also set mode to 'PIEZO'
+//  k.threshold(200);
+//  k.read();
+// }
+
+// function draw() {
+//   console.log(k.val, k.threshold, k.overThreshold());
+// }
 
 // // Serial Tests
 
-// function setup() {
-//   var serial = p5.serial();
-//   // serial.list();
+// var serial;
 
-//   serial.connect('/dev/cu.usbmodem1421');
-//   serial.read(function(data){ console.log(data); })
+// function setup() {
+//   serial = p5.serial();
+//   serial.list();
+
+//   // serial.connect('/dev/cu.usbmodem1421');
+//   // serial.read(function(data){ console.log(data); })
 // }  
