@@ -20,8 +20,7 @@ define(function (require) {
       constructFuncs: function(pin, mode) {
 
         // Let an explicit passed mode override the pin's user-facing mode
-        var mode = mode || pin.mode,
-            timeout;
+        var mode = mode || pin.mode;
 
         function setVal(data) {
           // Callbacks set in socketGen for generic read & in special constructors for special
@@ -63,14 +62,13 @@ define(function (require) {
 
       readTests: {
         button: function buttonTests(val) {
-          this.pressedOnce = false;
           if (val === 1) {
-            pressedOnce = true;
+            this.pressedOnce = true;
             this.buttonPressedcb && this.buttonPressedcb();
-            timeout = this.buttonHeldcb ? this.buttonHeldcb() : false;
+            this.timeout = this.buttonHeldcb ? this.buttonHeldcb() : false;
           } else if (val === 0) {
-            pressedOnce && this.buttonReleasedcb && this.buttonReleasedcb();
-            timeout && clearTimeout(timeout);
+            this.pressedOnce && this.buttonReleasedcb && this.buttonReleasedcb();
+            this.timeout && clearTimeout(this.timeout);
           }
         },
 
@@ -87,7 +85,6 @@ define(function (require) {
           this.C = ((val * ((this._voltsIn * 1000) / 1024)) - 500) / 10;
           this.F = conversions.CtoF(this.C);
           this.K = conversions.CtoK(this.C);
-          this.pressedOnce = true;
         },
 
         vres: function vresTests(val){
