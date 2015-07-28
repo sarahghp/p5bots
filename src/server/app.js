@@ -35,6 +35,8 @@ app.get('/', function(req, res) {
 
 // App code
 
+var board;
+
 io.of('/sensors').on('connect', function(socket) {
   console.log('connected');
   exports.socket = socket;
@@ -47,8 +49,6 @@ io.of('/sensors').on('connect', function(socket) {
   
   // Board setup
   
-  var board;
-
   socket.on('board object', function(data) {
 
     function init() {
@@ -62,6 +62,7 @@ io.of('/sensors').on('connect', function(socket) {
     // functions are called without restarting the whole proces
     
     if (!board) {
+      console.log('if called');
       board = new firmata.Board(data.port, function(err) {
         if (err) {
           throw new Error(err);
@@ -69,6 +70,7 @@ io.of('/sensors').on('connect', function(socket) {
         init();
       });
     } else {
+      console.log('else called');
       init();
     }
   });
