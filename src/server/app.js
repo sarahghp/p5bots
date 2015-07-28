@@ -62,7 +62,6 @@ io.of('/sensors').on('connect', function(socket) {
     // functions are called without restarting the whole proces
     
     if (!board) {
-      console.log('if called');
       board = new firmata.Board(data.port, function(err) {
         if (err) {
           throw new Error(err);
@@ -70,7 +69,6 @@ io.of('/sensors').on('connect', function(socket) {
         init();
       });
     } else {
-      console.log('else called');
       init();
     }
   });
