@@ -8,11 +8,14 @@ define(function (require) {
 
   var specialMethods = {
     'button': { fn: special.button, mode: 'digital' },
+    'knock': { fn: special.piezo, mode: 'analog' },
     'led': { fn: special.led, mode: 'digital' },
     'motor': { fn: special.motor, mode: 'pwm' },
+    'piezo': { fn: special.piezo, mode: 'digital' },
     'rgbled': { fn: special.rgbled, mode: 'pwm' },
     'servo': { fn: special.servo, mode: 'servo' },
     'temp': { fn: special.temp, mode: 'analog' },
+    'tone': { fn: special.piezo, mode: 'digital' },
     'vres': { fn: special.vres, mode: 'analog' }
   };
 

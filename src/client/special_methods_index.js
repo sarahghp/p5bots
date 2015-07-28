@@ -8,6 +8,8 @@ define(function (require) {
 
     motor: require('src/client/motor'),
 
+    piezo: require('src/client/piezo'),
+
     rgbled: require('src/client/rgb'),
 
     serial: require('src/client/serial'),

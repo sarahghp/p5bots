@@ -125,6 +125,10 @@ io.of('/sensors').on('connect', function(socket) {
     var servo = require('./servo.js');
     servo.range(board, socket);
     servo.sweep(board, socket);
+
+    // Piezo
+    var piezo = require('./piezo.js');
+    piezo.tone(board, socket);
   }
 
   // Serial does not require firmata board
