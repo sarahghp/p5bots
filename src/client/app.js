@@ -22,9 +22,33 @@ define(function (require) {
   p5.Board = function (port, type){
     this.port = port;
     this.type = type.toLowerCase() || 'arduino';
+    
     // Will be set when board is connected
     this.ready = false;
     this.eventQ = [];
+
+    // Constants
+    this.HIGH =     'high';
+    this.LOW =      'low';
+
+    this.INPUT =    'input';
+    this.OUTPUT =   'output';
+    
+    this.ANALOG =   'analog';
+    this.DIGITAL =  'digital';
+    this.PWM =      'pwm';
+    this.SERVO =    'servo';
+
+    this.BUTTON =   'button';
+    this.KNOCK =    'knock';
+    this.LED =      'led';
+    this.MOTOR =    'motor';
+    this.PIEZO =    'piezo';
+    this.RGBLED =   'rgbled';
+    this.TEMP =     'temp';
+    this.TONE =     'tone';
+    this.VRES =     'vres';
+
   };
 
   p5.Pin = function(num, mode, direction){
