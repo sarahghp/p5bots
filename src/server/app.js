@@ -6,7 +6,9 @@ var express    = require('express'),
     server     = require('http').Server(app),
     io         = require('socket.io')(server),
     firmata    = require('firmata'),
-    program    = require('commander');
+    program    = require('commander'),
+    fs         = require('fs'),
+    path       = require('path');
 
 // Parse command-line args
 var directory, index, program;
@@ -15,6 +17,8 @@ program
   .description('Let your board talk to your sketch')
   .option('-d, --dir <d>', 'Set base directory for server')
   .option('-f, --file <f>', 'Set file to use')
+  .option('-p, --ufilepath <p>', 'Path to file containing user-defined server-side listeners.')
+  .option('-n, --ufilename <n>', 'Path to file, including file name, that contains user-defined server-side listeners.')
   .parse(process.argv);
 
 exports.program = program;
@@ -129,6 +133,39 @@ io.of('/sensors').on('connect', function(socket) {
     // Piezo
     var piezo = require('./piezo.js');
     piezo.tone(board, socket);
+
+    // User defined, if present
+
+    if (program.ufilename) {
+      var filepath = program.ufilename; 
+    } else if (program.ufilepath) {
+      var userpath = program.ufilepath || __dirname,
+          filepath = userpath + '/user.js';
+    }    
+
+    if (filepath) {
+      filepath = path.normalize(filepath);
+      fs.stat(filepath, function(err, stats){
+        if (err == null) {
+
+          var reqPath = path.isAbsolute(filepath) ? filepath : process.cwd() + '/' + filepath;
+          
+          var user = require(reqPath),
+              keys = Object.keys(user);
+
+          keys.forEach(function(key){
+            user[key](board, socket);
+          });
+
+        } else if (err.code === 'ENOENT'){
+          throw new Error(filepath + ' does not seem to exist. Maybe it is a ghost.')
+
+        } else {
+          console.log(err);
+        }
+      });
+    }
+ 
   }
 
   // Serial does not require firmata board
