@@ -37,33 +37,33 @@
 /////////////////////////////
 
 console.log('quicktest');
-// p5.board('/dev/cu.usbmodem1421', 'arduino');
+
 
 
 //////////////////////
 // Example Scripts //
 //////////////////////
 
-// // Board setup — obviously you may need to change the port
-// p5.board('/dev/cu.usbmodem1421', 'arduino');
+// // Board setup for all funcs — obviously you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
 
 // // Test digital write
-// var p = p5.pin(9, 'DIGITAL', 'OUTPUT');
+// var p = b.pin(9, 'DIGITAL', 'OUTPUT');
 // p.write('HIGH');
 
 // Test PWM write
-// var p = p5.pin(9, 'PWM', 'OUTPUT');
+// var p = b.pin(9, 'PWM', 'OUTPUT');
 // p.write(80);
 
 
 // Test digital read -- only uncomment one p.read() at a time
-// var p = p5.pin(9, 'DIGITAL', 'INPUT');
+// var p = b.pin(9, 'DIGITAL', 'INPUT');
 // p.read(function(val){console.log(val);});
 // p.read();
 // setInterval(function() { console.log(p.val) }, 500);
 
 // // Test analog read -- only uncomment one p.read() at a time
-// var p = p5.pin(0, 'ANALOG', 'INPUT');
+// var p = b.pin(0, 'ANALOG', 'INPUT');
 // p.read(function(val){console.log(val);});
 // p.read();
 // setInterval(function() { console.log(p.val) }, 500);
@@ -74,9 +74,7 @@ console.log('quicktest');
 // var p;
 
 // function setup() {
-  
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   p = p5.pin(9, 'DIGITAL', 'INPUT');
+//   p = b.pin(9, 'DIGITAL', 'INPUT');
 //   p.read();
 
 //   createCanvas(1200, 500);
@@ -99,9 +97,7 @@ console.log('quicktest');
 //   noStroke();
 //   fill(62, 0, 255);
 //   ellipse(width/2, height/2, 100, 100);
-
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   pin = p5.pin(9, 'DIGITAL', 'OUTPUT');
+//   pin = b.pin(9, 'DIGITAL', 'OUTPUT');
 // }
 
 // function mousePressed() {
@@ -120,9 +116,7 @@ console.log('quicktest');
 
 // function setup() {
 //   createCanvas(400, 400);
-
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   var pin = p5.pin(9, 'DIGITAL', 'OUTPUT');
+//   var pin = b.pin(9, 'DIGITAL', 'OUTPUT');
 
   
 //   var button = createButton('LIGHT THE LED!!');
@@ -143,9 +137,7 @@ console.log('quicktest');
 // function setup() {
 //   slider = createSlider(0, 255, 150);
 //   slider.position = (10, 10);
-
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   pin = p5.pin(9, 'PWM', 'OUTPUT');
+//   pin = b.pin(9, 'PWM', 'OUTPUT');
 
 // }
 
@@ -160,8 +152,7 @@ console.log('quicktest');
 // var led;
 
 // function setup() {
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   led = p5.pin(9, 'LED');
+//   led = b.pin(9, 'LED');
 //   console.log(led);
 // }
 
@@ -182,8 +173,7 @@ console.log('quicktest');
 // var led;
 
 // function setup() {
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   led = p5.pin(9, 'LED');
+//   led = b.pin(9, 'LED');
 // }
 
 // function keyPressed(){
@@ -196,8 +186,7 @@ console.log('quicktest');
 // // LED Fade in Setup -- Same setup as above [tests queueing]
 
 // function setup() {
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   var led = p5.pin(9, 'LED');
+//   var led = b.pin(9, 'LED');
 //   led.write(200);
 //   led.fade(200, 0);
 // }
@@ -208,8 +197,7 @@ console.log('quicktest');
 // plugged into pins 9, 10, 11
 
 // function setup() {
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   var rgb = p5.pin({r: 9, g: 10, b: 11}, 'RGBLED');
+//   var rgb = b.pin({r: 9, g: 10, b: 11}, 'RGBLED');
 //   var c = color(65);
 //   rgb.write(c);
 //   fill(c);
@@ -222,8 +210,8 @@ console.log('quicktest');
 // var rgb, c;
 
 // function setup() {
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   rgb = p5.pin({r: 9, g: 10, b: 11}, 'RGBLED');
+//
+//   rgb = b.pin({r: 9, g: 10, b: 11}, 'RGBLED');
 //   c = color(Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255));
 //   rgb.write(c);
 //   fill(c);
@@ -235,38 +223,36 @@ console.log('quicktest');
 //   rgb.read(function(val){ console.log(val.toString()); });
 // }
 
-// // RGB LED On/Off/Blink -- Same as above
-// var rgb, c;
+// RGB LED On/Off/Blink -- Same as above
+var rgb, c;
 
-// function setup() {
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   rgb = p5.pin({r: 9, g: 10, b: 11}, 'RGBLED');
-//   c = color(Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255));
-//   rgb.write(c);
-//   fill(c);
-//   noStroke();
-//   ellipse(80, 80, 40, 40); 
-// }
+function setup() {
+  rgb = b.pin({r: 9, g: 10, b: 11}, b.RGBLED);
+  c = color(Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255));
+  rgb.write(c);
+  fill(c);
+  noStroke();
+  ellipse(80, 80, 40, 40);
+}
 
-// function keyPressed() {
-//   if (keyCode === LEFT_ARROW){
-//     rgb.on();
-//   } else if (keyCode === RIGHT_ARROW) {
-//     rgb.off();
-//   } else if (keyCode === UP_ARROW){
-//     rgb.blink();
-//   } else if (keyCode === DOWN_ARROW) {
-//     rgb.noBlink();
-//   }
-// }
+function keyPressed() {
+  if (keyCode === LEFT_ARROW){
+    rgb.on();
+  } else if (keyCode === RIGHT_ARROW) {
+    rgb.off();
+  } else if (keyCode === UP_ARROW){
+    rgb.blink();
+  } else if (keyCode === DOWN_ARROW) {
+    rgb.noBlink();
+  }
+}
 
 // RGB LED Fade on Key -- Same setup as above
 
 // var rgb;
 
 // function setup() {
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   rgb = p5.pin({r: 9, g: 10, b: 11}, 'RGBLED');
+//   rgb = b.pin({r: 9, g: 10, b: 11}, 'RGBLED');
 //   var c = color(Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255));
 //   rgb.write(c);
 //   fill(c);
@@ -286,8 +272,7 @@ console.log('quicktest');
 // var motor;
 
 // function setup() {
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   motor = p5.pin(9, 'MOTOR');
+//   motor = b.pin(9, 'MOTOR');
 // }
 
 // function keyPressed() {
@@ -306,8 +291,7 @@ console.log('quicktest');
 // var servo;
 
 // function setup() {
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   servo = p5.pin(9, 'SERVO');
+//   servo = b.pin(9, 'SERVO');
 //   servo.range([0, 60]);
 // }
 
@@ -332,11 +316,8 @@ console.log('quicktest');
 // var button;
 
 // function setup() {
-
 //   createCanvas(600, 200);
-
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   button = p5.pin(9, 'BUTTON');
+//   button = b.pin(9, 'BUTTON');
 
 //   function redEllipse() {
 //     console.log('pressed');
@@ -373,9 +354,7 @@ console.log('quicktest');
 // var pmeter;
 
 // function setup() {
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   pmeter = p5.pin(0, 'VRES');
-
+//   pmeter = b.pin(0, 'VRES');
 //   pmeter.read(function(val){ console.log('pmeter read', val)});
 //   pmeter.range([10, 400]);
 //   pmeter.threshold(600);
@@ -390,8 +369,7 @@ console.log('quicktest');
 // var thermo;
 
 // function setup() {
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   thermo = p5.pin({ pin: 0, voltsIn: 5 }, 'TEMP');
+//   thermo = b.pin({ pin: 0, voltsIn: 5 }, 'TEMP');
 //   thermo.read();
 // }
 
@@ -416,8 +394,7 @@ console.log('quicktest');
 // var t;
 
 // function setup() {
-//   p5.board('/dev/cu.usbmodem1421', 'arduino');
-//   t = p5.pin(8, 'TONE'); // Can also set mode to 'PIEZO'
+//   t = b.pin(8, 'TONE'); // Can also set mode to 'PIEZO'
 // }
 
 // function keyPressed() {
@@ -441,8 +418,7 @@ console.log('quicktest');
 // var k;
 
 // function setup() {
-//  p5.board('/dev/cu.usbmodem1421', 'arduino');
-//  k = p5.pin(0, 'KNOCK'); // Can also set mode to 'PIEZO'
+//  k = b.pin(0, 'KNOCK'); // Can also set mode to 'PIEZO'
 //  k.threshold(200);
 //  k.read();
 // }
@@ -462,3 +438,21 @@ console.log('quicktest');
 //   // serial.connect('/dev/cu.usbmodem1421');
 //   // serial.read(function(data){ console.log(data); })
 // }  
+
+// // User-declared function -- just requires a board
+
+// var socket;
+
+// function setup() {
+//   socket = io.connect('http://localhost:8000/sensors');
+// }
+
+// function keyPressed() {
+//   if (keyCode === UP_ARROW) {
+//     console.log('emitting hi, check server for execution');
+//     socket.emit('say hi', {message: 'sarahpants!'});
+//   } else if (keyCode === DOWN_ARROW){
+//     console.log('emitting hi, check server for execution');
+//     socket.emit('say hi', {message: 'tiger breath!'}); 
+//   }
+// }
