@@ -18,7 +18,7 @@ program
   .option('-d, --dir <d>', 'Set base directory for server')
   .option('-f, --file <f>', 'Set file to use')
   .option('-p, --ufilepath <p>', 'Path to file containing user-defined server-side listeners.')
-  .option('-n, --ufilename <n>', 'Path to file, including file name, that contains user-defined server-side listeners.')
+  .option('-n, --ufilename <n>', 'Path, inluding file name, to user-defined server-side listeners.')
   .parse(process.argv);
 
 exports.program = program;
