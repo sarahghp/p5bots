@@ -19,13 +19,15 @@ define(function (require) {
     'vres': { fn: special.vres, mode: 'analog' }
   };
 
-  p5.Board = function (port, type){
+  var Board = function (port, type){
     this.port = port;
     this.type = type.toLowerCase() || 'arduino';
     
     // Will be set when board is connected
     this.ready = false;
     this.eventQ = [];
+
+    this.pinsArray = [];
 
     // Constants
     this.HIGH =     'high';
@@ -51,7 +53,7 @@ define(function (require) {
 
   };
 
-  p5.Pin = function(num, mode, direction){
+  var Pin = function(num, mode, direction){
     this.pin = num;
     this.direction = direction ? direction.toLowerCase() : 'output';
 
@@ -66,24 +68,8 @@ define(function (require) {
     this.read = function() { throw new Error('Read undefined') }
   };
 
-  p5.board = function (port, type){
-    utils.board = new p5.Board(port, type);
-
-    // also emit board object & listen for return
-    utils.boardInit(port, type);
-    utils.socket.on('board ready', function(data) {
-     utils.board.ready = true;
-     // utils.board.analogPins = data.analogArr;
-     utils.board.eventQ.forEach(function(el){
-      el.func.apply(null, el.args);
-     });
-    });
-     
-    return utils.board;
-  };
-
-  p5.pin = function(num, mode, direction){
-    var _pin = new p5.Pin(num, mode, direction);
+  Board.prototype.pin = function(num, mode, direction){
+    var _pin = new Pin(num, mode, direction);
     
     if (_pin.special) {
       specialMethods[_pin.special].fn(_pin);
@@ -97,12 +83,28 @@ define(function (require) {
       utils.constructFuncs(_pin, 'analog');
 
     } else {
-
       throw new Error(modeError);
-
     }
 
+    this.pinsArray.push(_pin);
+
     return _pin;
+  };
+
+  p5.board = function (port, type){
+    utils.board = new Board(port, type);
+
+    // also emit board object & listen for return
+    utils.boardInit(port, type);
+    utils.socket.on('board ready', function(data) {
+     utils.board.ready = true;
+     // utils.board.analogPins = data.analogArr;
+     utils.board.eventQ.forEach(function(el){
+      el.func.apply(null, el.args);
+     });
+    });
+     
+    return utils.board;
   };
 
   // Serial does not pass through firmata & therefore not through 
