@@ -29,6 +29,7 @@
   "dependencies": {
     "commander": "^2.8.1",
     "firmata": "^0.5.4",
+    "nanotimer": "^0.3.10",
     "serialport": "^1.7.4"
   },
   "author": "Sarah Groff-Palermo",

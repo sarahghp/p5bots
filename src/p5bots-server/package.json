@@ -6,11 +6,11 @@
     "type": "git",
     "url": "https://github.com/sarahgp/p5bots"
   },
-  "author": {
-    "name": "Sarah Groff-Palermo",
-    "email": "hi@sarahgp.com"
-  },
-  "files": ["p5bots-server"],
+  "readmeFilename": "README.md",
+  "author": "Sarah Groff-Palermo",
+  "files": [
+    "p5bots-server"
+  ],
   "main": "src/app.js",
   "scripts": {
     "start": "node ./src/server/app.js",
@@ -20,10 +20,9 @@
     "commander": "^2.8.1",
     "express": "^4.13.1",
     "firmata": "^0.5.4",
-    "nanotimer": "0.3.10",
+    "nanotimer": "^0.3.10",
     "serialport": "^1.7.4"
   },
-  "author": "Sarah Groff-Palermo",
   "license": "LGPL-2.1",
   "bugs": {
     "url": "https://github.com/sarahgp/p5bots/issues"
