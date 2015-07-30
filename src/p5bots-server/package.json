@@ -1,0 +1,32 @@
+{
+  "name": "p5bots-server",
+  "version": "0.0.0",
+  "description": "Get sensor data into your p5 sketches -- the server files",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sarahgp/p5bots"
+  },
+  "author": {
+    "name": "Sarah Groff-Palermo",
+    "email": "hi@sarahgp.com"
+  },
+  "files": ["p5bots-server"],
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node ./src/server/app.js",
+    "sensors-up": "node ./src/server/app.js"
+  },
+  "dependencies": {
+    "commander": "^2.8.1",
+    "express": "^4.13.1",
+    "firmata": "^0.5.4",
+    "nanotimer": "0.3.10",
+    "serialport": "^1.7.4"
+  },
+  "author": "Sarah Groff-Palermo",
+  "license": "LGPL-2.1",
+  "bugs": {
+    "url": "https://github.com/sarahgp/p5bots/issues"
+  },
+  "homepage": "https://github.com/sarahgp/p5bots"
+}

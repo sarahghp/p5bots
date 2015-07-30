@@ -114,24 +114,24 @@ io.of('/sensors').on('connect', function(socket) {
   function initializeSpecialFuncs(board) {
     
     // LED
-    var led = require('./led.js');
+    var led = require('./lib/led.js');
     led.blink(board, socket);
     led.fade(board, socket);
     
     // RGB
-    var rgb = require('./rgb.js');
+    var rgb = require('./lib/rgb.js');
     rgb.write(board, socket);
     rgb.read(board, socket);
     rgb.blink(board, socket);
     rgb.fade(board, socket);
 
     // Servo
-    var servo = require('./servo.js');
+    var servo = require('./lib/servo.js');
     servo.range(board, socket);
     servo.sweep(board, socket);
 
     // Piezo
-    var piezo = require('./piezo.js');
+    var piezo = require('./lib/piezo.js');
     piezo.tone(board, socket);
 
     // User defined, if present
@@ -169,7 +169,7 @@ io.of('/sensors').on('connect', function(socket) {
   }
 
   // Serial does not require firmata board
-  var serial = require('./serial.js');
+  var serial = require('./lib/serial.js');
   serial.init(socket);
   serial.read(socket);
   serial.write(socket);
