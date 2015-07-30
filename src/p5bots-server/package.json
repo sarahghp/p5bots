@@ -13,8 +13,8 @@
   ],
   "main": "src/app.js",
   "scripts": {
-    "start": "node ./src/server/app.js",
-    "sensors-up": "node ./src/server/app.js"
+    "start": "node ./app.js",
+    "sensors-up": "node ./app.js"
   },
   "dependencies": {
     "commander": "^2.8.1",
