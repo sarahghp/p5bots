@@ -2,7 +2,7 @@
 
 These are the files necessary for the server end of the p5bots setup. 
 
-_Note: This is still version 0.0.0, so there are a lot of todos left. Anything can happen._
+_Note: This is still version 0.0.x, so there are a lot of todos left. Anything can happen._
 
 ## Setup
 
@@ -29,13 +29,14 @@ npm run examples-go
 Open your browser to `localhost:8000` and you should see a circle whose color is also displayed on your RGB Led.
 
 :rotating_light::rotating_light::rotating_light:
+
 If you get an error telling you the board cannot be found, or something like:
 
 ```js
 Error: Error: Cannot open /dev/cu.usbmodem1421
 ```
 
-you may have to adjust [the board declaration in `quicktest.js`](https://github.com/sarahgp/p5bots/blob/master/src/p5bots-server/example/quicktest.js#L48).
+you may have to adjust [the board declaration in `quicktest.js`](https://github.com/sarahgp/p5bots/blob/master/src/p5bots-server/example/quicktest.js#L53).
 
 Either use the port you noted down in setup, assuming you haven't moved the board, or check out the console, where we are listing the ports via the serial command. The one that looks like `/dev/cu.*` is likely the one you need.
 
