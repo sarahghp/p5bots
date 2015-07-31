@@ -16,14 +16,14 @@ var directory, index, program;
 program
   .description('Let your board talk to your sketch')
   .option('-d, --dir <d>', 'Set base directory for server')
-  .option('-f, --file <f>', 'Set file to use')
+  .option('-f, --file <f>', 'Set file to use for index page')
   .option('-p, --ufilepath <p>', 'Path to file containing user-defined server-side listeners.')
   .option('-n, --ufilename <n>', 'Path, inluding file name, to user-defined server-side listeners.')
   .parse(process.argv);
 
 exports.program = program;
 exports.directory = directory = program.dir || __dirname;
-exports.index = index = program.file || (__dirname + '/index.html');
+exports.index = index = program.file || (directory + '/index.html');
 
 // Setup server, sockets, and events
 

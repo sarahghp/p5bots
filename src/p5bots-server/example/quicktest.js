@@ -37,7 +37,12 @@
 /////////////////////////////
 
 console.log('quicktest');
-
+console.log('serial list:');
+p5.serial().list(function(data) {
+  data.ports.forEach(function(port) {
+    console.log(port.comName);
+  });
+});
 
 
 //////////////////////

@@ -14,14 +14,16 @@
   "main": "src/app.js",
   "scripts": {
     "start": "node ./app.js",
-    "sensors-up": "node ./app.js"
+    "sensors-up": "node ./app.js",
+    "examples-go": "node ./app.js -d 'example'"
   },
   "dependencies": {
     "commander": "^2.8.1",
     "express": "^4.13.1",
     "firmata": "^0.5.4",
     "nanotimer": "^0.3.10",
-    "serialport": "^1.7.4"
+    "serialport": "^1.7.4",
+    "socket.io": "^1.3.6"
   },
   "license": "LGPL-2.1",
   "bugs": {
