@@ -24,7 +24,6 @@ program
 exports.program = program;
 exports.directory = directory = program.dir || __dirname;
 exports.index = index = program.file || (directory + '/index.html');
-
 // Setup server, sockets, and events
 
 server.listen(8000);

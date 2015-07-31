@@ -27,10 +27,12 @@ Currently, the RGB LED test is uncommented. To run this, set up the breadboard l
 then run:
 
 ```js
-bots-go -d 'example'
+bots-go -d 'node_modules/p5bots-server/example'
 ```
 
 Open your browser to `localhost:8000` and you should see a circle whose color is also displayed on your RGB Led.
+
+For other examples, checkout `node_modules/p5bots-server/example/quicktest.js` and try other layouts. From the `/p5bots-server` folder, you can run `npm run examples-go` to get the server up.
 
 :rotating_light::rotating_light::rotating_light:
 
@@ -45,7 +47,6 @@ you may have to adjust [the board declaration in `quicktest.js`](https://github.
 Either use the port you noted down in setup, assuming you haven't moved the board, or check out the console, where we are listing the ports via the serial command. The one that looks like `/dev/cu.*` is likely the one you need.
 
 ## Command Line Options
-Although the `bots-go -d 'example'` script is setup to start the examples folder, you may want to move things around.
 
 `bots-go` can be run with the following options:
 
