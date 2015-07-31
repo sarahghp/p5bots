@@ -75,6 +75,7 @@ define(function (require) {
     pin.on = function() {
 
       function rgbOn() {
+        utils.socket.emit('rgb blink cancel');
         var setTo = this.offSaved || this.color.writeArr || [top, top, top];
         this.write(setTo);
       }
@@ -87,6 +88,7 @@ define(function (require) {
       this.offSaved = this.color.writeArr.slice();
 
       function rgbOff() {
+        utils.socket.emit('rgb blink cancel');
         this.write([zero, zero, zero]);
       }
 

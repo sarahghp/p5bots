@@ -8,6 +8,7 @@ define(function (require) {
     pin.on = function() {
       
       function ledOn() {
+        utils.socket.emit('blink cancel');
         if(this.mode !== 'pwm') {
           this.write('HIGH');  
         } else {
@@ -22,6 +23,7 @@ define(function (require) {
     pin.off = function() {
 
       function ledOff() {
+        utils.socket.emit('blink cancel');
         if(this.mode !== 'pwm') {
           this.write('LOW');  
         } else {
