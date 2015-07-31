@@ -1,6 +1,6 @@
 {
   "name": "p5bots-server",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "description": "Get sensor data into your p5 sketches -- the server files",
   "repository": {
     "type": "git",
@@ -10,7 +10,7 @@
   "author": "Sarah Groff-Palermo",
   "main": "src/app.js",
   "bin": {
-    "bots-go": "app.js"
+    "bots-go": "./app.js"
   },
   "scripts": {
     "start": "node ./app.js",
