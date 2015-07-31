@@ -22,6 +22,7 @@ To test your setup, you can run any of the examples in `examples/quicktest.js`. 
 
 Currently, the RGB LED test is uncommented. To run this, set up the breadboard like this:
 
+![rgb led layout with red in 9, green in 10, and blue in 11, plus resistors between board and leg; ground is to ground/](img/rgb_led.png)
 
 then run:
 
