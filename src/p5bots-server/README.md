@@ -14,7 +14,7 @@ _Note: This is still version 0.0.x, so there are a lot of todos left. Anything c
 ### Javascript
 1. Install node & npm if you haven't already; be sure you have node 0.12.x+ and npm 2.0.x+
 2. Install firmata on your computer: `npm install -g firmata`
-3. `npm install` in the `p5bots-server` directory
+3. `npm install p5bots-server` in the directory you will be working in
 
 ## Run Examples
 
@@ -30,7 +30,7 @@ then run:
 bots-go -d 'node_modules/p5bots-server/example'
 ```
 
-Open your browser to `localhost:8000` and you should see a circle whose color is also displayed on your RGB Led.
+Open your browser to `localhost:8000` and you should see a circle whose color is also displayed on your RGB Led. Try pressing the arrow keys.
 
 For other examples, checkout `node_modules/p5bots-server/example/quicktest.js` and try other layouts. From the `/p5bots-server` folder, you can run `npm run examples-go` to get the server up.
 

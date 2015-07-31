@@ -1,6 +1,6 @@
 {
   "name": "p5bots-server",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Get sensor data into your p5 sketches -- the server files",
   "repository": {
     "type": "git",
