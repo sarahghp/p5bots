@@ -18,12 +18,15 @@ _Note: This is still version 0.0.x, so there are a lot of todos left. Anything c
 
 ## Run Examples
 
-To test your setup, you can run any of the examples in `examples/quicktest.js`.
+To test your setup, you can run any of the examples in `examples/quicktest.js`. (It's inside the `node_modules/p5bots-server` folder.)
 
-Currently, the RGB LED test is uncommented. To run this, set up the breadboard as shown below, then run:
+Currently, the RGB LED test is uncommented. To run this, set up the breadboard like this:
+
+
+then run:
 
 ```js
-npm run examples-go
+bots-go -d 'example'
 ```
 
 Open your browser to `localhost:8000` and you should see a circle whose color is also displayed on your RGB Led.
@@ -41,9 +44,9 @@ you may have to adjust [the board declaration in `quicktest.js`](https://github.
 Either use the port you noted down in setup, assuming you haven't moved the board, or check out the console, where we are listing the ports via the serial command. The one that looks like `/dev/cu.*` is likely the one you need.
 
 ## Command Line Options
-Although the `examples-go` script is setup to start the examples folder, you may want to move things around.
+Although the `bots-go -d 'example'` script is setup to start the examples folder, you may want to move things around.
 
-`./app.js` can be run with the following options:
+`bots-go` can be run with the following options:
 
 ```
 -d, --dir <d>        Set base directory for server

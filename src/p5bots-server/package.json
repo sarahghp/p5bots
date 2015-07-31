@@ -6,15 +6,15 @@
     "type": "git",
     "url": "https://github.com/sarahgp/p5bots"
   },
-  "readmeFilename": "README.md",
+  "readmeFilename": "p5bots-server/README.md",
   "author": "Sarah Groff-Palermo",
-  "files": [
-    "p5bots-server"
-  ],
   "main": "src/app.js",
+  "bin": {
+    "bots-go": "app.js"
+    },
   "scripts": {
     "start": "node ./app.js",
-    "sensors-up": "node ./app.js",
+    "bots-go": "node ./app.js",
     "examples-go": "node ./app.js -d 'example'"
   },
   "dependencies": {
