@@ -33,12 +33,93 @@ Below is a short annotated guide to the API. Detailed examples & tutorials by th
 
 #### Initialize Board
 ```
-p5.board(port, type) // returns a reference to the board object
+// returns a reference to the board object
+p5.board(port, type)
 ```
 
 -- TYPE: string, probably 'arduino'  
 -- PORT: string, see [p5bots-server README](https://github.com/sarahgp/p5bots/tree/master/src/p5bots-server) for figuring out what this should be
 
+#### Initialize Pin
+```
+// returns a reference to the pin object
+board.pin(num, type, direction) 
+```
+-- NUM: pin #  
+-- TYPE: digital | analog | pwm || any special method
+-- DIRECTION: input | output  
+  
+```
+// shorthand pin initialization
+board.pin(num) 
+```
+-- default to digital output
+
+#### Basic Pin Methods
+```
+// each time a value changes pin.val will be updated + optional callback function will be called 
+pin.read([callback fn]) 
+
+// send a value to the pin
+pin.write(val) 
+```
+
+#### Special write methods
+
+##### LED Methods
+```
+// initialize the pin
+board.pin(num, 'LED')
+
+// basic functions work as on any other pin
+led.write()
+led.read()
+
+// write high or low
+led.on()
+led.off()
+
+// starts the blinking, duration indication how long it stays on/off
+led.blink(duration)
+
+// stops the blinking, funnily enough
+led.noBlink()
+
+// fades the pin from the start to stop brightness
+// brightness is pwm, 0 to 255; time is in ms
+// default total is 3000, interval is 200
+led.fade([start, stop, [, total time, interval]])
+```
+
+##### RGB LED Methods
+pins will take a hash 
+
+```
+// initialize with hash of led options
+board.pin({ r: int, g: int, b: int, common: 'anode' || 'cathode' }, 'RGBLED');
+
+// sets color, takes a p5 color obj or array of values
+rgb.write() 
+rgb.read()
+
+// Turns led to previously given color or white
+rgb.on()
+
+// Writes low but retains previous color
+rgb.off()
+
+// starts the blinking, duration indication how long it stays on/off
+rgb.blink(duration)
+
+// stops the blinking, funnily enough
+rgb.noBlink()
+
+// fades the pin from the start to stop brightness
+// brightness is pwm, 0 to 255; time is in ms
+// default total is 3000, interval is 200
+// each pin is specified separately
+rgb.fade([start, stop, [, total time, interval]] * 3)
+```
 
 ## Contributing
 This is still in alpha, but if you want to report issues, please do so! If you feel like getting your hands dirtier and adding features, please add an issue describing your plan and then fork away! Exclamation point!
