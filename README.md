@@ -32,7 +32,7 @@ Below is a short annotated guide to the API. Detailed examples & tutorials by th
 ### Base Functions
 
 #### Initialize Board
-```
+```js
 // returns a reference to the board object
 p5.board(port, type)
 ```
@@ -41,7 +41,7 @@ p5.board(port, type)
 -- PORT: string, see [p5bots-server README](https://github.com/sarahgp/p5bots/tree/master/src/p5bots-server) for figuring out what this should be
 
 #### Initialize Pin
-```
+```js
 // returns a reference to the pin object
 board.pin(num, type, direction) 
 ```
@@ -49,14 +49,14 @@ board.pin(num, type, direction)
 -- TYPE: digital | analog | pwm || any special method
 -- DIRECTION: input | output  
   
-```
+```js
 // shorthand pin initialization
-board.pin(num) 
+pin = board.pin(num) 
 ```
 -- default to digital output
 
 #### Basic Pin Methods
-```
+```js
 // each time a value changes pin.val will be updated + optional callback function will be called 
 pin.read([callback fn]) 
 
@@ -64,12 +64,12 @@ pin.read([callback fn])
 pin.write(val) 
 ```
 
-#### Special write methods
+### Special write methods
 
-##### LED Methods
-```
+#### LED Methods
+```js
 // initialize the pin
-board.pin(num, 'LED')
+led = board.pin(num, 'LED')
 
 // basic functions work as on any other pin
 led.write()
@@ -91,12 +91,12 @@ led.noBlink()
 led.fade([start, stop, [, total time, interval]])
 ```
 
-##### RGB LED Methods
+#### RGB LED Methods
 pins will take a hash 
 
-```
+```js
 // initialize with hash of led options
-board.pin({ r: int, g: int, b: int, common: 'anode' || 'cathode' }, 'RGBLED');
+rgb = board.pin({ r: int, g: int, b: int, common: 'anode' || 'cathode' }, 'RGBLED');
 
 // sets color, takes a p5 color obj or array of values
 rgb.write() 
@@ -120,6 +120,36 @@ rgb.noBlink()
 // each pin is specified separately
 rgb.fade([start, stop, [, total time, interval]] * 3)
 ```
+
+#### MOTOR Methods
+```js
+// initialize the pin
+motor = board.pin(num, 'LED')
+
+// set motor to highest speed, lowest speed
+motor.start()
+motor.stop()
+
+// set motor to a given speed, pwm 0 to 255
+motor.write(int)
+```
+
+#### SERVO Methods
+```js
+// initialize the pin
+servo = board.pin(num, 'SERVO')
+
+// range in degrees, default is 0 to 180
+servo.range([int, int])
+
+// set to specific position, in degrees
+servo.write(int)
+
+// servo moves back and forth, across range; stops
+servo.sweep()
+servo.noSweep()
+```
+
 
 ## Contributing
 This is still in alpha, but if you want to report issues, please do so! If you feel like getting your hands dirtier and adding features, please add an issue describing your plan and then fork away! Exclamation point!
