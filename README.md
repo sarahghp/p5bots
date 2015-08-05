@@ -232,5 +232,53 @@ k.threshold()
 k.overThreshold // returns boolean
 ```
 
+### Other Special Methods
+#### Serial
+
+In addition to the Firmata-based methods above, p5 has a loose `node-serialport` wrapper.
+
+```js
+// Access with
+serial = p5.serial()
+
+// To get a list of ports on your machine, you can use list(). 
+// Serial does not have to be connected to get a list of ports
+serial.list()
+
+// Otherwise you must first connect
+// Config object takes options listed at: https://github.com/voodootikigod/node-serialport#serialport-path-options-openimmediately-callback
+
+serial.connect(path [, { config obj } ]) 
+
+// Basic read and write events
+serial.read()
+serial.write()
+
+
+### Create Your Own Methods
+
+If you are familiar with node, you can write your own server-side listeners to call from the client. To do so:
+
+1. Set up a server file where each function you would like to access is its property on the exports object. Each function has access to the socket and the Firmata board instance.
+
+```js
+
+exports.mine = function mine(board, socket) {
+  socket.on('event', function(data){ .. });
+  socket.emit('another', { name: 'data-object' });
+}
+
+```
+
+2. Tell the server about this file when you start using one of the following options. 
+
+```
+-p, --ufilepath <p>  Path to file containing user-defined server-side listeners.
+-n, --ufilename <n>  Path, inluding file name, to user-defined server-side listeners.
+```
+
+Path defaults to the current directory and filename to `user.js`.
+
+
 ## Contributing
 This is still in alpha, but if you want to report issues, please do so! If you feel like getting your hands dirtier and adding features, please add an issue describing your plan and then fork away! Exclamation point!
