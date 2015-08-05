@@ -92,8 +92,6 @@ led.fade([start, stop, [, total time, interval]])
 ```
 
 #### RGB LED Methods
-pins will take a hash 
-
 ```js
 // initialize with hash of led options
 rgb = board.pin({ r: int, g: int, b: int, common: 'anode' || 'cathode' }, 'RGBLED');
@@ -150,6 +148,89 @@ servo.sweep()
 servo.noSweep()
 ```
 
+### Special read methods
+
+#### BUTTON Methods
+```js
+// initialize the pin
+button = board.pin(num, 'BUTTON')
+
+// each method takes a callback to be called when the button is pressed or released
+button.pressed(cb)
+button.released(cb)
+
+// hold also requires a threshold to trigger
+button.held(cb, int)
+```
+
+#### Variable Resistor
+
+These methods can be used with any variable resistor: for instance, a potentiometer, photo- or touch-sensitive sensor.
+
+```js
+// initialize the pin
+vr = board.pin(num, 'VRES')
+
+// sets the range of values for methods to work with, defaults to 0 to 1023
+vr.range([int, int]) 
+
+// works like standard read function: sets vr.val and calls callback on each value change
+vr.read([cb])
+
+// sets threshold value
+vr.threshold(int)
+
+// once a threshold has been set, this returns boolean (true or false) 
+vr.overThreshold 
+```
+
+#### TEMP Methods
+Initial implementation is for sensors that read voltage change for temperature
+
+```js
+// initialize the pin with number and voltage
+temp = board.pin({pin: num, voltsIn: 5})
+
+// will return raw value always, if you want it to return in a different mode 
+// you can call temp.read( function(val) { console.log(temp.f(val)) } );
+temp.read() 
+
+// return temp in given system
+temp.C
+temp.F
+temp.K
+```
+
+#### PIEZO Methods
+The piezo can be used as an output pin, to emit a tone or as an input pin, a knock sensor.
+
+*Tone functions: Output*
+```js
+// initialize the pin
+t = board.pin(num, 'TONE') || board.pin(num, 'PIEZO')
+
+// sends a single value
+t.write()
+
+// sennds a note or a frequency for the given duration
+t.tone(note || freq, duration)
+t.noTone()
+```
+
+*Knock functions: Input* 
+```js
+// initialize the pin
+k = board.pin(num, 'KNOCK') || board.pin(num, 'PIEZO')
+
+// standard read function
+k.read()
+
+// sets threshold value
+k.threshold()
+
+// once a threshold has been set, this returns boolean (true or false) 
+k.overThreshold // returns boolean
+```
 
 ## Contributing
 This is still in alpha, but if you want to report issues, please do so! If you feel like getting your hands dirtier and adding features, please add an issue describing your plan and then fork away! Exclamation point!
