@@ -3,8 +3,10 @@
 p5.bots is a library to facilitate communication between [p5.js](http://p5js.org/) running in your browser and a microcontroller* running [Firmata](https://github.com/firmata/arduino)**.
 
 <small>
+```
 * The library has been tested on Arduino Unos, but should work on anything running Firmata.  
 ** The serial API does not depend on Firmata.
+```
 </small>
 
 ## Setting Up
