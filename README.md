@@ -235,7 +235,7 @@ k.overThreshold // returns boolean
 ### Other Special Methods
 #### Serial
 
-In addition to the Firmata-based methods above, p5 has a loose `node-serialport` wrapper.
+In addition to the Firmata-based methods above, p5 has a loose [`node-serialport`](https://www.npmjs.com/package/serialport) wrapper.
 
 ```js
 // Access with
