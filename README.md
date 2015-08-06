@@ -253,6 +253,7 @@ serial.connect(path [, { config obj } ])
 // Basic read and write events
 serial.read()
 serial.write()
+```
 
 
 ### Create Your Own Methods
