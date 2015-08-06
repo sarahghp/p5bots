@@ -39,9 +39,9 @@ app.get('/', function(req, res) {
 
 // App code: Define as export for IDE, call at end of file for non-IDE usage
 
-exports.setup = function setup(io) {
+var setup = exports.setup = function(io) {
 
-  var board;
+    var board;
 
   io.of('/sensors').on('connect', function(socket) {
     console.log('connected');
