@@ -1,6 +1,6 @@
 {
   "name": "p5bots",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Get sensor data into your p5 sketches",
   "main": "src/app.js",
   "devDependencies": {
