@@ -13,6 +13,10 @@ var express    = require('express'),
 // Parse command-line args
 var directory, index, program;
 
+function makeAbsolute(filepath){
+  return path.isAbsolute(filepath) ? filepath : process.cwd() + '/' + filepath;
+}
+
 program
   .description('Let your board talk to your sketch')
   .option('-d, --dir <d>', 'Set base directory for server')
@@ -33,7 +37,7 @@ app.use(express.static(directory));
 console.log('server starting');
 
 app.get('/', function(req, res) {
-  res.sendFile(index);
+  res.sendFile(makeAbsolute(index));
 });
 
 
@@ -150,7 +154,7 @@ var setup = exports.setup = function(io) {
         fs.stat(filepath, function(err, stats){
           if (err == null) {
 
-            var reqPath = path.isAbsolute(filepath) ? filepath : process.cwd() + '/' + filepath;
+            var reqPath = makeAbsolute(filepath);
             
             var user = require(reqPath),
                 keys = Object.keys(user);

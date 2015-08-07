@@ -3,10 +3,6 @@
   "version": "0.0.1",
   "description": "Get sensor data into your p5 sketches",
   "main": "src/app.js",
-  "scripts": {
-    "start": "node ./src/server/app.js",
-    "sensors-up": "node ./src/server/app.js"
-  },
   "devDependencies": {
     "amdclean": "~0.3.3",
     "concat-files": "^0.1.0",
