@@ -8,7 +8,8 @@ _Note: This is still version 0.0.x, so there are a lot of todos left. Anything c
 
 ### Arduino
 1. Download [Arduino IDE](https://www.arduino.cc/en/main/software).
-2. Upload `File > Examples > Firmata > StandardFirmata to your board`. To do this, you'll have to select your board and serial port from the Tools menu. ([More instructions from Arduino.](https://www.arduino.cc/en/Guide/MacOSX)) If you are only using serial, you can skip this step.
+2. Upload `File > Examples > Firmata > StandardFirmata` to your board. To do this, you'll have to select your board and serial port from the `Tools` menu. ([More instructions from Arduino.](https://www.arduino.cc/en/Guide/MacOSX)) 
+  **Note:** If you are only using serial, you can skip this step.
 3. Write down the port your board is using; you may need it later.
 
 ### Javascript
@@ -54,9 +55,11 @@ npm run examples-go
 
 Open your browser to `localhost:8000` and you should see a circle whose color is also displayed on your RGB Led. Try pressing the arrow keys.
 
-For other examples, checkout `p5bots-server/example/quicktest.js` and try other layouts. From the `/p5bots-server` folder, you can run `npm run examples-go` to get the server up.
+For other examples, check out `p5bots-server/example/quicktest.js` and try other layouts. From the `/p5bots-server` folder, you can run `npm run examples-go` to get the server up.
 
 ## Common Errors
+
+### Ports
 If you get an error telling you the board cannot be found, or something like:
 
 ```js
@@ -67,6 +70,7 @@ you may have to adjust [the board declaration in `quicktest.js`](https://github.
 
 Either use the port you noted down in setup, assuming you haven't moved the board, or check out the console, where we are listing the ports via the serial command. The one that looks like `/dev/cu.*` is likely the one you need.
 
+### Installing via NPM
 If when installing the package you get something like:
 ```
 npm ERR!   errno: 3,
