@@ -1,22 +1,22 @@
 var special = {
   
-  button: require('./lib/button.js'),
+  button: require('./button.js'),
 
-  led: require('./lib/led.js'),
+  led: require('./led.js'),
 
-  motor: require('./lib/motor.js'),
+  motor: require('./motor.js'),
 
-  piezo: require('./lib/piezo.js'),
+  piezo: require('./piezo.js'),
 
-  rgbled: require('./lib/rgb.js'),
+  rgbled: require('./rgb.js'),
 
-  serial: require('./lib/serial.js'),
+  serial: require('./serial.js'),
 
-  servo: require('./lib/servo.js'),
+  servo: require('./servo.js'),
 
-  temp: require('./lib/temp.js'),
+  temp: require('./temp.js'),
 
-  vres: require('./lib/variable_resistor.js')
+  vres: require('./variable_resistor.js')
 
 };
 

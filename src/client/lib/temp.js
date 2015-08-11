@@ -1,4 +1,4 @@
-var utils = require('./lib/socket_utils.js');
+var utils = require('./socket_utils.js');
 
 function temp(pin) {
   // Unpack pin object, pluck data & reassign pin num to pin.pin for generation 

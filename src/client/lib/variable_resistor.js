@@ -1,4 +1,4 @@
-var utils = require('./lib/socket_utils.js');
+var utils = require('./socket_utils.js');
 
 function vres(pin) {
 

@@ -186,7 +186,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
   grunt.loadNpmTasks('grunt-mocha');
   grunt.loadNpmTasks('grunt-mocha-chai-sinon');
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -194,7 +193,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-newer');
 
   // Create the multitasks.
-  grunt.registerTask('build', ['browserify', 'uglify', 'requirejs']);
+  grunt.registerTask('build', ['browserify', 'uglify']);
   grunt.registerTask('test', ['jshint', 'jscs', 'build', 'connect', 'mocha', 'mocha-chai-sinon']);
   grunt.registerTask('default', ['test', 'build']);
 };
