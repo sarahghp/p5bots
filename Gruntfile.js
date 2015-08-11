@@ -1,6 +1,6 @@
 /**
  *  This is the Gruntfile for p5bots.
- *  It is a modified version of the Gruntfile for p5.js. Grunt is a task 
+ *  It is a modified version of the Gruntfile for p5.js. Grunt is a task
  *  runner/builder, used to build the source code into the library
  *  and handle other housekeeping tasks.
  *
@@ -10,7 +10,7 @@
  *
  *  grunt build - This task builds and minifies the client source code
  *                and the automated API documentation.
- *                
+ *
  *  grunt test  - This only runs the automated tests, which is faster than
  *                rebuilding entirely from source because it skips minification
  *                and concatination. If you need to debug
@@ -18,7 +18,7 @@
  *                start the connect server and leave it running; the tests
  *                can then be opened at localhost:9001/test/test.html
  *
- *  grunt jsdoc - Generate documentation from inline code. 
+ *  grunt jsdoc - Generate documentation from inline code.
  *
  *  grunt watch:main  - This watches the source for changes and rebuilds on
  *                      every file change.
@@ -54,8 +54,9 @@ module.exports = function(grunt) {
       },
       source: {
         src: [
-          'src/**/*.js',
-          '!src/external/**/*.js'
+        'src/client/**/*.js',
+        'src/p5bots-server/app.js',
+        'src/p5bots-server/lib/*.js',
         ]
       },
       test: {

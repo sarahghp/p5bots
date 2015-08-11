@@ -13,7 +13,7 @@ exports.tone = function(board, socket) {
     if (tones[tone]) {
       tone = tones[tone];
     } else if (+tone !== +tone) { // checks if the coerced val is NaN
-      throw new Error("Tone must be a note or a number");
+      throw new Error('Tone must be a note or a number');
     } else {
       tone = +tone;
     }

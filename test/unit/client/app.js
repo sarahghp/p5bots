@@ -33,14 +33,16 @@ suite('p5sensors basic', function() {
 
 
 suite('p5sensors digital read & write', function() {
+  var notCreatedErr =  "Please check mode. Value should be 'analog', 'digital', 'pwm', or servo"; // jshint ignore:line
+
   test('pin read is defined correctly', function() {
-    assert.doesNotThrow(Error, createdPin.read(), 
-      "Please check mode. Value should be 'analog', 'digital', or 'pwm'");
+    assert.doesNotThrow(Error, createdPin.read(),
+      notCreatedErr);
     assert.equal(createdPin.read().name, 'nextRead');
   });
   test('pin write is defined correctly', function() {
-    assert.doesNotThrow(Error, createdPin.write(), 
-      "Please check mode. Value should be 'analog', 'digital', or 'pwm'");
+    assert.doesNotThrow(Error, createdPin.write(),
+      notCreatedErr);
     assert.equal(createdPin.write().name, 'nextWrite');
   });
 });
@@ -48,13 +50,13 @@ suite('p5sensors digital read & write', function() {
 suite('p5sensors analog read & write', function() {
   createdPin = p5.pin(9, 'ANALOG', 'INPUT');
   test('pin read is defined correctly', function() {
-    assert.doesNotThrow(Error, createdPin.read(), 
-      "Please check mode. Value should be 'analog', 'digital', or 'pwm'");
+    assert.doesNotThrow(Error, createdPin.read(),
+      notCreatedErr);
     assert.equal(createdPin.read().name, 'nextRead');
   });
   test('pin write is defined correctly', function() {
-    assert.doesNotThrow(Error, createdPin.write(), 
-      "Please check mode. Value should be 'analog', 'digital', or 'pwm'");
+    assert.doesNotThrow(Error, createdPin.write(),
+      notCreatedErr);
     assert.equal(createdPin.write().name, 'nextWrite');
   });
 });

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-'use strict'
+'use strict';
 
 var express    = require('express'),
     app        = express(),
     server     = require('http').Server(app),
-    io         = require('socket.io')(server),
+    io         = require('socket.io')(server), // jshint ignore:line
     firmata    = require('firmata'),
     program    = require('commander'),
     fs         = require('fs'),
@@ -21,8 +21,10 @@ program
   .description('Let your board talk to your sketch')
   .option('-d, --dir <d>', 'Set base directory for server')
   .option('-f, --file <f>', 'Set file to use for index page')
-  .option('-p, --ufilepath <p>', 'Path to file containing user-defined server-side listeners.')
-  .option('-n, --ufilename <n>', 'Path, inluding file name, to user-defined server-side listeners.')
+  .option('-p, --ufilepath <p>',
+    'Path to file containing user-defined server-side listeners.')
+  .option('-n, --ufilename <n>',
+    'Path, inluding file name, to user-defined server-side listeners.')
   .parse(process.argv);
 
 exports.program = program;
@@ -45,20 +47,20 @@ app.get('/', function(req, res) {
 
 var setup = exports.setup = function(io) {
 
-    var board;
+  var board;
 
   io.of('/sensors').on('connect', function(socket) {
     console.log('connected');
     exports.socket = socket;
 
     // Error handling
-    
+
     socket.on('error', function(err){
       console.log(err);
     });
-    
+
     // Board setup
-    
+
     socket.on('board object', function(data) {
 
       function init() {
@@ -70,7 +72,7 @@ var setup = exports.setup = function(io) {
       // If the board has already been initialized in firmata, it won't
       // call the callback again on client reload; this way the init
       // functions are called without restarting the whole proces
-      
+
       if (!board) {
         board = new firmata.Board(data.port, function(err) {
           if (err) {
@@ -84,7 +86,7 @@ var setup = exports.setup = function(io) {
     });
 
     // Pin setup
-    
+
     socket.on('pin object', function(data){
       console.log('pin object caught', data);
       // Digital pins are set to INPUT or OUTPUT in firmata
@@ -96,12 +98,13 @@ var setup = exports.setup = function(io) {
     // Action functions:
     // The primary action function formats the read & write functions & sends
     // these to firmata
-    
+
     socket.on('action', function(data){
       // console.log('action data', data);
       var argument = data.arg;
       if (argument){
-        // If it is digtalWrite, augment the argument with `board` to match firmata call
+        // If it is digtalWrite, augment the argument with
+        // `board` to match firmata call
         if (argument && (argument === 'HIGH' || argument === 'LOW')) {
           board[data.action](data.pin, board[argument]);
         } else {
@@ -116,14 +119,14 @@ var setup = exports.setup = function(io) {
     });
 
     // Special functions
-    
+
     function initializeSpecialFuncs(board) {
-      
+
       // LED
       var led = require('./lib/led.js');
       led.blink(board, socket);
       led.fade(board, socket);
-      
+
       // RGB
       var rgb = require('./lib/rgb.js');
       rgb.write(board, socket);
@@ -142,12 +145,14 @@ var setup = exports.setup = function(io) {
 
       // User defined, if present
 
+      var filepath;
+
       if (program.ufilename) {
-        var filepath = program.ufilename; 
+        filepath = program.ufilename;
       } else if (program.ufilepath) {
-        var userpath = program.ufilepath || __dirname,
-            filepath = userpath + '/user.js';
-      }    
+        var userpath = program.ufilepath || __dirname;
+        filepath = userpath + '/user.js';
+      }
 
       if (filepath) {
         filepath = path.normalize(filepath);
@@ -155,7 +160,7 @@ var setup = exports.setup = function(io) {
           if (err == null) {
 
             var reqPath = makeAbsolute(filepath);
-            
+
             var user = require(reqPath),
                 keys = Object.keys(user);
 
@@ -164,14 +169,15 @@ var setup = exports.setup = function(io) {
             });
 
           } else if (err.code === 'ENOENT'){
-            throw new Error(filepath + ' does not seem to exist. Maybe it is a ghost.')
+            throw new Error(filepath +
+              ' does not seem to exist. Maybe it is a ghost.');
 
           } else {
             console.log(err);
           }
         });
       }
-   
+
     }
 
     // Serial does not require firmata board
@@ -182,6 +188,6 @@ var setup = exports.setup = function(io) {
     serial.list(socket);
 
   });
-}
+};
 
 setup(io);

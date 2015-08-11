@@ -6,7 +6,7 @@ function button (pin) {
 
   utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
   utils.constructFuncs(pin);
-  
+
   pin.pressed = function(cb) {
     function pinPress() {
       this.buttonPressedcb = cb;
@@ -22,7 +22,7 @@ function button (pin) {
   };
 
   pin.held = function(cb, threshold) {
-    
+
     function pinHeld() {
       this.buttonHeldcb = function() {
         var timeout = setTimeout(cb, threshold);

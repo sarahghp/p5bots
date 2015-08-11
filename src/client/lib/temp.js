@@ -1,10 +1,10 @@
 var utils = require('./socket_utils.js');
 
 function temp(pin) {
-  // Unpack pin object, pluck data & reassign pin num to pin.pin for generation 
+  // Unpack pin object, pluck data & reassign pin num to pin.pin for generation
   var settings = pin.pin;
   var pinNum = settings.pin;
-      
+
   pin._voltsIn = settings.voltsIn;
   pin.pin = pinNum;
 
@@ -17,7 +17,6 @@ function temp(pin) {
   this.C = function() { throw new Error(tempErr); };
   this.F = function() { throw new Error(tempErr); };
   this.K = function() { throw new Error(tempErr); };
-  
 
   return pin;
 }

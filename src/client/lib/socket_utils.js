@@ -21,13 +21,13 @@ var utils =  {
     var mode = mode || pin.mode; // jshint ignore:line
 
     function setVal(data) {
-      // Callbacks set in socketGen for generic read 
+      // Callbacks set in socketGen for generic read
       // & in special constructors for special
       this.readcb && this.readcb(data.val);
       this.val = data.val;
 
-      utils.readTests[this.special] && 
-        utils.readTests[this.special].call(this, data.val);          
+      utils.readTests[this.special] &&
+        utils.readTests[this.special].call(this, data.val);
     }
 
     pin.read = function(arg) {
@@ -37,7 +37,7 @@ var utils =  {
       return function nextRead(arg) { fire(arg); };
     };
 
-    pin.write = function(arg) {         
+    pin.write = function(arg) {
       var fire = utils.socketGen(mode, 'write', pin);
       utils.dispatch(fire, arg);
       return function nextWrite(arg) { fire(arg); };
@@ -48,7 +48,7 @@ var utils =  {
 
   dispatch: function(fn, arg){
     this.board.ready ?
-        fn(arg) 
+        fn(arg)
       : this.board.eventQ.push({func: fn, args: [arg]});
   },
 
@@ -80,7 +80,7 @@ var utils =  {
           return value * 1.8 + 32;
         },
         'CtoK': function(value) {
-           return value + 273.15;
+          return value + 273.15;
         }
       };
 
@@ -92,7 +92,7 @@ var utils =  {
     vres: function vresTests(val){
       this.readRange && this.readRange();
     }
-  }, 
+  },
 
   socket: socket,
 

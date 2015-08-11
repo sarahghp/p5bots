@@ -3,7 +3,7 @@ var utils = require('./socket_utils.js');
 function rgb(pin) {
   // Unpack pin object & initialize pins
   var settings = pin.pin;
-  
+
   pin.redPin = settings.r || settings.red;
   pin.greenPin = settings.g || settings.green;
   pin.bluePin = settings.b || settings.blue;
@@ -100,13 +100,13 @@ function rgb(pin) {
 
   pin.blink = function() {
     function rgbBlink() {
-      utils.socket.emit('rgb blink', { 
+      utils.socket.emit('rgb blink', {
         pins: {
           red: [this.redPin, this.color.writeArr[0] || 255],
           green: [this.greenPin, this.color.writeArr[1] || 255],
           blue: [this.bluePin, this.color.writeArr[2] || 255]
         },
-        length: length 
+        length: length
       });
     }
 
@@ -114,7 +114,7 @@ function rgb(pin) {
   };
 
   pin.noBlink = function() {
-  
+
     function rgbNoBlink() {
       utils.socket.emit('rgb blink cancel');
     }
@@ -126,32 +126,32 @@ function rgb(pin) {
   pin.fade = function (red, green, blue) {
     function rgbFade() {
       utils.socket.emit('rgb fade', {
-        red: { 
-          pin: this.redPin, 
-          start: red[0], 
-          stop: red[1], 
-          time: red[2] || 3000, 
-          inc: red[3] || 200 
+        red: {
+          pin: this.redPin,
+          start: red[0],
+          stop: red[1],
+          time: red[2] || 3000,
+          inc: red[3] || 200
         },
-        green: { 
-          pin: this.greenPin, 
-          start: green[0], 
-          stop: green[1], 
-          time: green[2] || 3000, 
-          inc: green[3] || 200 
+        green: {
+          pin: this.greenPin,
+          start: green[0],
+          stop: green[1],
+          time: green[2] || 3000,
+          inc: green[3] || 200
         },
-        blue: { 
-          pin: this.bluePin, 
-          start: blue[0], 
-          stop: blue[1], 
-          time: blue[2] || 3000, 
-          inc: blue[3] || 200 
+        blue: {
+          pin: this.bluePin,
+          start: blue[0],
+          stop: blue[1],
+          time: blue[2] || 3000,
+          inc: blue[3] || 200
         }
       });
     }
 
     utils.dispatch(rgbFade.bind(this));
-  
+
   };
 
   return pin;

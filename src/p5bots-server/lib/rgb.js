@@ -15,10 +15,10 @@ exports.read = function rgbRead(board, socket) {
     var pins = data.pins,
         pKeys = Object.keys(pins);
 
-      pKeys.forEach(function(key) {
-        var val = board.pins[pins[key]].value;
-        socket.emit( 'rgb return ' + key, { type: key, val: val } );
-      });
+    pKeys.forEach(function(key) {
+      var val = board.pins[pins[key]].value;
+      socket.emit( 'rgb return ' + key, { type: key, val: val } );
+    });
   });
 };
 
@@ -28,7 +28,7 @@ exports.blink = function rgbBlink(board, socket) {
     var pinsArray = Object.keys(data.pins),
         length = data.length || 500,
         idsArray = [];
-    
+
     pinsArray.forEach(function(key){
       var ledPin = data.pins[key][0],
           ledOn = true;
@@ -84,13 +84,15 @@ exports.fade = function rgbFade(board, socket) {
 
       board.pinMode(el.pin, board.MODES.PWM);
 
+      function setStep(num){
+        setTimeout(function(){
+          board.analogWrite(el.pin, gamma[val]);
+          val = nextVal(val, vps);
+        }, num * inc);
+      }
+
       for (var i = 0; i <= steps; i++){
-        (function(num){
-          setTimeout(function(){
-            board.analogWrite(el.pin, gamma[val]);
-            val = nextVal(val, vps);
-          }, num * inc);
-        })(i);
+        setStep(i);
       }
     });
   });

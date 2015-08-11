@@ -6,18 +6,18 @@ function motor(pin) {
   pin.on = function() {
     function motorOn() {
       if(this.mode !== 'pwm') {
-        this.write('HIGH');  
+        this.write('HIGH');
       } else {
         this.write(255);
-      } 
+      }
     }
-    utils.dispatch(motorOn.bind(this)); 
+    utils.dispatch(motorOn.bind(this));
   };
-  
+
   pin.off = function() {
     function motorOff() {
       if(this.mode !== 'pwm') {
-        this.write('LOW');  
+        this.write('LOW');
       } else {
         // In my test setup, this works whereas writing 0 does not
         this.write(10);
@@ -26,6 +26,6 @@ function motor(pin) {
     utils.dispatch(motorOff.bind(this));
   };
   return pin;
- }
+}
 
 module.exports = motor;

@@ -21,7 +21,7 @@ var specialMethods = {
 var Board = function (port, type){
   this.port = port;
   this.type = type.toLowerCase() || 'arduino';
-  
+
   // Will be set when board is connected
   this.ready = false;
   this.eventQ = [];
@@ -34,7 +34,7 @@ var Board = function (port, type){
 
   this.INPUT =    'input';
   this.OUTPUT =   'output';
-  
+
   this.ANALOG =   'analog';
   this.DIGITAL =  'digital';
   this.PWM =      'pwm';
@@ -57,7 +57,7 @@ var Pin = function(num, mode, direction){
   this.direction = direction ? direction.toLowerCase() : 'output';
 
   this.mode = mode ? mode.toLowerCase() : 'digital';
-  
+
   if (specialMethods[this.mode]) {
     this.special = this.mode;
     this.mode = specialMethods[this.mode].mode;
@@ -69,7 +69,7 @@ var Pin = function(num, mode, direction){
 
 Board.prototype.pin = function(num, mode, direction){
   var _pin = new Pin(num, mode, direction);
-  
+
   if (_pin.special) {
     specialMethods[_pin.special].fn(_pin);
 
@@ -96,17 +96,17 @@ p5.board = function (port, type){
   // also emit board object & listen for return
   utils.boardInit(port, type);
   utils.socket.on('board ready', function(data) {
-   utils.board.ready = true;
-   // utils.board.analogPins = data.analogArr;
-   utils.board.eventQ.forEach(function(el){
-    el.func.apply(null, el.args);
-   });
+    utils.board.ready = true;
+    // utils.board.analogPins = data.analogArr;
+    utils.board.eventQ.forEach(function(el){
+      el.func.apply(null, el.args);
+    });
   });
-   
+
   return utils.board;
 };
 
-// Serial does not pass through firmata & therefore not through 
+// Serial does not pass through firmata & therefore not through
 // board & pin constructors
 p5.serial = special.serial;
 

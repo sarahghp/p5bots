@@ -4,18 +4,18 @@ function led(pin) {
   utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
   utils.constructFuncs(pin);
   pin.on = function() {
-    
+
     function ledOn() {
       utils.socket.emit('blink cancel');
       if(this.mode !== 'pwm') {
-        this.write('HIGH');  
+        this.write('HIGH');
       } else {
         this.write(255);
-      } 
+      }
     }
 
     utils.dispatch(ledOn.bind(this));
-    
+
   };
 
   pin.off = function() {
@@ -23,7 +23,7 @@ function led(pin) {
     function ledOff() {
       utils.socket.emit('blink cancel');
       if(this.mode !== 'pwm') {
-        this.write('LOW');  
+        this.write('LOW');
       } else {
         this.write(0);
       }
@@ -32,7 +32,7 @@ function led(pin) {
     utils.dispatch(ledOff.bind(this));
 
   };
-  
+
   pin.fade = function(start, stop, totalTime, increment) {
     function ledFade() {
       var totalTime = totalTime || 3000,
@@ -55,7 +55,7 @@ function led(pin) {
     }
 
     utils.dispatch(ledBlink.bind(this));
-    
+
   };
 
   pin.noBlink = function() {

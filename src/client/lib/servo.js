@@ -5,7 +5,7 @@ function servo(pin) {
   utils.constructFuncs(pin);
   this.rangeMin = 0;
   this.rangeMax = 45;
-  
+
   // Overwrite defualt write returned from construct funcs with servoWrite
   pin.write = function(arg) {
     var fire = utils.socketGen('servo', 'write', pin);
@@ -43,7 +43,7 @@ function servo(pin) {
       utils.socket.emit('sweep cancel');
     }
     utils.dispatch(cancelSweep.bind(this));
-  }; 
+  };
 
   return pin;
 }

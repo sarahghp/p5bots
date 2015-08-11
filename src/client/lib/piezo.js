@@ -7,13 +7,13 @@ function piezo(pin) {
   // Overwrite read with analog, so it is always read as such
   pin.read = function(arg) {
     function setVal(data) {
-      // Callbacks set in socketGen for generic read 
+      // Callbacks set in socketGen for generic read
       // & in special constructors for special
       this.readcb && this.readcb(data.val);
       this.val = data.val;
 
-      utils.readTests[this.special] && 
-        utils.readTests[this.special].call(this, data.val);          
+      utils.readTests[this.special] &&
+        utils.readTests[this.special].call(this, data.val);
     }
 
     var fire = utils.socketGen('analog', 'read', pin);

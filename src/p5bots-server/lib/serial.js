@@ -4,7 +4,9 @@ var sp = require('serialport'),
     serialQ = [];
 
 function serialDispatch(fn, args){
-  serialport.isOpen ? fn.apply(null, args) : serialQ.push({ func: fn, args: args });
+  serialport.isOpen ?
+      fn.apply(null, args)
+    : serialQ.push({ func: fn, args: args });
 }
 
 exports.init = function serialInit(socket) {
@@ -26,7 +28,7 @@ exports.read = function serialRead(socket) {
         socket.emit('serial read return', { data: data });
       });
     }
-    serialDispatch(sRead);    
+    serialDispatch(sRead);
   });
 };
 
@@ -40,7 +42,7 @@ exports.write = function serialWrite(socket) {
     }
     serialDispatch(sWrite, arg);
   });
-}
+};
 
 exports.list = function serialList(socket) {
   socket.on('serial list', function(){

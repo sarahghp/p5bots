@@ -30,7 +30,7 @@ exports.blink = function blink(board, socket) {
       clearInterval(blinkID);
     });
 
-  }); 
+  });
 };
 
 /**
@@ -56,14 +56,16 @@ exports.fade = function fade(board, socket) {
     function nextVal(a, b) {
       return a + mult * b;
     }
-  
+
+    function setStep(num){
+      setTimeout(function(){
+        board.analogWrite(data.pin, val);
+        val = nextVal(val, vps);
+      }, num * inc);
+    }
+
     for (var i = 0; i <= steps; i++){
-      (function(num){
-        setTimeout(function(){
-          board.analogWrite(data.pin, val);
-          val = nextVal(val, vps);
-        }, num * inc);
-      })(i);
+      setStep(i);
     }
   });
-}
+};

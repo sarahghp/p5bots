@@ -1,6 +1,6 @@
 exports.range = function servoRange(board, socket) {
   socket.on('range', function(data){
-    board.servoConfig(data.pin, data.range[0], data.range[1])
+    board.servoConfig(data.pin, data.range[0], data.range[1]);
   });
 };
 
@@ -25,4 +25,4 @@ exports.sweep = function servoSweep(board, socket) {
       clearInterval(sweepID);
     });
   });
-}
+};

@@ -10,7 +10,7 @@ var serial = function() {
       config: config
     });
   };
-  
+
   serialObj.read = function(cb) {
     socket.emit('serial read');
     socket.on('serial read return', function(data){
@@ -32,7 +32,7 @@ var serial = function() {
       cb && cb(data);
     });
   };
-  
+
   return serialObj;
 
 };
