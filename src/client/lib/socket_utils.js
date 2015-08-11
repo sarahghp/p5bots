@@ -18,34 +18,38 @@ var utils =  {
   constructFuncs: function(pin, mode) {
 
     // Let an explicit passed mode override the pin's user-facing mode
-    var mode = mode || pin.mode;
+    var mode = mode || pin.mode; // jshint ignore:line
 
     function setVal(data) {
-      // Callbacks set in socketGen for generic read & in special constructors for special
+      // Callbacks set in socketGen for generic read 
+      // & in special constructors for special
       this.readcb && this.readcb(data.val);
       this.val = data.val;
 
-      utils.readTests[this.special] && utils.readTests[this.special].call(this, data.val);          
-    };
+      utils.readTests[this.special] && 
+        utils.readTests[this.special].call(this, data.val);          
+    }
 
     pin.read = function(arg) {
       var fire = utils.socketGen(mode, 'read', pin);
       utils.dispatch(fire, arg);
       socket.on('return val', setVal.bind(this));
-      return function nextRead(arg) { fire(arg) };
-    }
+      return function nextRead(arg) { fire(arg); };
+    };
 
     pin.write = function(arg) {         
       var fire = utils.socketGen(mode, 'write', pin);
       utils.dispatch(fire, arg);
-      return function nextWrite(arg) { fire(arg) };
-    }
+      return function nextWrite(arg) { fire(arg); };
+    };
 
     return pin;
   },
 
   dispatch: function(fn, arg){
-    this.board.ready ? fn(arg) : this.board.eventQ.push({func: fn, args: [arg]});
+    this.board.ready ?
+        fn(arg) 
+      : this.board.eventQ.push({func: fn, args: [arg]});
   },
 
   pinInit: function(pin, mode, direction){
@@ -55,7 +59,7 @@ var utils =  {
         mode: mode.toLowerCase(),
         direction: direction.toLowerCase()
       });
-    }
+    };
   },
 
   readTests: {
@@ -93,17 +97,21 @@ var utils =  {
   socket: socket,
 
   socketGen: function(kind, direction, pin) {
+    function titleCase(str){
+      return str.charAt(0).toUpperCase() + str.substring(1);
+    }
+
     return function action(arg) {
       if (direction === 'read') {
         pin.readcb = arg;
       }
       socket.emit('action', {
-        action: kind + direction.charAt(0).toUpperCase() + direction.substring(1),
+        action: kind + titleCase(direction),
         pin: pin.pin,
         type: direction,
         arg: arg
       });
-    }
+    };
   }
 
 };

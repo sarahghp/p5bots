@@ -8,7 +8,7 @@ function motor(pin) {
       if(this.mode !== 'pwm') {
         this.write('HIGH');  
       } else {
-        this.write(255)
+        this.write(255);
       } 
     }
     utils.dispatch(motorOn.bind(this)); 

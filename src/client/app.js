@@ -2,7 +2,8 @@
 
 var utils = require('./lib/socket_utils.js');
 var special = require('./lib/special_methods_index.js');
-var modeError = "Please check mode. Value should be 'analog', 'digital', 'pwm', or servo";
+var modeError = "Please check mode. Value should be 'analog', 'digital', 'pwm', or servo"; // jshint ignore:line
+
 
 var specialMethods = {
   'button': { fn: special.button, mode: 'digital' },
@@ -62,8 +63,8 @@ var Pin = function(num, mode, direction){
     this.mode = specialMethods[this.mode].mode;
   }
 
-  this.write = function() { throw new Error('Write undefined') },
-  this.read = function() { throw new Error('Read undefined') }
+  this.write = function() { throw new Error('Write undefined'); };
+  this.read = function() { throw new Error('Read undefined'); };
 };
 
 Board.prototype.pin = function(num, mode, direction){

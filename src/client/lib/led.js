@@ -10,7 +10,7 @@ function led(pin) {
       if(this.mode !== 'pwm') {
         this.write('HIGH');  
       } else {
-        this.write(255)
+        this.write(255);
       } 
     }
 
@@ -37,7 +37,12 @@ function led(pin) {
     function ledFade() {
       var totalTime = totalTime || 3000,
           inc       = increment || 200;
-      utils.socket.emit('fade', { pin: this.pin, start: start, stop: stop, time: totalTime, inc: inc });
+      utils.socket.emit('fade', {
+        pin: this.pin,
+        start: start,
+        stop: stop,
+        time: totalTime,
+        inc: inc });
     }
 
     utils.dispatch(ledFade.bind(this));
@@ -63,7 +68,7 @@ function led(pin) {
 
   };
 
-  return pin
+  return pin;
 }
 
 module.exports = led;

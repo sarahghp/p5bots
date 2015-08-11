@@ -12,7 +12,7 @@ function vres(pin) {
     function vrRange() {
       this.readRange = function() {
         this.val = this.val/1023 * (max - min) + min;
-      }
+      };
     }
 
     utils.dispatch(vrRange.bind(this));
@@ -22,7 +22,7 @@ function vres(pin) {
     this.threshold = thresh;
     this.overThreshold = function() {
       return this.val > this.threshold ? true : false;
-    }
+    };
   };
 
   return pin;

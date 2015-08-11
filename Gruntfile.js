@@ -76,7 +76,9 @@ module.exports = function(grunt) {
           jshintrc: 'src/.jshintrc',
           ignores: [ 'src/external/**/*.js' ]
         },
-        src: ['src/**/*.js']
+        src: ['src/client/**/*.js',
+              'src/p5bots-server/app.js',
+              'src/p5bots-server/lib/*.js']
       },
       test: {
         options: {

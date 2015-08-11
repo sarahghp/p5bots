@@ -27,7 +27,7 @@ function button (pin) {
       this.buttonHeldcb = function() {
         var timeout = setTimeout(cb, threshold);
         return timeout;
-      }
+      };
     }
 
     utils.dispatch(pinHeld.bind(this));

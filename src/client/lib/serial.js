@@ -9,7 +9,7 @@ var serial = function() {
       path: path,
       config: config
     });
-  }
+  };
   
   serialObj.read = function(cb) {
     socket.emit('serial read');

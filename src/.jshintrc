@@ -5,6 +5,7 @@
   "devel": true,
   "eqeqeq": true,
   "eqnull": true,
+  "expr": true,
   "immed": true,
   "latedef": "nofunc",
   "newcap": false,
@@ -15,10 +16,11 @@
   "maxlen": 80,
   "node": true,
 
-  "browserify": true,
   "browser": true,
   "globals": {
     "module": false,
-    "require": false
+    "require": false,
+    "p5": false,
+    "io": false
   }
 }

@@ -52,7 +52,10 @@ function rgb(pin) {
         this.incomingColor[data.type] = data.val;
 
         if (Object.keys(this.incomingColor).length === 3) {
-          this.color = p5.prototype.color([this.incomingColor.red, this.incomingColor.green, this.incomingColor.blue]);
+          this.color = p5.prototype.color([
+            this.incomingColor.red,
+            this.incomingColor.green,
+            this.incomingColor.blue]);
           this.readcb(this.color);
         }
       }
