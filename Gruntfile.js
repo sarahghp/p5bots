@@ -4,18 +4,21 @@
  *  runner/builder, used to build the source code into the library
  *  and handle other housekeeping tasks.
  *
- *  There are four main tasks:
+ *  There are five main tasks:
  *
  *  grunt       - This is the default task, which both tests and builds.
  *
- *  grunt build - This task builds and minifies the client source code.
- *
+ *  grunt build - This task builds and minifies the client source code
+ *                and the automated API documentation.
+ *                
  *  grunt test  - This only runs the automated tests, which is faster than
  *                rebuilding entirely from source because it skips minification
  *                and concatination. If you need to debug
  *                a test suite in a browser, `grunt test --keepalive` will
  *                start the connect server and leave it running; the tests
- *                can then be opened at localhost:9001/test/test.htmln
+ *                can then be opened at localhost:9001/test/test.html
+ *
+ *  grunt jsdoc - Generate documentation from inline code. 
  *
  *  grunt watch:main  - This watches the source for changes and rebuilds on
  *                      every file change.
@@ -83,12 +86,26 @@ module.exports = function(grunt) {
       }
     },
 
+    // Set up jsdoc task to generate documentation
+    jsdoc : {
+      dist : {
+        src: ['src/client/app.js',
+              'src/client/lib/*.js',
+              'src/p5bots-server/app.js',
+              'src/p5bots-server/lib/*.js',
+              'src/README.md'],
+        options: {
+          destination: 'doc'
+        }
+      }
+    },
+
     // Set up the watch task, used for live-reloading during development.
     watch: {
       // Watch the codebase for changes
       main: {
         files: ['src/**/*.js'],
-        tasks: ['newer:jshint:source','test'],
+        tasks: ['newer:jshint:source','test', 'jsdoc'],
         options: {
           livereload: true
         }
@@ -185,6 +202,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha');
   grunt.loadNpmTasks('grunt-mocha-chai-sinon');
@@ -193,7 +211,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-newer');
 
   // Create the multitasks.
-  grunt.registerTask('build', ['browserify', 'uglify']);
+  grunt.registerTask('build', ['browserify', 'uglify', 'jsdoc']);
   grunt.registerTask('test', ['jshint', 'jscs', 'build', 'connect', 'mocha', 'mocha-chai-sinon']);
   grunt.registerTask('default', ['test', 'build']);
 };
