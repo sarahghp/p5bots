@@ -2,35 +2,110 @@ var basicBoard = {
       type: 'arduino',
       port: '/dev/cu.usbmodem1421'
     },
-    pinnedBoard = {
+    createdBoard = p5.board('/dev/cu.usbmodem1421', 'arduino'),
+    createdPin;
+
+suite('p5sensors init', function() {
+
+  var pins = {
+    
+    digitalOUT: {
       pin: 9,
       mode: 'digital',
       direction: 'output'
     },
-    createdBoard = p5.board('/dev/cu.usbmodem1421', 'arduino'),
-    createdPin;
 
-suite('p5sensors basic', function() {
+    digitalIN: {
+      pin: 9,
+      mode: 'digital',
+      direction: 'input'
+    },
+
+    analog: {
+      pin: 9,
+      mode: 'analog',
+      direction: 'input'
+    },
+
+    pwm: {
+      pin: 9,
+      mode: 'pwm',
+      direction: 'output'
+    },
+  };
+
+  var b = createdBoard;
+
   test('can create a board object', function() {
     assert.equal(createdBoard.type, basicBoard.type);
     assert.equal(createdBoard.port, basicBoard.port);
   });
 
-  test('can add a pin', function() {
-    createdPin = p5.pin(9, 'DIGITAL', 'OUTPUT');
-    assert.equal(createdPin.pin, pinnedBoard.pin);
-    assert.equal(createdPin.mode, pinnedBoard.mode);
-    assert.equal(createdPin.direction, pinnedBoard.direction);
+  test('can add a pin with shorthand', function() {
+    // shorthand pins are by default digital output
+    createdPin = createdBoard.pin(9);
+    assert.equal(createdPin.pin, pins.digitalOUT.pin);
+    assert.equal(createdPin.mode, pins.digitalOUT.mode);
+    assert.equal(createdPin.direction, pins.digitalOUT.direction);
   });
 
-  test('can add a pin with shorthand', function() {
-    createdPin = p5.pin(9);
-    assert.equal(createdPin.pin, pinnedBoard.pin);
-    assert.equal(createdPin.mode, pinnedBoard.mode);
-    assert.equal(createdPin.direction, pinnedBoard.direction);
+  test('can add a digital output pin', function() {
+    createdPin = createdBoard.pin(9, 'DIGITAL', 'OUTPUT');
+    assert.equal(createdPin.pin, pins.digitalOUT.pin);
+    assert.equal(createdPin.mode, pins.digitalOUT.mode);
+    assert.equal(createdPin.direction, pins.digitalOUT.direction);
+
+    // now again with constants
+    createdPin = createdBoard.pin(9, b.DIGITAL, b.OUTPUT);
+    assert.equal(createdPin.pin, pins.digitalOUT.pin);
+    assert.equal(createdPin.mode, pins.digitalOUT.mode);
+    assert.equal(createdPin.direction, pins.digitalOUT.direction);
   });
+
+  test('can add a digital input pin', function() {
+    createdPin = createdBoard.pin(9, 'DIGITAL', 'INPUT');
+    assert.equal(createdPin.pin, pins.digitalIN.pin);
+    assert.equal(createdPin.mode, pins.digitalIN.mode);
+    assert.equal(createdPin.direction, pins.digitalIN.direction);
+
+    // now again with constants
+    createdPin = createdBoard.pin(9, b.DIGITAL, b.INPUT);
+    assert.equal(createdPin.pin, pins.digitalIN.pin);
+    assert.equal(createdPin.mode, pins.digitalIN.mode);
+    assert.equal(createdPin.direction, pins.digitalIN.direction)
+  });
+
+  test('can add an analog pin', function() {
+    createdPin = createdBoard.pin(0, 'ANALOG', 'INPUT');
+    assert.equal(createdPin.pin, pins.analog.pin);
+    assert.equal(createdPin.mode, pins.analog.mode);
+    assert.equal(createdPin.direction, pins.analog.direction);
+
+    // now again with constants
+    createdPin = createdBoard.pin(0, b.ANALOG, b.INPUT);
+    assert.equal(createdPin.pin, pins.analog.pin);
+    assert.equal(createdPin.mode, pins.analog.mode);
+    assert.equal(createdPin.direction, pins.analog.direction);
+  });
+
+  test('can add a pwm pin', function() {
+    createdPin = createdBoard.pin(9, 'PWM', 'OUTPUT');
+    assert.equal(createdPin.pin, pins.pwm.pin);
+    assert.equal(createdPin.mode, pins.pwm.mode);
+    assert.equal(createdPin.direction, pins.pwm.direction);
+
+    // now again with constants
+    createdPin = createdBoard.pin(9, b.PWM, b.OUTPUT);
+    assert.equal(createdPin.pin, pins.pwm.pin);
+    assert.equal(createdPin.mode, pins.pwm.mode);
+    assert.equal(createdPin.direction, pins.pwm.direction);
+
+  });
+
 });
 
+
+// TODO: Update read tests, be sure to create pin
 
 suite('p5sensors digital read & write', function() {
   var notCreatedErr =  "Please check mode. Value should be 'analog', 'digital', 'pwm', or servo"; // jshint ignore:line
@@ -40,6 +115,20 @@ suite('p5sensors digital read & write', function() {
       notCreatedErr);
     assert.equal(createdPin.read().name, 'nextRead');
   });
+
+  // TODO: add test that read callback set
+  
+  test('read callback is set', function() {
+    var testcb = function(data) {
+      console.log('read cb', data);
+    };
+
+    piezo.read(testcb);
+    assert.equal(piezo.readcb, testcb);
+    assert.isDefined(piezo.val);
+
+  });
+
   test('pin write is defined correctly', function() {
     assert.doesNotThrow(Error, createdPin.write(),
       notCreatedErr);
@@ -52,11 +141,23 @@ suite('p5sensors analog read & write', function() {
   test('pin read is defined correctly', function() {
     assert.doesNotThrow(Error, createdPin.read(),
       notCreatedErr);
-    assert.equal(createdPin.read().name, 'nextRead');
   });
+
+  // TODO: add test that read callback set
+  
+  test('read callback is set', function() {
+    var testcb = function(data) {
+      console.log('read cb', data);
+    };
+
+    piezo.read(testcb);
+    assert.equal(piezo.readcb, testcb);
+    assert.isDefined(piezo.val);
+
+  });
+  
   test('pin write is defined correctly', function() {
     assert.doesNotThrow(Error, createdPin.write(),
       notCreatedErr);
-    assert.equal(createdPin.write().name, 'nextWrite');
   });
 });

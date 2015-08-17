@@ -93,11 +93,10 @@ Board.prototype.pin = function(num, mode, direction){
 p5.board = function (port, type){
   utils.board = new Board(port, type);
 
-  // also emit board object & listen for return
+  // emit board object & listen for return
   utils.boardInit(port, type);
   utils.socket.on('board ready', function(data) {
     utils.board.ready = true;
-    // utils.board.analogPins = data.analogArr;
     utils.board.eventQ.forEach(function(el){
       el.func.apply(null, el.args);
     });
