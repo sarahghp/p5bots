@@ -6,6 +6,15 @@ suite('Motor', function() {
     assert.equal(motor.pin, 9);
     assert.equal(motor.mode, 'pwm');
     assert.equal(motor.direction, 'output');
+    assert.equal(motor.special, 'motor');
+  });
+
+  test('pin set correctly with constant', function() {
+    var cmotor = b.pin(9, b.MOTOR);
+    assert.equal(bmotor.pin, 9);
+    assert.equal(bmotor.mode, 'pwm');
+    assert.equal(bmotor.direction, 'output');
+    assert.equal(bmotor.special, 'motor');
   });
 
   test('methods are defined', function() {

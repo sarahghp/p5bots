@@ -105,10 +105,9 @@ suite('p5sensors init', function() {
 });
 
 
-// TODO: Update read tests, be sure to create pin
-
 suite('p5sensors digital read & write', function() {
   var notCreatedErr =  "Please check mode. Value should be 'analog', 'digital', 'pwm', or servo"; // jshint ignore:line
+  createdPin = createdBoard.pin(9);
 
   test('pin read is defined correctly', function() {
     assert.doesNotThrow(Error, createdPin.read(),
@@ -123,9 +122,9 @@ suite('p5sensors digital read & write', function() {
       console.log('read cb', data);
     };
 
-    piezo.read(testcb);
-    assert.equal(piezo.readcb, testcb);
-    assert.isDefined(piezo.val);
+    createdPin.read(testcb);
+    assert.equal(createdPin.readcb, testcb);
+    assert.isDefined(createdPin.val);
 
   });
 
@@ -137,7 +136,7 @@ suite('p5sensors digital read & write', function() {
 });
 
 suite('p5sensors analog read & write', function() {
-  createdPin = p5.pin(9, 'ANALOG', 'INPUT');
+  createdPin = createdBoard.pin(9, 'ANALOG', 'INPUT');
   test('pin read is defined correctly', function() {
     assert.doesNotThrow(Error, createdPin.read(),
       notCreatedErr);
@@ -150,9 +149,9 @@ suite('p5sensors analog read & write', function() {
       console.log('read cb', data);
     };
 
-    piezo.read(testcb);
-    assert.equal(piezo.readcb, testcb);
-    assert.isDefined(piezo.val);
+    createdPin.read(testcb);
+    assert.equal(createdPin.readcb, testcb);
+    assert.isDefined(createdPin.val);
 
   });
   

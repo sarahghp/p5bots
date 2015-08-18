@@ -6,6 +6,15 @@ suite('LED', function() {
     assert.equal(led.pin, 9);
     assert.equal(led.mode, 'digital');
     assert.equal(led.direction, 'output');
+    assert.equal(led.special, 'led');
+  });
+
+  test('pin set correctly with constant', function() {
+    var cled = b.pin(9, b.LED);
+    assert.equal(cled.pin, 9);
+    assert.equal(cled.mode, 'digital');
+    assert.equal(cled.direction, 'output');
+    assert.equal(cled.special, 'led');
   });
 
   test('methods are defined', function() {

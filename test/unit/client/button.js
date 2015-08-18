@@ -6,6 +6,15 @@ suite('Button', function() {
     assert.equal(button.pin, 9);
     assert.equal(button.mode, 'digital');
     assert.equal(button.direction, 'input');
+    assert.equal(button.special, 'button');
+  });
+
+  test('pin set correctly with constant', function() {
+    var cbutton = b.pin(9, b.BUTTON);
+    assert.equal(cbutton.pin, 9);
+    assert.equal(cbutton.mode, 'digital');
+    assert.equal(cbutton.direction, 'input');
+    assert.equal(cbutton.special, 'button');
   });
 
   test('pressed set correctly', function() {

@@ -2,6 +2,7 @@ var utils = require('./socket_utils.js');
 
 function vres(pin) {
 
+  pin.direction = 'input';
   utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
   utils.constructFuncs(pin);
 
