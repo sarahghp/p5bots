@@ -18,6 +18,8 @@ var serial = function() {
     });
   };
 
+  serialObj.readEvent = serialObj.read;
+
   serialObj.write = function(arg, cb) {
     socket.emit('serial write', { arg: arg });
     socket.on('serial write return', function(data){
