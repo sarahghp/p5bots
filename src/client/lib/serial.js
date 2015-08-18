@@ -14,11 +14,15 @@ var serial = function() {
   serialObj.read = function(cb) {
     socket.emit('serial read');
     socket.on('serial read return', function(data){
+      serialObj.data = data;
       cb(data);
     });
   };
 
   serialObj.readEvent = serialObj.read;
+  serialObj.readData = function(){
+    return this.data;
+  }
 
   serialObj.write = function(arg, cb) {
     socket.emit('serial write', { arg: arg });
