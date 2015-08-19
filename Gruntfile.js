@@ -50,7 +50,10 @@ module.exports = function(grunt) {
         reporter: require('jscs-stylish').path
       },
       build: {
-        src: ['Gruntfile.js']
+        src: [
+        'Gruntfile.js',
+        'build/**/*.js'
+        ]
       },
       source: {
         src: [
@@ -70,7 +73,10 @@ module.exports = function(grunt) {
         options: {
           jshintrc: '.jshintrc'
         },
-        src: ['Gruntfile.js']
+        src: [
+        'Gruntfile.js',
+        'build/**/*.js'
+        ]
       },
       source: {
         options: {
@@ -142,21 +148,6 @@ module.exports = function(grunt) {
       }
     },
 
-    // Build p5bots client source into a single, UMD-wrapped file
-    browserify: {
-      p5: {
-        options: {
-          transform: ['brfs'],
-          browserifyOptions: {
-            standalone: 'p5bots'
-          },
-          banner: '/*! p5bots.js v<%= pkg.version %> <%= grunt.template.today("mmmm dd, yyyy") %> */'
-        },
-        src: 'src/client/app.js',
-        dest: 'lib/p5bots.js'
-      }
-    },
-
     // This minifies the javascript into a single file and adds a banner to the
     // front of the file.
     uglify: {
@@ -201,7 +192,7 @@ module.exports = function(grunt) {
   });
 
   // Load the external libraries used.
-  grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadTasks('build/tasks');
   grunt.loadNpmTasks('grunt-jscs');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-jsdoc');
