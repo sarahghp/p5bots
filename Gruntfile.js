@@ -134,7 +134,7 @@ module.exports = function(grunt) {
     // Set up the mocha-chai-sinon task, used for the automated server-side tests.
     'mocha-chai-sinon': {
       build: {
-        src: ['test/unit/server/app.js'],
+        src: ['test/unit/p5bots-server/app.js'],
         options: {
           ui: 'tdd',
           reporter: reporter

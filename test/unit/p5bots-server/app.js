@@ -1,5 +1,5 @@
 // The file we're testing
-var app = require('../../../src/server/app.js');
+var app = require('../../../src/p5bots-server/app.js');
 
 // Actual tests
 suite('CLI & server inputs', function(){
