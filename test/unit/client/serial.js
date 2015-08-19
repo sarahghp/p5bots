@@ -1,5 +1,5 @@
 suite('Serial', function() {
-  var serial = p5.serial;
+  var serial = p5.serial();
 
   test('methods are defined', function() {
     assert.isFunction(serial.connect);

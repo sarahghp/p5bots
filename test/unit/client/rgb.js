@@ -56,10 +56,8 @@ suite('RGB LED', function() {
   });
 
   test('write succeeds with p5 hsl color', function() {
-    var c = color(255, 204, 0),
-        h;
     colorMode(hsla);
-    h = color(48, 100, 50);
+    var h = color(48, 100, 50);
     rgb.write(h);
     assert.deepEqual(h, rgb.color);
     assert.deepEqual([255, 204, 0], rgb.writeArray); // write array always converts to RGB
@@ -82,7 +80,7 @@ suite('RGB LED', function() {
   test('read sets callback successfully', function() {
     var log = function(data) {
       console.log(data);
-    }
+    };
     rgb.read(log);
     assert.equal(rgb.readcb, log);
   });

@@ -1,6 +1,6 @@
 suite('Motor', function() {
   var b = p5.board('/dev/cu.usbmodem1421', 'arduino'),
-      led = b.pin(9, 'MOTOR');
+      motor = b.pin(9, 'MOTOR');
 
   test('pin set correctly', function() {
     assert.equal(motor.pin, 9);
@@ -11,10 +11,10 @@ suite('Motor', function() {
 
   test('pin set correctly with constant', function() {
     var cmotor = b.pin(9, b.MOTOR);
-    assert.equal(bmotor.pin, 9);
-    assert.equal(bmotor.mode, 'pwm');
-    assert.equal(bmotor.direction, 'output');
-    assert.equal(bmotor.special, 'motor');
+    assert.equal(cmotor.pin, 9);
+    assert.equal(cmotor.mode, 'pwm');
+    assert.equal(cmotor.direction, 'output');
+    assert.equal(cmotor.special, 'motor');
   });
 
   test('methods are defined', function() {

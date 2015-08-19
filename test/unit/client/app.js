@@ -8,7 +8,7 @@ var basicBoard = {
 suite('p5sensors init', function() {
 
   var pins = {
-    
+
     digitalOUT: {
       pin: 9,
       mode: 'digital',
@@ -22,7 +22,7 @@ suite('p5sensors init', function() {
     },
 
     analog: {
-      pin: 9,
+      pin: 0,
       mode: 'analog',
       direction: 'input'
     },
@@ -72,7 +72,7 @@ suite('p5sensors init', function() {
     createdPin = createdBoard.pin(9, b.DIGITAL, b.INPUT);
     assert.equal(createdPin.pin, pins.digitalIN.pin);
     assert.equal(createdPin.mode, pins.digitalIN.mode);
-    assert.equal(createdPin.direction, pins.digitalIN.direction)
+    assert.equal(createdPin.direction, pins.digitalIN.direction);
   });
 
   test('can add an analog pin', function() {
@@ -104,9 +104,9 @@ suite('p5sensors init', function() {
 
 });
 
+var notCreatedErr =  "Please check mode. Value should be 'analog', 'digital', 'pwm', or servo"; // jshint ignore:line
 
 suite('p5sensors digital read & write', function() {
-  var notCreatedErr =  "Please check mode. Value should be 'analog', 'digital', 'pwm', or servo"; // jshint ignore:line
   createdPin = createdBoard.pin(9);
 
   test('pin read is defined correctly', function() {
@@ -115,16 +115,18 @@ suite('p5sensors digital read & write', function() {
     assert.equal(createdPin.read().name, 'nextRead');
   });
 
-  // TODO: add test that read callback set
-  
   test('read callback is set', function() {
     var testcb = function(data) {
       console.log('read cb', data);
     };
 
+    var assertion = function(){
+      assert.equal(createdPin.readcb, testcb);
+      assert.isDefined(createdPin.val);
+    };
+
     createdPin.read(testcb);
-    assert.equal(createdPin.readcb, testcb);
-    assert.isDefined(createdPin.val);
+    setTimeout(assertion, 1000);
 
   });
 
@@ -142,19 +144,21 @@ suite('p5sensors analog read & write', function() {
       notCreatedErr);
   });
 
-  // TODO: add test that read callback set
-  
   test('read callback is set', function() {
     var testcb = function(data) {
       console.log('read cb', data);
     };
 
+    var assertion = function(){
+      assert.equal(createdPin.readcb, testcb);
+      assert.isDefined(createdPin.val);
+    };
+
     createdPin.read(testcb);
-    assert.equal(createdPin.readcb, testcb);
-    assert.isDefined(createdPin.val);
+    setTimeout(assertion, 1000);
 
   });
-  
+
   test('pin write is defined correctly', function() {
     assert.doesNotThrow(Error, createdPin.write(),
       notCreatedErr);

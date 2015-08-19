@@ -14,9 +14,9 @@ function temp(pin) {
 
   var tempErr = 'Remember to call read before try to get a temp value.';
   // Actual values set in read callback; see socket_utils, constructFuncs
-  this.C = function() { throw new Error(tempErr); };
-  this.F = function() { throw new Error(tempErr); };
-  this.K = function() { throw new Error(tempErr); };
+  pin.C = function() { throw new Error(tempErr); };
+  pin.F = function() { throw new Error(tempErr); };
+  pin.K = function() { throw new Error(tempErr); };
 
   return pin;
 }

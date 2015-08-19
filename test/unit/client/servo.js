@@ -31,8 +31,8 @@ suite('Servo', function() {
 
   test('range sets max and min', function() {
     servo.range([10, 180]);
-    assert.equal(serve.rangeMin, 10);
-    assert.equal(serve.rangeMax, 180);
+    assert.equal(servo.rangeMin, 10);
+    assert.equal(servo.rangeMax, 180);
   });
 
 });

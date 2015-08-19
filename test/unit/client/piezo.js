@@ -1,4 +1,4 @@
-var b = p5.board('/dev/cu.usbmodem1421', 'arduino'),
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
 
 suite('Piezo', function() {
 
@@ -32,9 +32,13 @@ suite('Piezo', function() {
       console.log('read cb', data);
     };
 
+    var assertion = function() {
+      assert.equal(piezo.readcb, testcb);
+      assert.isDefined(piezo.val);
+    };
+
     piezo.read(testcb);
-    assert.equal(piezo.readcb, testcb);
-    assert.isDefined(piezo.val);
+    setTimeout(assertion, 1000);
 
   });
 
@@ -51,15 +55,15 @@ suite('Knock', function() {
 
   test('pin set correctly', function() {
     assert.equal(knock.pin, 9);
-    assert.equal(knock.mode, 'digital');
+    assert.equal(knock.mode, 'analog');
     assert.equal(knock.direction, 'output');
     assert.equal(knock.special, 'knock');
   });
 
   test('pin set correctly with constant', function() {
-    var cknock = b.pin(9, b.KOCK);
+    var cknock = b.pin(9, b.KNOCK);
     assert.equal(cknock.pin, 9);
-    assert.equal(cknock.mode, 'digital');
+    assert.equal(cknock.mode, 'analog');
     assert.equal(cknock.direction, 'output');
     assert.equal(cknock.special, 'knock');
   });

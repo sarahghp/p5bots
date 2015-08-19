@@ -25,8 +25,9 @@ suite('Variable resistor', function() {
   });
 
   test('range defines read range function', function() {
+    var assertion = function() { assert.isFunction(vres.readRange); };
     vres.range([10, 400]);
-    assert.isFunction(vres.readRange);
+    setTimeout(assertion, 1000);
   });
 
   test('threshold sets threshold val and overThreshold method', function() {

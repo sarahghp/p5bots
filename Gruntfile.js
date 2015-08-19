@@ -216,5 +216,5 @@ module.exports = function(grunt) {
   // Create the multitasks.
   grunt.registerTask('build', ['browserify', 'uglify', 'jsdoc']);
   grunt.registerTask('test', ['jshint', 'jscs', 'build', 'connect', 'mocha', 'mocha-chai-sinon']);
-  grunt.registerTask('default', ['test', 'build']);
+  grunt.registerTask('default', ['test']);
 };

@@ -22,7 +22,7 @@ var serial = function() {
   serialObj.readEvent = serialObj.read;
   serialObj.readData = function(){
     return this.data;
-  }
+  };
 
   serialObj.write = function(arg, cb) {
     socket.emit('serial write', { arg: arg });
