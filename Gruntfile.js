@@ -118,7 +118,6 @@ module.exports = function(grunt) {
     // Set up the mocha task, used for the automated browser-side tests.
     mocha: {
       test: {
-        src: ['test/**/*.html'],
         options: {
           urls: [
             'http://localhost:9001/test/test.html',

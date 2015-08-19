@@ -112,7 +112,6 @@ suite('p5sensors digital read & write', function() {
   test('pin read is defined correctly', function() {
     assert.doesNotThrow(Error, createdPin.read(),
       notCreatedErr);
-    assert.equal(createdPin.read().name, 'nextRead');
   });
 
   test('read callback is set', function() {
@@ -133,7 +132,6 @@ suite('p5sensors digital read & write', function() {
   test('pin write is defined correctly', function() {
     assert.doesNotThrow(Error, createdPin.write(),
       notCreatedErr);
-    assert.equal(createdPin.write().name, 'nextWrite');
   });
 });
 
