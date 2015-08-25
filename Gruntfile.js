@@ -102,7 +102,7 @@ module.exports = function(grunt) {
               'src/client/lib/*.js',
               'src/p5bots-server/app.js',
               'src/p5bots-server/lib/*.js',
-              'src/README.md'],
+              'doc/README.md'],
         options: {
           destination: 'doc'
         }
