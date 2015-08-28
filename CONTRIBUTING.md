@@ -1,5 +1,7 @@
 # Contributing
 
+Contributing involves two important activities: development and not being a jackass.
+
 ## Be Nice
 As contributors to a p5.js library, p5bots collaborators are expected to abide by the [p5 Code of Conduct](https://github.com/processing/p5.js/blob/master/CONTRIBUTING.md).
 
@@ -17,11 +19,11 @@ If you'd like to contribute to p5bots developement, check out the [issues](https
 4. Grunt
 5. A microcontroller running Firmata
 
-### Getting set up
+### Getting Set Up
 1. Clone this repo: `git clone git@github.com:sarahgp/p5bots.git`
 2. Enter the directory and install dependencies with `npm install`
 3. Run `grunt` to build the files.
-4. Start the server with `npm start`, which will serve the `src/p5bots-server/examples/index.html` file on `localhost:8000`. 
+4. Start the server with `npm start`, which will serve the `src/p5bots-server/examples/index.html` file on `localhost:8000`.   
 4a. To learn how configure the server to run other files, run `node src/p5bots-server/app.js --help`.
 
 ### Workflow
