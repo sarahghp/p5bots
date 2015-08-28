@@ -18,7 +18,7 @@ function makeAbsolute(filepath){
 }
 
 program
-  .description('Let your board talk to your sketch')
+  .description('Run `node app.js` plus these flags to configure your server.')
   .option('-d, --dir <d>', 'Set base directory for server')
   .option('-f, --file <f>', 'Set file to use for index page')
   .option('-p, --ufilepath <p>',

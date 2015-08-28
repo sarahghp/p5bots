@@ -4,6 +4,9 @@
   "description": "Get sensor data into your p5 sketches",
   "repository": "https://github.com/sarahgp/p5bots",
   "main": "src/app.js",
+  "scripts": {
+    "start": "node src/p5bots-server/app.js -d 'src/p5bots-server/example'"
+  },
   "devDependencies": {
     "browserify": "^11.0.1",
     "concat-files": "^0.1.0",
