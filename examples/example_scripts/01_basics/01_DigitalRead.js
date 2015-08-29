@@ -1,8 +1,6 @@
 // Basic: Digital Read
 // Diagram: diagrams/simple_button
 
-// Board setup — you may need to change the port
-var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
 
 // Uncomment the lines below to log ports to the console
 // p5.serial().list(function(data) {
@@ -11,6 +9,9 @@ var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
 //     console.log(port.comName);
 //   });
 // });
+
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
 
 // Test digital read
 var p = b.pin(9, 'DIGITAL', 'INPUT');

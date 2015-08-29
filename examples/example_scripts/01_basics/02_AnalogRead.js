@@ -1,9 +1,6 @@
 // Basic: Analog Read
 // Diagram: diagrams/potentiometer
 
-// Board setup — you may need to change the port
-var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
-
 // Uncomment the lines below to log ports to the console
 // p5.serial().list(function(data) {
 //   console.log('serial list:');
@@ -11,6 +8,9 @@ var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
 //     console.log(port.comName);
 //   });
 // });
+
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
 
 // Test analog read
 var p = b.pin(0, 'ANALOG', 'INPUT');
