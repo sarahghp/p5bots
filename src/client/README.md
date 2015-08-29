@@ -1,13 +1,7 @@
-# p5.bots
+# p5.bots API
 
-p5.bots is a library to facilitate communication between [p5.js](http://p5js.org/) running in your browser and a microcontroller* running [Firmata](https://github.com/firmata/arduino)**.
-
-<small>
-```
-* The library has been tested on Arduino Unos, but should work on anything running Firmata.  
-** The serial API does not depend on Firmata.
-```
-</small>
+* [Setting Up](#setting-up)  
+* [Using p5.Bots with p5.js](#using-p5bots-with-p5js)  
 
 ## Setting Up
 
@@ -25,7 +19,7 @@ In addition to including p5.js in your html file, you will need two other script
 ### But Wait, There's More: Server-Side Files
 To send messages from the client to the board, you also need to run the p5.bots server files. For more detail on setting up the server and making sure it's working check out the README at [p5bots-server in src](https://github.com/sarahgp/p5bots/tree/master/src/p5bots-server) & download [p5bots-server from NPM](https://www.npmjs.com/package/p5bots-server).
 
-## Using the API
+## Using p5.Bots with p5.js
 
 Below is a short annotated guide to the API. Detailed examples & tutorials by the end of August.
 

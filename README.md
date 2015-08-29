@@ -4,12 +4,23 @@
 * [p5.Serial](#p5serial)
 * [p5.Board](#p5board)
 * [Getting Started](#getting-started)
+* [Finding Informataion](#finding-information)  
 * [Issues](#issues)
 * [Contributing](#contributing)
 
 
 ## How Does This Work?
-p5bots is a library that works to send messages from your browser, where you are running p5.js, to your microcontroller, most likely an Arduino. To do this, it uses the `socket.io` library and `node.js` to send messages between the two devices, in a language each device can understand.
+
+p5.bots is a library to facilitate communication between [p5.js](http://p5js.org/) running in your browser and a microcontroller* running [Firmata](https://github.com/firmata/arduino)**.
+
+<small>
+```
+* The library has been tested on Arduino Unos, but should work on anything running Firmata.  
+** The serial API does not depend on Firmata.
+```
+</small>
+
+To do this, it uses the `socket.io` library and `node.js` to send messages between the two devices, in a language each device can understand.
 
 This way, you can click on a sketch to light an LED or use temperature data to drive a sketch — or more.
 
@@ -20,9 +31,9 @@ p5bots comprises two sets of files: the client file, called `p5bots.js`, which i
 If all this sounds a little too manual, you can also use p5bots from the [p5.js IDE](https://github.com/processing/p5.js-editor).
 
 ## p5.Serial
-p5bots has a [`p5.serial` method](API.md#serial) that can be used in combination with an Arduino sketch listening for serial, much in the same way the Processing serial library can.
+p5bots has a [`p5.serial` method](src/client/README.md#serial) that can be used in combination with an Arduino sketch listening for serial, much in the same way the Processing serial library can.
 
-For more details on this module, see [serial in the API reference](API.md#serial).
+For more details on this module, see [serial in the API reference](src/client/README.md#serial).
 
 If you use serial only, you do not need to install Firmata on your board.
 
@@ -33,10 +44,15 @@ Details for these methods, plus examples can be found in the module pages. Examp
 
 ## Getting Started
 Ready to go? Good entry points include:
-* [the Hello, World tutorial]()
-* [checking out examples, say for RGB LEDs](https://github.com/sarahgp/p5bots/tree/master/examples#rgb-leds)
-* reading about [the client API](API.md), which lists the methods you can use in your p5 code, and [p5bots-server](https://github.com/sarahgp/p5bots/tree/master/src/p5bots-server)
+* [the Hello, World tutorial](examples/HelloWorld.md)
+* [checking out examples, say for RGB LEDs](https://github.com/sarahgp/p5bots/tree/master/examples#rgb-write)
+* reading about [the client API](src/client/README.md), which lists the methods you can use in your p5 code and covers setting up in detail, and [p5bots-server](https://github.com/sarahgp/p5bots/tree/master/src/p5bots-server)
 * or, [heading over to p5.js to learn more about the drawing library](http://p5js.org/)
+
+## Finding Infomation
+Detailed explanations of functionality have been broken up by subject:
+  - Getting set up and using the library with p5.js: [p5.bots API](src/client/README.md)  
+  - Setting up and testin the server files: [p5.bots server](src/p5bots-server/)
 
 ## Issues
 [Report issues in this repo.](https://github.com/sarahgp/p5bots/issues)
