@@ -282,4 +282,4 @@ Path defaults to the current directory and filename to `user.js`.
 
 
 ## Contributing
-This is still in alpha, but if you want to report issues, please do so! If you feel like getting your hands dirtier and adding features, please add an issue describing your plan and then fork away! Exclamation point!
+If you are interested in contributing please start by reading [CONTRIBUTING.md]
