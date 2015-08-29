@@ -2,11 +2,11 @@
 
 * [Setting Up](#setting-up)  
 * [Using p5.Bots with p5.js](#using-p5bots-with-p5js)  
-  -[](#)  
-    -[](#)
-    -[](#)  
-    -[](#)  
-    -[](#)  
+  -[Base Functions](#)  
+    -[Initialize Board](#)  
+    -[Initialize Pin](#)  
+    -[Constants](#)  
+    -[Basic Pin Methods](#)  
   -[](#)  
     -[](#)  
     -[](#)  
@@ -77,7 +77,7 @@ board.pin(num, mode, direction)
 // shorthand pin initialization
 pin = board.pin(num) 
 ```
--- default to digital output
+-- default to (NUM, 'DIGITAL', 'OUTPUT')
 
 #### Constants
 Properties such as type and direction can be indicated with strings, as we saw above, e.g.: `'HIGH'`, or with constants attached to the board object: `b.HIGH`.
@@ -131,9 +131,12 @@ pin.write(val)
 p.read(function(val){console.log(val);});
 ```  
 
-### Special write methods
+### Special write modes
+When calling special modes, the direction does not need to be indicated.
 
 #### LED Methods
+In addition to read and write, LEDs can be turned on and off, they can blink, and they can fade.
+
 ```js
 // initialize the pin
 led = board.pin(num, 'LED')
@@ -146,10 +149,10 @@ led.read()
 led.on()
 led.off()
 
-// starts the blinking, duration indication how long it stays on/off
+// starts the blinking, duration indication how long it stays on/off, in ms
 led.blink(duration)
 
-// stops the blinking, funnily enough
+// stops the blinking
 led.noBlink()
 
 // fades the pin from the start to stop brightness
@@ -159,6 +162,10 @@ led.fade([start, stop, [, total time, interval]])
 ```
 
 #### RGB LED Methods
+Like LEDs, RGB LEDs can be turned on and off, they can blink, and they can fade. When initialized, RGB LEDs take a hash/object listing the pin number for each color as well as the type of LED it is.
+
+Write accepts a p5.Color object or an array of three numbers 0-255 describing an RGB color.
+
 ```js
 // initialize with hash of led options
 rgb = board.pin({ r: int, g: int, b: int, common: 'anode' || 'cathode' }, 'RGBLED');
@@ -166,6 +173,29 @@ rgb = board.pin({ r: int, g: int, b: int, common: 'anode' || 'cathode' }, 'RGBLE
 // sets color, takes a p5 color obj or array of values
 rgb.write() 
 rgb.read()
+
+```
+
+*Example*
+
+These lines create the same color.
+```js
+
+var c = color(255, 204, 0);
+rgb.write(c);
+
+
+colorMode(hsla);
+var h = color(48, 100, 50);
+rgb.write(h);
+
+var a = [255, 204, 0];
+rgb.write(a);
+
+```
+On and off toggle high & low, but maintain the previous color value in memory.
+
+```js
 
 // Turns led to previously given color or white
 rgb.on()
@@ -183,7 +213,7 @@ rgb.noBlink()
 // brightness is pwm, 0 to 255; time is in ms
 // default total is 3000, interval is 200
 // each pin is specified separately
-rgb.fade([start, stop, [, total time, interval]] * 3)
+rgb.fade([start, stop, [, total time, interval]], [start, stop, [, total time, interval]], [start, stop, [, total time, interval]])
 ```
 
 #### MOTOR Methods
