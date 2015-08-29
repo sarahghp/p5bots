@@ -2,26 +2,25 @@
 
 * [Setting Up](#setting-up)  
 * [Using p5.Bots with p5.js](#using-p5bots-with-p5js)  
-  - [Base Functions](#)  
-    - [Initialize Board](#)  
-    - [Initialize Pin](#)  
-    - [Constants](#)  
-    - [Basic Pin Methods](#)  
-  - [](#)  
-    - [](#)  
-    - [](#)  
-    - [](#)  
-    - [](#)  
-  - [](#)  
-    - [](#)  
-    - [](#)  
-    - [](#)  
-    - [](#)  
-      - [](#)  
-      - [](#)  
-  - [](#)  
-    - [](#)  
-  - [](#)  
+  - [Basic Functions](#basic-functions)  
+    - [Initialize Board](#initialize-board)  
+    - [Initialize Pin](#initialize-pin)  
+    - [Constants](#constants)  
+    - [Basic Pin Methods](#basic-pin-methods)  
+  - [Special Write Modes](#special-write-modes)  
+    - [LED Methods](#led-methods)  
+    - [RGB LED Methods](#rgb-led-methods)  
+    - [MOTOR Methods](#motor-methods)  
+    - [SERVO Methods](#servo-methods) 
+    - [PIEZO Methods: Tone](#piezo-methods-tone)   
+  - [Special Read Modes](#special-read-modes)  
+    - [BUTTON Methods](#button-methods)  
+    - [VRES Methods](#vres-methods)  
+    - [TEMP Methods](#temp-methods)  
+    - [PIEZO Methods: Knock](#piezo-methods-knock)  
+  - [Other Special Methods](#other-special-methods)  
+    - [Serial](#serial)  
+  - [Create Your Own Methods](#create-your-own-methods)  
 
 ## Setting Up
 
@@ -44,7 +43,7 @@ p5.bots is also included in the [p5.js Editor](https://github.com/processing/p5.
 
 ## Using p5.Bots with p5.js
 
-### Base Functions
+### Basic Functions
 
 To start communicating with your device, you must first create a board and at least one pin. To do this, first call `p5.board()`. This will return a board object that has the pin method and other functionality attached.
 
@@ -131,7 +130,7 @@ pin.write(val)
 p.read(function(val){console.log(val);});
 ```  
 
-### Special write modes
+### Special Write Modes
 When calling special modes, the direction does not need to be indicated.
 
 #### LED Methods
@@ -192,7 +191,7 @@ var a = [255, 204, 0];
 rgb.write(a);
 
 ```
-On and off toggle high & low, but maintain the previous color value in memory.
+`On` and `off` toggle high & low, but maintain the previous color value in memory.
 
 ```js
 
@@ -262,14 +261,15 @@ t.tone(note || freq, duration)
 t.noTone()
 ```
 *Example*
-These will both sound the same tone for second.
+
+These will both sound the same tone for half a second.
 
 ```js
-t.tone('c#2', 1000)
-t.tone(69, 1000)
+t.tone('c#2', 500)
+t.tone(69, 500)
 ```
 
-### Special read methods
+### Special Read Modes
 As with special write modes, the direction does not need to be indicated.
 
 #### BUTTON Methods
@@ -287,7 +287,7 @@ button.released(cb)
 button.held(cb, int)
 ```
 
-#### Variable Resistor
+#### VRES Methods
 
 These methods can be used with any variable resistor: for instance, a potentiometer, or a photo- or touch-sensitive sensor.
 
