@@ -1,10 +1,6 @@
 // RGB LED: Write
 // Diagram: diagrams/rgb
 
-
-// Board setup — you may need to change the port
-var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
-
 // Uncomment the lines below to log ports to the console
 // p5.serial().list(function(data) {
 //   console.log('serial list:');
@@ -12,6 +8,10 @@ var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
 //     console.log(port.comName);
 //   });
 // });
+
+
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
 
 function setup() {
   var rgb = b.pin({r: 9, g: 10, b: 11}, 'RGBLED');

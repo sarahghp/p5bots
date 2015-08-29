@@ -1,10 +1,6 @@
 // LED: Blink the LED
 // Diagram: diagrams/led
 
-
-// Board setup — you may need to change the port
-var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
-
 // Uncomment the lines below to log ports to the console
 // p5.serial().list(function(data) {
 //   console.log('serial list:');
@@ -13,8 +9,11 @@ var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
 //   });
 // });
 
-// Blink LED 
 
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+
+// Blink LED 
 var led;
 
 function setup() {

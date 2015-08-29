@@ -66,7 +66,7 @@ function setup() {
 
 
 #### Analog Read
-![simple button diagram](diagrams/simple_button.png)  
+![potentiometer diagram](diagrams/potentiometer.png)  
 _diagram: potentiometer_
 
 ```js
@@ -205,14 +205,326 @@ function draw() {
 }
 ```
 
-
-
-
 ### LEDs
+#### LED Blink
+![led diagram](diagrams/led.png)  
+_diagram: led_
+
+```js
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+
+// Blink LED 
+var led;
+
+function setup() {
+  led = b.pin(9, 'LED');
+
+  createCanvas(300, 200);
+
+  var innerStr = '<p style="font-family:Arial;font-size:12px">'
+  innerStr += '<b>&larr;</b> LED on &nbsp; | &nbsp;';
+  innerStr += '<b>&rarr;</b> LED off &nbsp; | &nbsp;';
+  innerStr += '<b>&uarr;</b> Blink LED &nbsp; | &nbsp;';
+  innerStr += '<b>&darr;</b> Stop Blinking </p>';
+
+  createDiv(innerStr);
+}
+
+function keyPressed() {
+  if (keyCode === LEFT_ARROW){
+    led.on();
+  } else if (keyCode === RIGHT_ARROW) {
+    led.off();
+  } else if (keyCode === UP_ARROW){
+    led.blink();
+  } else if (keyCode === DOWN_ARROW) {
+    led.noBlink();
+  }
+}
+```
+
+#### LED Fade 
+![led diagram](diagrams/led.png)  
+_diagram: led_
+
+```js
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+
+// Fade LED 
+
+var led;
+
+function setup() {
+  led = b.pin(9, 'LED');
+
+  createCanvas(300, 200);
+
+  var innerStr = '<p style="font-family:Arial;font-size:12px">'
+  innerStr += '<b>&darr;</b> Fade </p>';
+
+  createDiv(innerStr);
+}
+
+function keyPressed(){
+ if (keyCode === DOWN_ARROW) {
+  led.write(200);
+  led.fade(200, 0);
+ } 
+}
+```
+
+
 ### RGB LEDs
+#### RGB Write
+![rgb diagram](diagrams/rgb.png)  
+_diagram: rgb_
+
+```js
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+
+function setup() {
+  var rgb = b.pin({r: 9, g: 10, b: 11}, 'RGBLED');
+  var c = color(65);
+  rgb.write(c);
+  fill(c);
+  noStroke();
+  ellipse(80, 80, 40, 40);
+}
+```
+
+#### RGB Read
+![rgb diagram](diagrams/rgb.png)  
+_diagram: rgb_
+
+```js
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+
+var rgb, c;
+
+function setup() {
+
+  createCanvas(300, 200);
+
+  var innerStr = '<p style="font-family:Arial;font-size:12px">'
+  innerStr += 'Press any key & check out the console for readings</p>';
+
+  createDiv(innerStr);
+
+
+  rgb = b.pin({r: 9, g: 10, b: 11}, 'RGBLED');
+  c = color(Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255));
+  rgb.write(c);
+  fill(c);
+  noStroke();
+  ellipse(80, 80, 40, 40);
+}
+
+// On any key press logs the color to the console
+function keyPressed(){
+  rgb.read(function(val){ console.log(val.toString()); });
+}
+```
+
+#### Blink RGB
+![rgb diagram](diagrams/rgb.png)  
+_diagram: rgb_
+
+```js
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+
+// RGB LED On/Off/Blink
+var rgb, c;
+
+function setup() {
+
+  createCanvas(300, 200);
+
+  var innerStr = '<p style="font-family:Arial;font-size:12px">'
+  innerStr += '<b>&larr;</b> LED on &nbsp; | &nbsp;';
+  innerStr += '<b>&rarr;</b> LED off &nbsp; | &nbsp;';
+  innerStr += '<b>&uarr;</b> Blink LED &nbsp; | &nbsp;';
+  innerStr += '<b>&darr;</b> Stop Blinking </p>';
+
+  createDiv(innerStr);
+
+  rgb = b.pin({r: 9, g: 10, b: 11}, b.RGBLED);
+  c = color(Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255));
+  rgb.write(c);
+  fill(c);
+  noStroke();
+  ellipse(150, 100, 40, 40);
+}
+
+function keyPressed() {
+  if (keyCode === LEFT_ARROW){
+    rgb.on();
+  } else if (keyCode === RIGHT_ARROW) {
+    rgb.off();
+  } else if (keyCode === UP_ARROW){
+    rgb.blink();
+  } else if (keyCode === DOWN_ARROW) {
+    rgb.noBlink();
+  }
+}
+```
+
+#### Fade RGB
+![rgb diagram](diagrams/rgb.png)  
+_diagram: rgb_
+
+```js
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+
+// Fade RGB
+var rgb;
+
+function setup() {
+
+  createCanvas(300, 200);
+
+  var innerStr = '<p style="font-family:Arial;font-size:12px">'
+  innerStr += '<b>&darr;</b> Fade </p>';
+
+  createDiv(innerStr);
+
+  rgb = b.pin({r: 9, g: 10, b: 11}, 'RGBLED');
+  var c = color(Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255));
+  rgb.write(c);
+  fill(c);
+  noStroke();
+  ellipse(80, 80, 40, 40);
+}
+
+function keyPressed(){
+ if (keyCode === DOWN_ARROW) {
+  rgb.write([200, 200, 200]);
+  rgb.fade([200, 0, 3000], [200, 0, 5000, 50], [200, 0, 1000, 50]);
+ } 
+}
+```
+
 ### Motor & Servo
+#### 
+![motor diagram](diagrams/motor.png)  
+_diagram: motor_
+
+```js
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+
+// Test motor functionality
+var motor;
+
+function setup() {
+  motor = b.pin(9, 'MOTOR');
+
+  createCanvas(300, 200);
+
+  var innerStr = '<p style="font-family:Arial;font-size:12px">'
+  innerStr += '<b>&larr;</b> Motor on &nbsp; | &nbsp;';
+  innerStr += '<b>&rarr;</b> Motor off &nbsp; | &nbsp;';
+  innerStr += '<b>&uarr;</b> motor.write(100) </p>';
+
+  createDiv(innerStr);
+}
+
+function keyPressed() {
+  if (keyCode === LEFT_ARROW){
+    motor.on();
+  } else if (keyCode === RIGHT_ARROW) {
+    motor.off();
+  } else if (keyCode === UP_ARROW){
+    motor.write(100);
+  }
+}
+```
+
+#### 
+![servo diagram](diagrams/servo.png)  
+_diagram: servo_
+
+```js
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+
+// Test servo functionality
+var servo;
+
+function setup() {
+  createCanvas(300, 200);
+
+  var innerStr = '<p style="font-family:Arial;font-size:12px">'
+  innerStr += '<b>&larr;</b> To 15 &nbsp; | &nbsp;';
+  innerStr += '<b>&rarr;</b> To 45 &nbsp; | &nbsp;';
+  innerStr += '<b>&uarr;</b> Sweep &nbsp; | &nbsp;';
+  innerStr += '<b>&darr;</b> Stop Sweeping </p>';
+
+  createDiv(innerStr);
+
+  servo = b.pin(9, 'SERVO');
+  servo.range([0, 60]);
+}
+
+function keyPressed() {
+   if (keyCode === LEFT_ARROW) {
+     console.log('l')
+     servo.write(15);
+   } else if (keyCode === RIGHT_ARROW) {
+     console.log('r')
+     servo.write(45);
+   } else if (keyCode === UP_ARROW) {
+     console.log('u')
+     servo.sweep();
+   } else if (keyCode === DOWN_ARROW) {
+     console.log('d')
+     servo.noSweep();
+   } 
+}
+```
+
 ### Button
+#### 
+![led diagram](diagrams/led.png)  
+_diagram: led_
+```js
+```
+
 ### Variable Resistors
+#### 
+![led diagram](diagrams/led.png)  
+_diagram: led_
+```js
+```
+
 ### Temperature
+#### 
+![led diagram](diagrams/led.png)  
+_diagram: led_
+```js
+```
+
 ### Piezo: Tone & Knock
+#### 
+![led diagram](diagrams/led.png)  
+_diagram: led_
+```js
+```
+
+#### 
+![led diagram](diagrams/led.png)  
+_diagram: led_
+```js
+```
+
 ### Serial
+#### 
+![led diagram](diagrams/led.png)  
+_diagram: led_
+```js
+```
