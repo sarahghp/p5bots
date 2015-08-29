@@ -1,8 +1,8 @@
 # Welcome to p5bots!
 
 * [How Does This Work?](#how-does-this-work)
-* [p5.Serial](#p5-serial)
-* [p5.Board](#p5-board)
+* [p5.Serial](#p5serial)
+* [p5.Board](#p5board)
 * [Getting Started](#getting-started)
 * [Issues](#issues)
 * [Contributing](#contributing)
