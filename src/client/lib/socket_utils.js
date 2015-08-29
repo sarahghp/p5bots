@@ -13,11 +13,20 @@ var utils =  {
     });
   },
 
+  // Set by p5.board
   board: undefined,
 
+
+  /**
+   * Workhorse function establishes default read & write for all
+   * pins that don't override
+   *
+   * @param  {Object} pin    Base pin instance
+   * @param  {String} [mode] Explicit mode override
+   * @return {Object}        Mutated pin
+   */
   constructFuncs: function(pin, mode) {
 
-    // Let an explicit passed mode override the pin's user-facing mode
     var mode = mode || pin.mode; // jshint ignore:line
 
     function setVal(data) {
@@ -62,6 +71,12 @@ var utils =  {
     };
   },
 
+  /**
+   * This is where we put tests for special callbacks, from
+   * special modes. Used by setVal() in constructFuncs.
+   *
+   * @type {Object}
+   */
   readTests: {
     button: function buttonTests(val) {
       if (val === 1) {
@@ -96,6 +111,16 @@ var utils =  {
 
   socket: socket,
 
+  /**
+   * Generates generic read and write funcs and emits
+   * across the socket
+   *
+   * @param  {String} kind      digital | analog
+   * @param  {String} direction input | output
+   * @param  {Number} pin       pin number on board, analog pins can
+   *                            just pass the number without A
+   *
+   */
   socketGen: function(kind, direction, pin) {
     function titleCase(str){
       return str.charAt(0).toUpperCase() + str.substring(1);

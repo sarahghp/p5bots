@@ -1,5 +1,11 @@
 var utils = require('./socket_utils.js');
 
+/**
+ * Adds led-specific methods to pin object. Called via special.
+ *
+ * @param  {Object} pin
+ * @return {Object} mutated pin
+ */
 function led(pin) {
   utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
   utils.constructFuncs(pin);
@@ -22,6 +28,7 @@ function led(pin) {
 
     function ledOff() {
       utils.socket.emit('blink cancel');
+
       if(this.mode !== 'pwm') {
         this.write('LOW');
       } else {
@@ -33,6 +40,16 @@ function led(pin) {
 
   };
 
+  /**
+   * Prepares and emits the fade event. The actual math is
+   * taken care of in the server LED file.
+   *
+   * @param  {Number} start             Initial PWM value
+   * @param  {Number} stop              End PWM value
+   * @param  {Number} [totalTime=3000]  Total time for fade, in ms
+   * @param  {Number} [increment=200]   Time taken for each step, in ms
+   *
+   */
   pin.fade = function(start, stop, totalTime, increment) {
     function ledFade() {
 

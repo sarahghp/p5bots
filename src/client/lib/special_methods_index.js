@@ -1,3 +1,5 @@
+// Don't forget to add new files to this sweet table of contents
+
 var special = {
 
   button: require('./button.js'),

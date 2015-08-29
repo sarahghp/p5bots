@@ -1,8 +1,15 @@
 var utils = require('./socket_utils.js');
 
+/**
+ * Adds motor-specific methods to pin object. Called via special.
+ *
+ * @param  {Object} pin
+ * @return {Object} mutated pin
+ */
 function motor(pin) {
   utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
   utils.constructFuncs(pin);
+
   pin.on = function() {
     function motorOn() {
       if(this.mode !== 'pwm') {

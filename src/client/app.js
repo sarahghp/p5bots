@@ -1,3 +1,7 @@
+/**
+ * @module Basic constructors
+ */
+
 'use strict';
 
 var utils = require('./lib/socket_utils.js');
@@ -18,6 +22,14 @@ var specialMethods = {
   'vres': { fn: special.vres, mode: 'analog' }
 };
 
+/**
+ * This is the primary constructor for the board object. It stores the
+ * port and type, makes constants available, and initializes the queue.
+ * It is called by p5.board.
+ *
+ * @param {String} port The port to which the microcontroller is connected
+ * @param {String} type Type of microcontroller
+ */
 var Board = function (port, type){
   this.port = port;
   this.type = type.toLowerCase() || 'arduino';
@@ -52,6 +64,14 @@ var Board = function (port, type){
 
 };
 
+/**
+ * The Pin constructor sets pin defaults and parses for special,
+ * or complex, modes
+ *
+ * @param {Number} num         Pin number on the board
+ * @param {String} [mode]      Pin mode: can be basic or complex
+ * @param {String} [direction] Input or output
+ */
 var Pin = function(num, mode, direction){
   this.pin = num;
   this.direction = direction ? direction.toLowerCase() : 'output';
@@ -67,6 +87,16 @@ var Pin = function(num, mode, direction){
   this.read = function() { throw new Error('Read undefined'); };
 };
 
+
+/**
+ * Instantiaties pin, directs construction of helper methods
+ * based on mode
+ *
+ * @param {Number} num         Pin number on the board
+ * @param {String} [mode]      Pin mode: can be basic or complex
+ * @param {String} [direction] Input or output
+ * @return {Object}            Instantiated pin
+ */
 Board.prototype.pin = function(num, mode, direction){
   var _pin = new Pin(num, mode, direction);
 
@@ -90,6 +120,17 @@ Board.prototype.pin = function(num, mode, direction){
   return _pin;
 };
 
+
+/**
+ * p5.board() makes the board object accessible via p5.
+ * It must be called to begin communicating with the board
+ * for all methods but p5.serial.
+ *
+ * @param {String} port The port to which the microcontroller is connected
+ * @param {String} type Type of microcontroller
+ * @return {Object}     Reference to the object as stored in utils.
+ *
+ */
 p5.board = function (port, type){
   utils.board = new Board(port, type);
 
@@ -105,8 +146,14 @@ p5.board = function (port, type){
   return utils.board;
 };
 
-// Serial does not pass through firmata & therefore not through
-// board & pin constructors
+
+/**
+ * Initializes the serial methods on the base p5 object.
+ * Serial does not pass through firmata & therefore not through
+ * board & pin constructors
+ *
+ * @type {function}
+ */
 p5.serial = special.serial;
 
 

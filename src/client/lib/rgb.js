@@ -1,5 +1,12 @@
 var utils = require('./socket_utils.js');
 
+/**
+ * Processes & adds rgb led–specific methods to pin object. Called via special.
+ * Does not use standard read and write constructors.
+ *
+ * @param  {Object} pin
+ * @return {Object} mutated pin
+ */
 function rgb(pin) {
   // Unpack pin object & initialize pins
   var settings = pin.pin;
@@ -13,11 +20,21 @@ function rgb(pin) {
   utils.dispatch(utils.pinInit(pin.greenPin, pin.mode, pin.direction));
   utils.dispatch(utils.pinInit(pin.bluePin, pin.mode, pin.direction));
 
+  /**
+   * Unlike other writes, which take a Number or a constant,
+   * the RGB LED takes a p5.Color object or an array of
+   * three values as an argument. This is also where inversion for
+   * anode RGBs is handled.
+   *
+   * @param  {Object | Array} color p5.Color object or an array of RGB values
+   *
+   */
   pin.write = function(color) {
 
     this.color = Array.isArray(color) ?  p5.prototype.color(color) : color;
     this.color.writeArr = [];
 
+    // Invert values for common anode RGBs
     if (this.common === 'anode') {
       this.color.writeArr[0] = 255 - this.color.rgba[0];
       this.color.writeArr[1] = 255 - this.color.rgba[1];
@@ -38,16 +55,33 @@ function rgb(pin) {
 
   };
 
+  /**
+   * The RGB read reassmbles values returned from each pin into a
+   * p5.Color object and then sets both the pin.val property and the
+   * pin.color, in addition to calling the user-provided callback
+   * with said value
+   *
+   * @param  {Function} [arg] User-provided callback function
+   *
+   */
   pin.read = function(arg) {
     this.incomingColor = {};
 
     function rgbRead() {
       if (arg) { this.readcb = arg; }
+
       utils.socket.emit('rgb read', {
         pins: { red: this.redPin, green: this.greenPin, blue:this.bluePin },
         arg: arg
       });
 
+      /**
+       * This method handles the async reasembly by populating the incoming
+       * color property with socket-received values and then triggering cb
+       * when complete
+       *
+       * @param {Object} data Single-pin info returned by pin read on server
+       */
       function setRGBvals(data){
         this.incomingColor[data.type] = data.val;
 
@@ -123,6 +157,20 @@ function rgb(pin) {
 
   };
 
+  /**
+   * Unpacks fade ararys to send to server, where the math happens :D
+   *
+   * @param  {Array} red   The 2 required & 2 optional vals, all Numbers:
+   *                       start, stop, total run time, increment time,
+   *                       the latter two in ms
+   * @param  {Arary} green The 2 required & 2 optional vals, all Numbers:
+   *                       start, stop, total run time, increment time,
+   *                       the latter two in ms
+   * @param  {Arary} blue  The 2 required & 2 optional vals, all Numbers:
+   *                       start, stop, total run time, increment time,
+   *                       the latter two in ms
+   *
+   */
   pin.fade = function (red, green, blue) {
     function rgbFade() {
       utils.socket.emit('rgb fade', {

@@ -2,8 +2,20 @@ var utils = require('./socket_utils.js'),
     socket = utils.socket,
     serialObj = {};
 
+/**
+ * Serial does not work along the same methods as Firmata-dependent
+ * board funcs. It is therefore attached to the top-level p5 Object.
+ *
+ * @return {Object} Constructed serial instance
+ */
 var serial = function() {
 
+  /**
+   * Passes through data to a node-serialport instatiation
+   * @param  {String} path   Port used
+   * @param  {Object} config Config options, can use any listed
+   *                         for node-serialport
+   */
   serialObj.connect = function(path, config) {
     socket.emit('serial init', {
       path: path,
@@ -19,6 +31,7 @@ var serial = function() {
     });
   };
 
+  // Read-event aliases for the old-school among us.
   serialObj.readEvent = serialObj.read;
   serialObj.readData = function(){
     return this.data;

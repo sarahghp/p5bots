@@ -1,5 +1,14 @@
 var utils = require('./socket_utils.js');
 
+/**
+ * Adds piezo-specific methods to pin object. Called via special.
+ * Can be called via the PIEZO mode, as well as KNOCK and TONE.
+ *
+ * Overwrites standard read constructor.
+ *
+ * @param  {Object} pin
+ * @return {Object} mutated pin
+ */
 function piezo(pin) {
   utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
   utils.constructFuncs(pin);
@@ -41,6 +50,8 @@ function piezo(pin) {
     utils.dispatch(piezoNoTone.bind(this));
   };
 
+  // Since this method just attaches further properties to the pin
+  // it does not run through dispatch
   pin.threshold = function(thresh) {
     this.threshold = thresh;
     this.overThreshold = function() {

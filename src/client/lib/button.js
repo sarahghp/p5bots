@@ -1,5 +1,12 @@
 var utils = require('./socket_utils.js');
 
+/**
+ * Adds button-specific methods to pin object. Called via special.
+ * Always overwrites direction.
+ *
+ * @param  {Object} pin
+ * @return {Object} mutated pin
+ */
 function button (pin) {
 
   pin.direction = 'input';
