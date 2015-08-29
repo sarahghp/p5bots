@@ -490,8 +490,8 @@ function keyPressed() {
 
 ### Button
 #### Button
-![button diagram](diagrams/button.png)  
-_diagram: button_
+![button diagram](diagrams/simple_button.png)  
+_diagram: simple_button_
 
 ```js
 // Board setup — you may need to change the port
