@@ -279,10 +279,3 @@ exports.mine = function mine(board, socket) {
 ```
 
 Path defaults to the current directory and filename to `user.js`.
-
-
-## Contributing
-If you are interested in contributing please start by reading [CONTRIBUTING.md]
-
-## License
-[LGPL](license.txt)
