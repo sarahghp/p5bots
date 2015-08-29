@@ -2,26 +2,26 @@
 
 * [Setting Up](#setting-up)  
 * [Using p5.Bots with p5.js](#using-p5bots-with-p5js)  
-  -[Base Functions](#)  
-    -[Initialize Board](#)  
-    -[Initialize Pin](#)  
-    -[Constants](#)  
-    -[Basic Pin Methods](#)  
-  -[](#)  
-    -[](#)  
-    -[](#)  
-    -[](#)  
-    -[](#)  
-  -[](#)  
-    -[](#)  
-    -[](#)  
-    -[](#)  
-    -[](#)  
-      -[](#)  
-      -[](#)  
-  -[](#)  
-    -[](#)  
-  -[](#)  
+  - [Base Functions](#)  
+    - [Initialize Board](#)  
+    - [Initialize Pin](#)  
+    - [Constants](#)  
+    - [Basic Pin Methods](#)  
+  - [](#)  
+    - [](#)  
+    - [](#)  
+    - [](#)  
+    - [](#)  
+  - [](#)  
+    - [](#)  
+    - [](#)  
+    - [](#)  
+    - [](#)  
+      - [](#)  
+      - [](#)  
+  - [](#)  
+    - [](#)  
+  - [](#)  
 
 ## Setting Up
 
@@ -164,8 +164,6 @@ led.fade([start, stop, [, total time, interval]])
 #### RGB LED Methods
 Like LEDs, RGB LEDs can be turned on and off, they can blink, and they can fade. When initialized, RGB LEDs take a hash/object listing the pin number for each color as well as the type of LED it is.
 
-Write accepts a p5.Color object or an array of three numbers 0-255 describing an RGB color.
-
 ```js
 // initialize with hash of led options
 rgb = board.pin({ r: int, g: int, b: int, common: 'anode' || 'cathode' }, 'RGBLED');
@@ -176,6 +174,8 @@ rgb.read()
 
 ```
 
+`Write` accepts a p5.Color object or an array of three numbers 0-255 describing an RGB color.
+
 *Example*
 
 These lines create the same color.
@@ -183,7 +183,6 @@ These lines create the same color.
 
 var c = color(255, 204, 0);
 rgb.write(c);
-
 
 colorMode(hsla);
 var h = color(48, 100, 50);
@@ -219,7 +218,7 @@ rgb.fade([start, stop, [, total time, interval]], [start, stop, [, total time, i
 #### MOTOR Methods
 ```js
 // initialize the pin
-motor = board.pin(num, 'LED')
+motor = board.pin(num, 'MOTOR')
 
 // set motor to highest speed, lowest speed
 motor.start()
@@ -245,9 +244,37 @@ servo.sweep()
 servo.noSweep()
 ```
 
+#### PIEZO Methods: Tone
+When set as an output pin, the piezo works as a sound element.
+
+```js
+// initialize the pin
+t = board.pin(num, 'TONE') || board.pin(num, 'PIEZO')
+
+// sends a single value
+t.write()
+```
+Sounds can be sent to the piezo as a note string or as a frequency.
+
+```js
+// sends a note or a frequency for the given duration, in ms
+t.tone(note || freq, duration)
+t.noTone()
+```
+*Example*
+These will both sound the same tone for second.
+
+```js
+t.tone('c#2', 1000)
+t.tone(69, 1000)
+```
+
 ### Special read methods
+As with special write modes, the direction does not need to be indicated.
 
 #### BUTTON Methods
+All three button methods work as special `read` methods by taking functions to be called when the method is invoked, that is, when the button is pressed, released, or held.
+
 ```js
 // initialize the pin
 button = board.pin(num, 'BUTTON')
@@ -256,13 +283,13 @@ button = board.pin(num, 'BUTTON')
 button.pressed(cb)
 button.released(cb)
 
-// hold also requires a threshold to trigger
+// hold also requires a threshold to trigger, a time specified in ms
 button.held(cb, int)
 ```
 
 #### Variable Resistor
 
-These methods can be used with any variable resistor: for instance, a potentiometer, photo- or touch-sensitive sensor.
+These methods can be used with any variable resistor: for instance, a potentiometer, or a photo- or touch-sensitive sensor.
 
 ```js
 // initialize the pin
@@ -282,7 +309,7 @@ vr.overThreshold
 ```
 
 #### TEMP Methods
-Initial implementation is for sensors that read voltage change for temperature
+Initial implementation is for sensors that read voltage change for temperature. Initialization requires both the pin number and the voltage that will be read in: 3.3 or 5.
 
 ```js
 // initialize the pin with number and voltage
@@ -298,23 +325,9 @@ temp.F
 temp.K
 ```
 
-#### PIEZO Methods
-The piezo can be used as an output pin, to emit a tone or as an input pin, a knock sensor.
+#### PIEZO Methods: Knock
+When set as an input pin, the piezo works as a knock sensor.
 
-*Tone functions: Output*
-```js
-// initialize the pin
-t = board.pin(num, 'TONE') || board.pin(num, 'PIEZO')
-
-// sends a single value
-t.write()
-
-// sennds a note or a frequency for the given duration
-t.tone(note || freq, duration)
-t.noTone()
-```
-
-*Knock functions: Input* 
 ```js
 // initialize the pin
 k = board.pin(num, 'KNOCK') || board.pin(num, 'PIEZO')
@@ -350,6 +363,16 @@ serial.connect(path [, { config obj } ])
 // Basic read and write events
 serial.read()
 serial.write()
+```
+
+Because `serial.read` works in the node style of accepting a callback function instead of returning a function, two additional functions have been provided.
+
+```js
+// Like the processing API
+serial.readEvent([callback function])
+
+// Returns data value
+serial.readData()
 ```
 
 
