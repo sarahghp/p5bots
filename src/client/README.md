@@ -2,13 +2,33 @@
 
 * [Setting Up](#setting-up)  
 * [Using p5.Bots with p5.js](#using-p5bots-with-p5js)  
+  -[](#)  
+    -[](#)
+    -[](#)  
+    -[](#)  
+    -[](#)  
+  -[](#)  
+    -[](#)  
+    -[](#)  
+    -[](#)  
+    -[](#)  
+  -[](#)  
+    -[](#)  
+    -[](#)  
+    -[](#)  
+    -[](#)  
+      -[](#)  
+      -[](#)  
+  -[](#)  
+    -[](#)  
+  -[](#)  
 
 ## Setting Up
 
 There are two steps to get up and running with p5.bots.
 
 ### Bots in the Browser: The Client
-In addition to including p5.js in your html file, you will need two other scripts to get p5.bots going: a link to `socket.io`'s CDN or to a version you can download at [socket.io](http://socket.io/download/) and a pointer to the `p5bots.js` file from the [lib directory](https://github.com/sarahgp/p5bots/tree/master/lib).
+In addition to including `p5.js` in your html file, you will need two other scripts to get p5.bots going: a link to `socket.io`'s CDN or to a version you can download at [socket.io](http://socket.io/download/) and a pointer to the `p5bots.js` file from the [lib directory](https://github.com/sarahgp/p5bots/tree/master/lib).
 
 ```html
 <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
@@ -17,30 +37,40 @@ In addition to including p5.js in your html file, you will need two other script
 
 
 ### But Wait, There's More: Server-Side Files
-To send messages from the client to the board, you also need to run the p5.bots server files. For more detail on setting up the server and making sure it's working check out the README at [p5bots-server in src](https://github.com/sarahgp/p5bots/tree/master/src/p5bots-server) & download [p5bots-server from NPM](https://www.npmjs.com/package/p5bots-server).
+To send messages from the client to the board, you also need to run the p5.bots server files. For more detail on setting up the server and making sure it's working check out the README at [p5bots-server](https://github.com/sarahgp/p5bots/tree/master/src/p5bots-server) & download [p5bots-server from NPM](https://www.npmjs.com/package/p5bots-server).
+
+### Or, Let the Editor Handle It
+p5.bots is also included in the [p5.js Editor](https://github.com/processing/p5.js-editor).
 
 ## Using p5.Bots with p5.js
 
-Below is a short annotated guide to the API. Detailed examples & tutorials by the end of August.
-
 ### Base Functions
+
+To start communicating with your device, you must first create a board and at least one pin. To do this, first call `p5.board()`. This will return a board object that has the pin method and other functionality attached.
 
 #### Initialize Board
 ```js
 // returns a reference to the board object
 p5.board(port, type)
 ```
+ 
+-- PORT: string, see [example README](https://github.com/sarahgp/p5bots/tree/master/examples) for ways to identify your port
+-- TYPE: string, probably 'arduino' 
 
--- TYPE: string, probably 'arduino'  
--- PORT: string, see [p5bots-server README](https://github.com/sarahgp/p5bots/tree/master/src/p5bots-server) for figuring out what this should be
+*Example*
+```js
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+```  
 
 #### Initialize Pin
+Once you have a board, you will create at least one pin to let the program know where to send or find  information. This can be called with all the information entered manually or with shorthand. It returns a reference to a pin with the methods suited to its type. (See modes below for details.)
+
 ```js
 // returns a reference to the pin object
-board.pin(num, type, direction) 
+board.pin(num, mode, direction) 
 ```
 -- NUM: pin #  
--- TYPE: digital | analog | pwm || any special method
+-- MODE: digital | analog | pwm || any special method
 -- DIRECTION: input | output  
   
 ```js
@@ -49,7 +79,44 @@ pin = board.pin(num)
 ```
 -- default to digital output
 
+#### Constants
+Properties such as type and direction can be indicated with strings, as we saw above, e.g.: `'HIGH'`, or with constants attached to the board object: `b.HIGH`.
+
+The following constants are available:
+```js
+// values
+board.HIGH
+board.LOW
+
+// direction
+board.INPUT 
+board.OUTPUT
+
+// basic mode types
+board.ANALOG
+board.DIGITAL
+board.PWM 
+
+// special mode types
+board.SERVO
+board.BUTTON
+board.KNOCK 
+board.LED 
+board.MOTOR 
+board.PIEZO 
+board.RGBLED
+board.TEMP
+board.TONE
+board.VRES
+```
+
 #### Basic Pin Methods
+All pins have read and write methods. These basic methods are sometimes overwritten by special methods suited to the mode.
+
+`Write` will always send a value to a pin. If the pin is set to input, this may have the effect of setting the pin to pull high or low.
+
+`Read` works differently from the Arduino or Processing `read` methods in that rather than returning a value directly, it takes a function that will be called each time the value changes. p5.bots also sets the `pin.val` property on each value change, though, because this is asynchronous, it may have a small lag.
+
 ```js
 // each time a value changes pin.val will be updated + optional callback function will be called 
 pin.read([callback fn]) 
@@ -57,6 +124,12 @@ pin.read([callback fn])
 // send a value to the pin
 pin.write(val) 
 ```
+
+*Example*
+```js
+// Will log the value each time it changes
+p.read(function(val){console.log(val);});
+```  
 
 ### Special write methods
 
