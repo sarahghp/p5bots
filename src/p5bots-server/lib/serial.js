@@ -9,6 +9,7 @@ function serialDispatch(fn, args){
     : serialQ.push({ func: fn, args: args });
 }
 
+// Kicks off the event queue on success
 exports.init = function serialInit(socket) {
   socket.on('serial init', function(data) {
     serialport = new SerialPort(data.path, data.config);
@@ -44,6 +45,7 @@ exports.write = function serialWrite(socket) {
   });
 };
 
+// Skips the event queue
 exports.list = function serialList(socket) {
   socket.on('serial list', function(){
     sp.list(function (err, ports) {

@@ -17,6 +17,7 @@ function makeAbsolute(filepath){
   return path.isAbsolute(filepath) ? filepath : process.cwd() + '/' + filepath;
 }
 
+// This both defines options as well as what prints when '--help' is called.
 program
   .description('Run `node app.js` plus these flags to configure your server.')
   .option('-d, --dir <d>', 'Set base directory for server')

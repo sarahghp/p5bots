@@ -37,6 +37,8 @@ exports.blink = function rgbBlink(board, socket) {
 
       var blinkID = setInterval(function() {
         if (ledOn) {
+          // Always refer back to array to be sure we are writing
+          // the initial color
           board.analogWrite(ledPin, gamma[data.pins[key][1]]);
         } else {
           board.analogWrite(ledPin, 0);

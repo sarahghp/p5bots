@@ -1,3 +1,7 @@
+/**
+ * Notes > frequency. Used by piezo.js
+ */
+
 module.exports = {
   'c0': 16,
   'c#0': 17,

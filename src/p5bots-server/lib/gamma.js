@@ -1,3 +1,7 @@
+/**
+ * Gamma correction for rgb leds. Used by rgb.js.
+ */
+
 module.exports = [
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,

@@ -1,12 +1,3 @@
-/**
- * @module Server-Side Events: LED
- */
-
-/**
- * Listener for LED blink event, sends data to board, manages timing
- * @param  {obj} board  Reference to instantiated Firmata board
- * @param  {obj} socket Reference to socket.io socket
- */
 exports.blink = function blink(board, socket) {
   socket.on('blink', function(data){
     var ledPin = data.pin,
@@ -33,11 +24,6 @@ exports.blink = function blink(board, socket) {
   });
 };
 
-/**
- * Listener for LED fade event, sends data to board, manages timing
- * @param  {obj} board  Reference to instantiated Firmata board
- * @param  {obj} socket Reference to socket.io socket
- */
 exports.fade = function fade(board, socket) {
   socket.on('fade', function(data) {
     board.pinMode(data.pin, board.MODES.PWM);
