@@ -1,6 +1,6 @@
 # Welcome to the Examples!
 
-This section contains example implementations for each of the standard and special modes:
+This section contains example implementations for each of the standard and special modes:  
   -[Basics](#basics)  
   -[LEDs](#leds)  
   -[RGB LEDs](#rgb-leds)  
