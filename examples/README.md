@@ -1,6 +1,7 @@
 # Welcome to the Examples!
 
-This section contains example implementations for each of the standard and special modes:  
+This section contains example implementations for each of the standard and special modes:
+
   -[Basics](#basics)  
   -[LEDs](#leds)  
   -[RGB LEDs](#rgb-leds)  
@@ -43,7 +44,7 @@ If your computer is not on this list — or if these fail — you can find your 
 ### Basics
 
 #### Digital Read
-![simple button diagram](diagrams/simple_button.png)
+![simple button diagram](diagrams/simple_button.png)  
 _diagram: simple_button_
 
 ```js
@@ -65,7 +66,7 @@ function setup() {
 
 
 #### Analog Read
-![simple button diagram](diagrams/simple_button.png)
+![simple button diagram](diagrams/simple_button.png)  
 _diagram: potentiometer_
 
 ```js
@@ -88,7 +89,7 @@ function setup() {
 
 
 #### Button Draw
-![simple button diagram](diagrams/simple_button.png)
+![simple button diagram](diagrams/simple_button.png)  
 _diagram: simple_button_
 
 ```js
@@ -122,7 +123,7 @@ function draw() {
 
 
 #### Light LED (Digital Write)
-![led diagram](diagrams/led.png)
+![led diagram](diagrams/led.png)  
 _diagram: led_
 
 ```js
@@ -180,7 +181,7 @@ function setup() {
 
 
 #### PWM Slider (PWM)
-![led diagram](diagrams/led.png)
+![led diagram](diagrams/led.png)  
 _diagram: led_
 
 ```js
