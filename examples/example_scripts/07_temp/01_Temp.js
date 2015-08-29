@@ -40,7 +40,7 @@ function keyPressed() {
     console.log(thermo.C);
   } else if (keyCode === UP_ARROW) {
     console.log('v');
-    console.log(thermo);
+    console.log(thermo.val);
   } else if (keyCode === DOWN_ARROW) {
     console.log('k')
     console.log(thermo.K);

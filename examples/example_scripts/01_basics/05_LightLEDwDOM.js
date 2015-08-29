@@ -1,5 +1,5 @@
 // Basic: Light LED + p5.DOM
-// Diagram: diagrams/simple_button
+// Diagram: diagrams/led
 
 
 // Board setup — you may need to change the port

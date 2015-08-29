@@ -1,5 +1,5 @@
 // Basic: Digital Read
-// Diagram: 
+// Diagram: diagrams/simple_button
 
 // Board setup — you may need to change the port
 var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
@@ -17,7 +17,6 @@ var p = b.pin(9, 'DIGITAL', 'INPUT');
 p.read(function(val){console.log(val);});
 
 function setup() {
-  createCanvas(300, 200);
 
   var innerStr = '<p style="font-family:Arial;font-size:12px">'
   innerStr += 'Check out the console for readings</p>';

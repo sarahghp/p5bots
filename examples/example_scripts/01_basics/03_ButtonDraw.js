@@ -21,8 +21,13 @@ function setup() {
   p = b.pin(9, 'DIGITAL', 'INPUT');
   p.read();
 
-  createCanvas(1200, 500);
+  createCanvas(1200, 300);
   noStroke();
+
+  var innerStr = '<p style="font-family:Arial;font-size:12px">'
+  innerStr += 'Press the button</p>';
+
+  createDiv(innerStr);
 }
 
 function draw() {

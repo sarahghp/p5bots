@@ -57,6 +57,6 @@ function setup() {
   button.read();
   button.pressed(redEllipse);
   button.released(blueEllipse);
-  button.held(greenEllipse, 3000);
+  button.held(greenEllipse, 1000);
 
 }

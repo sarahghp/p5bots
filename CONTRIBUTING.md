@@ -12,6 +12,8 @@ If you feel someone has violated this code or is otherwise making the community 
 ### Claiming a Task
 If you'd like to contribute to p5bots developement, check out the [issues](https://github.com/sarahgp/p5bots/issues) or open your own to let us know what you want to work on.
 
+Also, examples are always appreciated. See [the examples repo](examples) for what we already have.
+
 ### Prerequisities
 1. Node.js
 2. Npm

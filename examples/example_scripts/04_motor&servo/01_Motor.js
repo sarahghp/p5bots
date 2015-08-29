@@ -23,7 +23,7 @@ function setup() {
   var innerStr = '<p style="font-family:Arial;font-size:12px">'
   innerStr += '<b>&larr;</b> Motor on &nbsp; | &nbsp;';
   innerStr += '<b>&rarr;</b> Motor off &nbsp; | &nbsp;';
-  innerStr += '<b>&uarr;</b> Motor 100 </p>';
+  innerStr += '<b>&uarr;</b> motor.write(100) </p>';
 
   createDiv(innerStr);
 }

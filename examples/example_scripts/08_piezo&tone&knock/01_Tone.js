@@ -1,5 +1,5 @@
-// Button: Button 
-// Diagram: diagrams/simple_button
+// Piezo: Button 
+// Diagram: diagrams/tone
 
 
 // Board setup — you may need to change the port

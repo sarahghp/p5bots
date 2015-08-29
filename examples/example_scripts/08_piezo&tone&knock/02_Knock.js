@@ -1,5 +1,5 @@
-// Button: Button 
-// Diagram: diagrams/simple_button
+// Piezo: Knock 
+// Diagram: diagrams/knock
 
 
 // Board setup — you may need to change the port
