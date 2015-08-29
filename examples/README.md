@@ -410,7 +410,7 @@ function keyPressed(){
 ```
 
 ### Motor & Servo
-#### 
+#### Motor
 ![motor diagram](diagrams/motor.png)  
 _diagram: motor_
 
@@ -445,7 +445,7 @@ function keyPressed() {
 }
 ```
 
-#### 
+#### Servo
 ![servo diagram](diagrams/servo.png)  
 _diagram: servo_
 
@@ -489,42 +489,232 @@ function keyPressed() {
 ```
 
 ### Button
-#### 
-![led diagram](diagrams/led.png)  
-_diagram: led_
+#### Button
+![button diagram](diagrams/button.png)  
+_diagram: button_
+
 ```js
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+
+// Test Pressed, Held, Released
+var button;
+
+function setup() {
+  createCanvas(600, 200);
+
+  var innerStr = '<p style="font-family:Arial;font-size:12px">'
+  innerStr += 'Press for Red &nbsp; | &nbsp;';
+  innerStr += 'Release for Blue &nbsp; | &nbsp;';
+  innerStr += 'Hold for Green </p>';
+
+  createDiv(innerStr);
+
+  
+  button = b.pin(9, 'BUTTON');
+
+  function redEllipse() {
+    console.log('pressed');
+    clear();
+    noStroke();
+    fill(255, 0, 0);
+    ellipse(100, 100, 40, 40);
+  }
+
+  function blueEllipse() {
+    console.log('released');
+    clear();
+    noStroke();
+    fill(0, 0, 255);
+    ellipse(200, 100, 40, 40);
+  }
+
+  function greenEllipse() {
+    console.log('held')
+    clear();
+    noStroke();
+    fill(0, 255, 136);
+    ellipse(300, 100, 40, 40);
+  }
+  
+  button.read();
+  button.pressed(redEllipse);
+  button.released(blueEllipse);
+  button.held(greenEllipse, 1000);
+
+}
 ```
 
 ### Variable Resistors
-#### 
-![led diagram](diagrams/led.png)  
-_diagram: led_
+#### Variable Resistors
+![potentiometer diagram](diagrams/potentiometer.png)  
+_diagram: potentiometer_
+
 ```js
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+
+// Test Read & Threshold
+var pmeter;
+
+function setup() {
+  createCanvas(300, 200);
+
+  var innerStr = '<p style="font-family:Arial;font-size:12px">'
+  innerStr += 'Check out the console for readings &nbsp; | &nbsp;';
+  innerStr += 'Press any key to test threshold </p>';
+
+  createDiv(innerStr);
+
+
+  pmeter = b.pin(0, 'VRES');
+  pmeter.read(function(val){ console.log('pmeter read', val)});
+  pmeter.range([10, 400]);
+  pmeter.threshold(600);
+}
+
+function keyPressed() {
+  console.log('is over?', pmeter.val, pmeter.overThreshold());
+}
 ```
 
 ### Temperature
-#### 
-![led diagram](diagrams/led.png)  
-_diagram: led_
+#### Temperature
+![temp diagram](diagrams/temp.png)  
+_diagram: temp_
+
+This example uses a [TS-195 analog temperature sensor](http://tinkersphere.com/sensors/195-temperature-sensor-arduino-compatible.html) but should work with all analog temp sensors.
+
 ```js
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+
+// Test all read modes
+var thermo;
+
+function setup() {
+  createCanvas(300, 200);
+
+  var innerStr = '<p style="font-family:Arial;font-size:12px">'
+  innerStr += '<b>&larr;</b> Write F to console &nbsp; | &nbsp;';
+  innerStr += '<b>&rarr;</b> Write C to console &nbsp; | &nbsp;';
+  innerStr += '<b>&uarr;</b> Write raw value to console &nbsp; | &nbsp;';
+  innerStr += '<b>&darr;</b> Write K to console </p>';
+
+  createDiv(innerStr);
+
+
+  thermo = b.pin({ pin: 0, voltsIn: 5 }, 'TEMP');
+  thermo.read();
+}
+
+function keyPressed() {
+  if (keyCode === LEFT_ARROW) {
+    console.log('f');
+    console.log(thermo.F);
+  } else if (keyCode === RIGHT_ARROW) {
+    console.log('c');
+    console.log(thermo.C);
+  } else if (keyCode === UP_ARROW) {
+    console.log('v');
+    console.log(thermo.val);
+  } else if (keyCode === DOWN_ARROW) {
+    console.log('k')
+    console.log(thermo.K);
+  }
+}
 ```
 
 ### Piezo: Tone & Knock
-#### 
-![led diagram](diagrams/led.png)  
-_diagram: led_
+#### Tone
+![tone diagram](diagrams/tone.png)  
+_diagram: tone_
+
 ```js
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+
+// Play tones
+var t;
+
+function setup() {
+  createCanvas(300, 200);
+
+  var innerStr = '<p style="font-family:Arial;font-size:12px">'
+  innerStr += '<b>&larr;</b> Write note &nbsp; | &nbsp;';
+  innerStr += '<b>&rarr;</b> Write frequency &nbsp; | &nbsp;';
+  innerStr += '<b>&uarr;</b> Does nothing! &nbsp; | &nbsp;';
+  innerStr += '<b>&darr;</b> No Tone </p>';
+
+  createDiv(innerStr);
+
+
+  t = b.pin(8, 'TONE'); // Can also set mode to 'PIEZO'
+}
+
+function keyPressed() {
+  if (keyCode === LEFT_ARROW) {
+    console.log('note');
+    t.tone('e7', 10000)
+  } else if (keyCode === RIGHT_ARROW) {
+    console.log('freq');
+    t.tone(600, 400);
+  } else if (keyCode === UP_ARROW) {
+    console.log('up does nothing!!');
+    console.log(t);
+  } else if (keyCode === DOWN_ARROW) {
+    console.log('nT')
+    t.noTone();
+  }
+}
 ```
 
-#### 
-![led diagram](diagrams/led.png)  
-_diagram: led_
+#### Knock
+![knock diagram](diagrams/knock.png)  
+_diagram: knock_
+
 ```js
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
+
+// Get ready to knock
+var k;
+
+function setup() {
+
+ createCanvas(300, 200);
+
+ var innerStr = '<p style="font-family:Arial;font-size:12px">'
+ innerStr += 'Check out log to see values</p>';
+
+ createDiv(innerStr);
+
+ k = b.pin(0, 'KNOCK'); // Can also set mode to 'PIEZO'
+ k.threshold(200);
+ k.read();
+}
+
+function draw() {
+  console.log('Value:', k.val, 
+              'threshold:', k.threshold, 
+              'overThreshold?:', k.overThreshold());
+}
 ```
 
 ### Serial
-#### 
-![led diagram](diagrams/led.png)  
-_diagram: led_
+#### Serial 
+_no diagram, will return ambient values_
+
 ```js
+var serial;
+
+function setup() {
+  serial = p5.serial();
+  serial.list();
+
+  serial.connect('/dev/cu.usbmodem1421');
+
+  // Open console to read values
+  serial.read(function(data){ console.log(data); })
+}
 ```

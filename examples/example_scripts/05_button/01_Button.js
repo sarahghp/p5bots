@@ -1,10 +1,6 @@
 // Button: Button 
 // Diagram: diagrams/simple_button
 
-
-// Board setup — you may need to change the port
-var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
-
 // Uncomment the lines below to log ports to the console
 // p5.serial().list(function(data) {
 //   console.log('serial list:');
@@ -13,8 +9,10 @@ var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
 //   });
 // });
 
-// Test Pressed, Held, Released
+// Board setup — you may need to change the port
+var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
 
+// Test Pressed, Held, Released
 var button;
 
 function setup() {
