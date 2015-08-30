@@ -2,8 +2,6 @@
 
 These are the files necessary for the server end of the p5bots setup. While the instructions below help you get the example file up and running, you'll need the [client-side library](https://github.com/sarahgp/p5bots) as well to make your own work with the p5 and p5bots APIs.
 
-_Note: This is still version 0.0.x, so there are a lot of todos left. Anything can happen._
-
 ## Setup
 
 ### Arduino
