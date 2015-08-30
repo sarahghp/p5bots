@@ -91,7 +91,7 @@ function setup(){
 }
 ``` 
 
-Finally, once the sketch is running, we will use key presses to the arrow keys to trigger functionality. To do so, we will use [p5's `keyPressed()` method]().
+Finally, once the sketch is running, we will use key presses to the arrow keys to trigger functionality. To do so, we will use [p5's `keyPressed()` method](http://p5js.org/reference/#/p5/keyPressed).
 
 ```js
 function keyPressed() {
