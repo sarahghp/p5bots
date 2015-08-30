@@ -58,7 +58,7 @@ Detailed explanations of functionality have been broken up by subject:
 [Report issues in this repo.](https://github.com/sarahgp/p5bots/issues)
 
 ## Contributing
-Want to fix an issue you've identified? Looking to create some functionality we have yet to add? Check out the [p5bots repo on Github](https://github.com/sarahgp/p5bots) and, particularly, [CONTRIBUTING.md](https://github.com/sarahgp/p5bots/blob/master/CONTRIBUTING.md).
+Want to fix an issue you've identified? Looking to create some functionality we have yet to add? Check out  [CONTRIBUTING.md](https://github.com/sarahgp/p5bots/blob/master/CONTRIBUTING.md).
 
 ## License
 [LGPL](license.txt)
