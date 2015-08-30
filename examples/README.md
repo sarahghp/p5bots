@@ -12,7 +12,7 @@ This section contains example implementations for each of the standard and speci
   - [Piezo: Tone & Knock](#piezo-tone--knock)  
   - [Serial](#serial)  
 
-Script files for each of these examples are available in (`example_scripts`)[example_scripts]. You can determine which is run by editing [this line](https://github.com/sarahgp/p5bots/blob/master/examples/index.html#L13) to point to the script you want to run:
+Script files for each of these examples are available in [`example_scripts`](example_scripts). You can determine which is run by editing [this line](https://github.com/sarahgp/p5bots/blob/master/examples/index.html#L13) to point to the script you want to run:
 
 ```html
    <!-- Swap out the script below with any of the others in example_scripts. -->
