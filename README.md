@@ -52,7 +52,8 @@ Ready to go? Good entry points include:
 ## Finding Infomation
 Detailed explanations of functionality have been broken up by subject:
   - Getting set up and using the library with p5.js: [p5.bots API](src/client/README.md)  
-  - Setting up and testin the server files: [p5.bots server](src/p5bots-server/)
+  - Setting up and testing the server files: [p5.bots server](src/p5bots-server/)
+  - Examples showing p5.bots alongside p5 functions: [examples](examples)
 
 ## Issues
 [Report issues in this repo.](https://github.com/sarahgp/p5bots/issues)
