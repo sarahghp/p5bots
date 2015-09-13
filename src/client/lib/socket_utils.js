@@ -42,7 +42,7 @@ var utils =  {
     pin.read = function(arg) {
       var fire = utils.socketGen(mode, 'read', pin);
       utils.dispatch(fire, arg);
-      socket.on('return val', setVal.bind(this));
+      socket.on('return val' + pin.pin, setVal.bind(this));
       return function nextRead(arg) { fire(arg); };
     };
 

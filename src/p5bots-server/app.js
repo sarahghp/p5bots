@@ -114,7 +114,7 @@ var setup = exports.setup = function(io) {
       // Otherwise it is read with no argument, set pin.val on update
       } else if (data.type === 'read') {
         board[data.action](data.pin, function(val){
-          socket.emit('return val', { val: val });
+          socket.emit('return val' + data.pin, { val: val });
         });
       }
     });
