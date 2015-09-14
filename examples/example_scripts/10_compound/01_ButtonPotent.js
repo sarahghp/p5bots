@@ -43,9 +43,9 @@ function setup() {
 
 function draw() {
   // Create ellipse frame and draw to it if button.val = 1;
-  var frameW = w - (1/3 * w),
+  var frameW = w,
       frameH = h,
-      r      = potent.val/2 || 60;
+      r      = potent.val/2;
   
   if (button.val) {
     fill(Math.random() * 255, Math.random() * 255, Math.random() * 255);
