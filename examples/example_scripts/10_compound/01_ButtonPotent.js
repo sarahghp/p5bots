@@ -14,8 +14,8 @@ var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
 
 // Draw ellipses with a button
 
-var w = 1200,
-    h = 300,
+var w = window.innerWidth,
+    h = window.innerHeight - 100,
     button, potent;
 
 function setup() {
@@ -47,14 +47,8 @@ function draw() {
       frameH = h,
       r      = potent.val/2 || 60;
   
-  // console.log(button.val);
-
   if (button.val) {
     fill(Math.random() * 255, Math.random() * 255, Math.random() * 255);
     ellipse(Math.random() * frameW, Math.random() * frameH, r, r);
   }
-
-  // Create ellipse to reflect potentiometer value
-  fill(62, 0, 255);
-  ellipse(frameW, frameH/2, r, r);
 }
