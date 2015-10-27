@@ -40,7 +40,7 @@ var serial = function() {
   serialObj.write = function(arg, cb) {
     socket.emit('serial write', { arg: arg });
     socket.on('serial write return', function(data){
-      cb(data);
+      cb && cb(data);
     });
   };
 
@@ -48,7 +48,7 @@ var serial = function() {
     socket.emit('serial list');
     socket.on('serial list return', function(data) {
       console.log(data);
-      cb && cb(data);
+      cb && cb(data.data); // unwrap the data so the client doesn't need to
     });
   };
 
