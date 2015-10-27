@@ -164,11 +164,11 @@ You can test that your setup is working by plugging the Arduino into the compute
 ### Start the Server
 Now we need to open the gates and let the two talk. 
 
-1. Return to the Terminal. Be sure you are in `helloWorld`.
-2. Type `bots-go -f`, then drag the `index.html` file into the terminal window. You should end up with something like this:
+1. Return to the Terminal.
+2. Type `bots-go -d`, then drag the `helloWorld` folder into the terminal window. You should end up with something like this:
 
 ```bash
-bots-go -f /Users/computer/sites/p5bots/helloWord/index.html
+bots-go -d /Users/computer/sites/p5bots/helloWord/
 ```
 
 Hit enter and you should something like this:
