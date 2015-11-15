@@ -4,7 +4,7 @@ var sp = require('serialport'),
     serialQ = [];
 
 function serialDispatch(fn, args){
-  serialport.isOpen ?
+  serialport.isOpen() ?
       fn.apply(null, args)
     : serialQ.push({ func: fn, args: args });
 }
