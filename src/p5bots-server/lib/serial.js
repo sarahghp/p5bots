@@ -4,7 +4,7 @@ var sp = require('serialport'),
     serialQ = [];
 
 function serialDispatch(fn, args){
-  serialport.isOpen ?
+  serialport.isOpen() ?
       fn.apply(null, args)
     : serialQ.push({ func: fn, args: args });
 }
@@ -36,7 +36,7 @@ exports.read = function serialRead(socket) {
 exports.write = function serialWrite(socket) {
   socket.on('serial write', function(arg){
     function sWrite() {
-      serialport.write(arg, function(err, results) {
+      serialport.write(arg.arg, function(err, results) {
         if (err) { console.log('Serial write error', err); }
         socket.emit('serial write return', { results: results });
       });

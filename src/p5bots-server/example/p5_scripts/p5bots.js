@@ -481,7 +481,7 @@ var serial = function() {
       path: path,
       config: config
     });
-  }
+  };
   
   serialObj.read = function(cb) {
     socket.emit('serial read');
@@ -493,7 +493,7 @@ var serial = function() {
   serialObj.write = function(arg, cb) {
     socket.emit('serial write', { arg: arg });
     socket.on('serial write return', function(data){
-      cb(data);
+      cb && cb(data);
     });
   };
 
@@ -563,7 +563,7 @@ function servo(pin) {
 
 module.exports = servo;
 },{"./socket_utils.js":9}],9:[function(require,module,exports){
-var socket = io.connect('http://localhost:8000/sensors');
+var socket = io.connect(location.origin + '/sensors');
 socket.on('error', function(err){
   console.log(err);
 });
