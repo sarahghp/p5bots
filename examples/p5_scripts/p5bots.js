@@ -774,7 +774,7 @@ var utils =  {
     var mode = mode || pin.mode; // jshint ignore:line
 
     function setVal(data) {
-      console.log('return val' + pin.pin);
+      // console.log('return val' + pin.pin);
       // Callbacks set in socketGen for generic read
       // & in special constructors for special
       this.readcb && this.readcb(data.val);
