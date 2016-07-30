@@ -28,8 +28,6 @@ This way, you can click on a sketch to light an LED or use temperature data to d
 
 p5bots comprises two sets of files: the client file, called `p5bots.js`, which is included in the `index.html` along with `p5.js` and your sketch; and the server files, called `p5bots-server`, which can be downloaded from [npm](https://www.npmjs.com/package/p5bots-server).
 
-If all this sounds a little too manual, you can also use p5bots from the [p5.js IDE](https://github.com/processing/p5.js-editor).
-
 ## p5.Serial
 p5bots has a [`p5.serial` method](src/client/README.md#serial) that can be used in combination with an Arduino sketch listening for serial, much in the same way the Processing serial library can.
 
