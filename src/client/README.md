@@ -339,7 +339,7 @@ k.read()
 k.threshold()
 
 // once a threshold has been set, this returns boolean (true or false) 
-k.overThreshold // returns boolean
+k.overThreshold() // returns boolean
 ```
 
 ### Other Special Methods
