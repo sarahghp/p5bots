@@ -17,7 +17,7 @@ exports.blink = function blink(board, socket) {
 
     }, length);
 
-    socket.on('blink cancel', function(data) {
+    socket.on('blink' + data.id + ' cancel', function(data) {
       clearInterval(blinkID);
     });
 

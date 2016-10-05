@@ -9,6 +9,11 @@ var utils = require('./socket_utils.js');
 function led(pin) {
   utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
   utils.constructFuncs(pin);
+
+
+  // this is a little hacky but I am only a little sorry
+  var blinkCounter = 0;
+
   pin.on = function() {
 
     function ledOn() {
@@ -71,17 +76,19 @@ function led(pin) {
   pin.blink = function(length) {
 
     function ledBlink() {
-      utils.socket.emit('blink', { pin: [this.pin], length: length });
+      utils.socket.emit('blink', { pin: [this.pin], length: length, id: blinkCounter });
     }
 
     utils.dispatch(ledBlink.bind(this));
+
+    ++blinkCounter;
 
   };
 
   pin.noBlink = function() {
 
     function ledNoBlink() {
-      utils.socket.emit('blink cancel');
+      utils.socket.emit('blink' + blinkCounter ' cancel');
     }
 
     utils.dispatch(ledNoBlink);
