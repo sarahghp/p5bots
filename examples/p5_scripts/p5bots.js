@@ -451,11 +451,13 @@ function rgb(pin) {
 
     // Invert values for common anode RGBs
     if (this.common === 'anode') {
-      this.color.writeArr[0] = 255 - this.color.rgba[0];
-      this.color.writeArr[1] = 255 - this.color.rgba[1];
-      this.color.writeArr[2] = 255 - this.color.rgba[2];
+      this.color.writeArr[0] = 255 - red(color);
+      this.color.writeArr[1] = 255 - green(color);
+      this.color.writeArr[2] = 255 - blue(color);
     } else {
-      this.color.writeArr = this.color.rgba;
+      this.color.writeArr[0] = red(color);
+      this.color.writeArr[1] = green(color);
+      this.color.writeArr[2] = blue(color);
     }
 
     function rgbWrite() {
