@@ -1,4 +1,4 @@
-/*! p5bots.js v0.0.2 September 13, 2015 */
+/*! p5bots.js v0.3.2 January 02, 2017 */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.p5js = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 /**
  * @module Basic constructors
@@ -222,6 +222,11 @@ var utils = _dereq_('./socket_utils.js');
 function led(pin) {
   utils.dispatch(utils.pinInit(pin.pin, pin.mode, pin.direction));
   utils.constructFuncs(pin);
+
+
+  // this is a little hacky but I am only a little sorry
+  var blinkCounter = 0;
+
   pin.on = function() {
 
     function ledOn() {
@@ -284,17 +289,19 @@ function led(pin) {
   pin.blink = function(length) {
 
     function ledBlink() {
-      utils.socket.emit('blink', { pin: [this.pin], length: length });
+      utils.socket.emit('blink', { pin: [this.pin], length: length, id: blinkCounter });
     }
 
     utils.dispatch(ledBlink.bind(this));
+
+    ++blinkCounter;
 
   };
 
   pin.noBlink = function() {
 
     function ledNoBlink() {
-      utils.socket.emit('blink cancel');
+      utils.socket.emit('blink' + blinkCounter + ' cancel');
     }
 
     utils.dispatch(ledNoBlink);
@@ -451,13 +458,11 @@ function rgb(pin) {
 
     // Invert values for common anode RGBs
     if (this.common === 'anode') {
-      this.color.writeArr[0] = 255 - red(color);
-      this.color.writeArr[1] = 255 - green(color);
-      this.color.writeArr[2] = 255 - blue(color);
+      this.color.writeArr[0] = 255 - this.color.rgba[0];
+      this.color.writeArr[1] = 255 - this.color.rgba[1];
+      this.color.writeArr[2] = 255 - this.color.rgba[2];
     } else {
-      this.color.writeArr[0] = red(color);
-      this.color.writeArr[1] = green(color);
-      this.color.writeArr[2] = blue(color);
+      this.color.writeArr = this.color.rgba;
     }
 
     function rgbWrite() {
@@ -667,7 +672,7 @@ var serial = function() {
   serialObj.write = function(arg, cb) {
     socket.emit('serial write', { arg: arg });
     socket.on('serial write return', function(data){
-      cb(data);
+      cb && cb(data);
     });
   };
 
@@ -675,7 +680,7 @@ var serial = function() {
     socket.emit('serial list');
     socket.on('serial list return', function(data) {
       console.log(data);
-      cb && cb(data);
+      cb && cb(data.data); // unwrap the data so the client doesn't need to
     });
   };
 
@@ -776,7 +781,6 @@ var utils =  {
     var mode = mode || pin.mode; // jshint ignore:line
 
     function setVal(data) {
-      // console.log('return val' + pin.pin);
       // Callbacks set in socketGen for generic read
       // & in special constructors for special
       this.readcb && this.readcb(data.val);
