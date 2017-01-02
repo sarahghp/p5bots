@@ -15,7 +15,7 @@ var b = p5.board('/dev/cu.usbmodem1421', 'arduino');
 
 function setup() {
   var rgb = b.pin({r: 9, g: 10, b: 11}, 'RGBLED');
-  var c = color(65);
+  var c = color(0, 255, 0);
   rgb.write(c);
   fill(c);
   noStroke();
