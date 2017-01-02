@@ -38,9 +38,6 @@ In addition to including `p5.js` in your html file, you will need two other scri
 ### But Wait, There's More: Server-Side Files
 To send messages from the client to the board, you also need to run the p5.bots server files. For more detail on setting up the server and making sure it's working check out the README at [p5bots-server](https://github.com/sarahgp/p5bots/tree/master/src/p5bots-server) & download [p5bots-server from NPM](https://www.npmjs.com/package/p5bots-server).
 
-### Or, Let the Editor Handle It
-p5.bots is also included in the [p5.js Editor](https://github.com/processing/p5.js-editor).
-
 ## Using p5.Bots with p5.js
 
 ### Basic Functions
