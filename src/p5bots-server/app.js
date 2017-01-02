@@ -5,7 +5,7 @@ var express    = require('express'),
     app        = express(),
     server     = require('http').Server(app),
     io         = require('socket.io')(server), // jshint ignore:line
-    firmata    = require('firmata'),
+    Board      = require('firmata'),
     program    = require('commander'),
     fs         = require('fs'),
     path       = require('path');
@@ -75,7 +75,7 @@ var setup = exports.setup = function(io) {
       // functions are called without restarting the whole proces
 
       if (!board) {
-        board = new firmata.Board(data.port, function(err) {
+        board = new Board(data.port, function(err) {
           if (err) {
             throw new Error(err);
           }

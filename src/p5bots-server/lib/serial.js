@@ -1,5 +1,4 @@
-var sp = require('serialport'),
-    SerialPort = sp.SerialPort,
+var SerialPort = require('serialport'),
     serialport,
     serialQ = [];
 
