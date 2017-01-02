@@ -88,7 +88,7 @@ function led(pin) {
   pin.noBlink = function() {
 
     function ledNoBlink() {
-      utils.socket.emit('blink' + blinkCounter ' cancel');
+      utils.socket.emit('blink' + blinkCounter + ' cancel');
     }
 
     utils.dispatch(ledNoBlink);
