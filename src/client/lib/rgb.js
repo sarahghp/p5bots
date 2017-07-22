@@ -32,22 +32,23 @@ function rgb(pin) {
   pin.write = function(color) {
 
     this.color = Array.isArray(color) ?  p5.prototype.color(color) : color;
-    this.color.writeArr = [];
+
+    let red = p5.prototype.red(this.color),
+        green = p5.prototype.green(this.color),
+        blue = p5.prototype.blue(this.color);
 
     // Invert values for common anode RGBs
     if (this.common === 'anode') {
-      this.color.writeArr[0] = 255 - this.color.rgba[0];
-      this.color.writeArr[1] = 255 - this.color.rgba[1];
-      this.color.writeArr[2] = 255 - this.color.rgba[2];
-    } else {
-      this.color.writeArr = this.color.rgba;
+      red = 255 - red;
+      green = 255 - green;
+      blue = 255 - blue;
     }
 
     function rgbWrite() {
       utils.socket.emit('rgb write', {
-        red: [this.redPin, this.color.writeArr[0]],
-        green: [this.greenPin, this.color.writeArr[1]],
-        blue: [this.bluePin, this.color.writeArr[2]]
+        red: [this.redPin, red],
+        green: [this.greenPin, green],
+        blue: [this.bluePin, blue]
       });
     }
 
