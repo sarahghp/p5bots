@@ -75,13 +75,13 @@ function led(pin) {
 
   pin.blink = function(length) {
 
+    ++blinkCounter;
+
     function ledBlink() {
       utils.socket.emit('blink', { pin: [this.pin], length: length, id: blinkCounter });
     }
 
     utils.dispatch(ledBlink.bind(this));
-
-    ++blinkCounter;
 
   };
 
@@ -99,4 +99,3 @@ function led(pin) {
 }
 
 module.exports = led;
-
