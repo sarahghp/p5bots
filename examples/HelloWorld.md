@@ -34,7 +34,7 @@ Next, we need to create a place to put our project.
 
 1. Create a new folder for the project: `helloWorld`.
 2. Add two files in this folder: `index.html` and `sketch.js`.
-3. Inside `helloWorld` create another folder called `scripts`. Move the copies of `p5.js` and `p5.bots.js` into it.
+3. Inside `helloWorld` create another folder called `scripts`. Move the copies of `p5.js` and `p5bots.js` into it.
 
 ### Let's Code!
 Now that we have all the parts we need, we can start writing our code. Let's open `index.html` and add in the boilerplate we need for all HTML files.
